@@ -1,6 +1,17 @@
 ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
   public = list(
     initialize = function(feature, predictor, step.size, ep.method) {
+      
+      # Check if feature is unique character vector of length 1 or 2 and matches names in data
+      assertCharacter(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
+      assertSubset(feature, choices = predictor$data$feature.names)
+      
+      # Check if feature.types are numeric when feature is of length 2
+      if (length(feature) == 2) {
+        feature.types = predictor$data$feature.types[which(predictor$data$feature.names %in% feature)]
+        assert_set_equal(feature.types, y = c("numerical"))
+      }
+      
       self$feature = feature
       self$predictor = predictor
       self$step.size = step.size
@@ -24,10 +35,12 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
     
     # Function that computes feature values after the step
     make.step = function(feature, predictor, step.size) {
-      df = predictor$data$X
-      df = as.data.frame(df)
-      df[, feature] = df[, feature] + rep(step.size, each = nrow(df))
-      as.data.table(df)
+      df = data.table::copy(predictor$data$X)
+      for (n_col in 1:length(feature)) {
+        colname = feature[n_col]
+        data.table::set(df, j = colname, value = df[, ..colname] + step.size[n_col])
+      }
+      df
     }
   )
 )
