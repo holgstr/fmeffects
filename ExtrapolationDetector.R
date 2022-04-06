@@ -5,19 +5,19 @@ ExtrapolationDetector <- R6Class("ExtrapolationDetector",
       self$data.step = data.step
       self$feature.types = feature.types
       self$method = method
-      self$extrapolation.points = private$compute.ep(self$data, self$data.step, self$feature.types, self$method)
+      self$extrapolation.ids = private$compute.ep(self$data, self$data.step, self$feature.types, self$method)
       self$non.ep.data = data.table::copy(self$data)
       self$non.ep.data.step = data.table::copy(self$data.step)
-      if (!is.null(self$extrapolation.points)) {
-        self$non.ep.data = self$non.ep.data[-self$extrapolation.points,]
-        self$non.ep.data.step = self$non.ep.data.step[-self$extrapolation.points,]
+      if (!is.null(self$extrapolation.ids)) {
+        self$non.ep.data = self$non.ep.data[-self$extrapolation.ids,]
+        self$non.ep.data.step = self$non.ep.data.step[-self$extrapolation.ids,]
       }
     },
     data = NULL,
     data.step = NULL,
     feature.types = NULL,
     method = NULL,
-    extrapolation.points = NULL,
+    extrapolation.ids = NULL,
     non.ep.data = NULL,
     non.ep.data.step = NULL
   ),
@@ -48,7 +48,7 @@ ExtrapolationDetector <- R6Class("ExtrapolationDetector",
       data.step.cat = data.step[ ,..names.cat]
       data.step.cat$envelope = apply(data.step.cat, 1, function(x) !is.null(unlist(x))) # nonsense function that needs replacement
       # ids of observations in data.step outside of the multivariate envelope of features in data
-      extrapolation.ids = which((data.step.num$envelope == TRUE) & (data.step.cat$envelope == TRUE))
+      which((data.step.num$envelope == TRUE) & (data.step.cat$envelope == TRUE))
     }
   )
 )

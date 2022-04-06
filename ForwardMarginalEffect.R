@@ -1,16 +1,29 @@
 ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
   public = list(
-    initialize = function(feature, predictor, step.size, ep.method) {
+    initialize = function(feature, predictor, step.size, ep.method = "none") {
       
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
-      assertCharacter(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
-      assertSubset(feature, choices = predictor$data$feature.names)
+      assert_character(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
+      assert_subset(feature, choices = predictor$data$feature.names)
       
       # Check if feature.types are numeric when feature is of length 2
+      feature.types = predictor$data$feature.types[which(predictor$data$feature.names %in% feature)]
       if (length(feature) == 2) {
-        feature.types = predictor$data$feature.types[which(predictor$data$feature.names %in% feature)]
         assert_set_equal(feature.types, y = c("numerical"))
       }
+      
+      # Check if step.size corresponds to feature in length and format
+      if (length(feature) == 2) { # bivariate
+        assert_numeric(step.size, len = 2)
+      } else if (feature.types == "numerical"){ # univariate numerical 
+        assert_numeric(step.size, len = 1)
+      } else { # univariate categorical
+        assert_character(step.size, len = 1)
+        assert_true(step.size %in% predictor$data$X[,..feature][[1]])
+      }
+      
+      # Check if ep.method is one of the options provided
+      assert_choice(ep.method, choices = c("none", "mcec", "envelope"))
       
       self$feature = feature
       self$predictor = predictor
@@ -23,13 +36,19 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
                                                               data.step = self$data.step,
                                                               feature.types = self$predictor$data$feature.types,
                                                               method = self$ep.method)
+      
+      self$fme = private$compute.fme(self$predictor,
+                                     self$extrapolation.detector$non.ep.data,
+                                     self$extrapolation.detector$non.ep.data.step,
+                                     self$extrapolation.detector$extrapolation.ids)
     },
     feature = NULL,
     predictor = NULL,
     step.size = NULL,
     data.step = NULL,
     ep.method = NULL,
-    extrapolation.detector = NULL
+    extrapolation.detector = NULL,
+    fme = NULL
   ),
   private = list(
     
@@ -41,6 +60,14 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
         data.table::set(df, j = colname, value = df[, ..colname] + step.size[n_col])
       }
       df
+    },
+    
+    # Function that computes the forward marginal effect after extrapolation point detection
+    compute.fme = function(predictor, data, data.step, extrapolation.ids) {
+      y.hat.diff = predictor$predict(data.step) - predictor$predict(data)
+      df = data.table::copy(predictor$data$X)
+      df[-self$extrapolation.detector$extrapolation.ids, fme := y.hat.diff]
+      df[]
     }
   )
 )
