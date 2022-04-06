@@ -19,10 +19,10 @@ predictor = Predictor$new(forest, data = Boston)
 
 #eff <- FeatureEffect$new(predictor, feature = "rm", grid.size = "a")
 
-fme = ForwardMarginalEffect$new(feature = c("rm", "age"),
+fme = ForwardMarginalEffect$new(feature = c("chas"),
                                 predictor = predictor,
-                                step.size = c(1, 1),
+                                step.size = c("0"),
                                 ep.method = "envelope")
-fme$fme
+fme$data.step
 
 

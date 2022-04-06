@@ -15,11 +15,14 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
       # Check if step.size corresponds to feature in length and format
       if (length(feature) == 2) { # bivariate
         assert_numeric(step.size, len = 2)
+        self$step.type = "numerical"
       } else if (feature.types == "numerical"){ # univariate numerical 
         assert_numeric(step.size, len = 1)
+        self$step.type = "numerical"
       } else { # univariate categorical
         assert_character(step.size, len = 1)
         assert_true(step.size %in% predictor$data$X[,..feature][[1]])
+        self$step.type = "categorical"
       }
       
       # Check if ep.method is one of the options provided
@@ -30,7 +33,7 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
       self$step.size = step.size
       self$ep.method = ep.method
       
-      self$data.step = private$make.step(self$feature, self$predictor, self$step.size)
+      self$data.step = private$make.step(self$feature, self$predictor, self$step.size, self$step.type)
       
       self$extrapolation.detector = ExtrapolationDetector$new(data = self$predictor$data$X,
                                                               data.step = self$data.step,
@@ -48,16 +51,24 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
     data.step = NULL,
     ep.method = NULL,
     extrapolation.detector = NULL,
-    fme = NULL
+    fme = NULL,
+    step.type = NULL
   ),
   private = list(
     
     # Function that computes feature values after the step
-    make.step = function(feature, predictor, step.size) {
+    make.step = function(feature, predictor, step.size, step.type) {
       df = data.table::copy(predictor$data$X)
-      for (n_col in 1:length(feature)) {
-        colname = feature[n_col]
-        data.table::set(df, j = colname, value = df[, ..colname] + step.size[n_col])
+      if (step.type == "numerical") {
+        #for (n_col in 1:length(feature)) {
+        for (n_col in seq_len(length(feature))) {
+          colname = feature[n_col]
+          data.table::set(df, j = colname, value = df[, ..colname] + step.size[n_col])
+        }
+      } else {
+        setkeyv(df, feature)
+        df = df[!step.size]
+        data.table::set(df, j = feature, value = step.size)
       }
       df
     },
