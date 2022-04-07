@@ -1,23 +1,31 @@
 ExtrapolationDetector <- R6Class("ExtrapolationDetector",
   public = list(
-    initialize = function(data, data.step, feature.types, method) {
+    initialize = function(data, data.step, feature.types, method, step.type) {
+      
       self$data = data
       self$data.step = data.step
       self$feature.types = feature.types
       self$method = method
-      self$extrapolation.ids = private$compute.ep(self$data, self$data.step, self$feature.types, self$method)
+      self$step.type = step.type
+      
       self$non.ep.data = data.table::copy(self$data)
       self$non.ep.data.step = data.table::copy(self$data.step)
-      if (!is.null(self$extrapolation.ids)) {
-        self$non.ep.data = self$non.ep.data[-self$extrapolation.ids,]
-        self$non.ep.data.step = self$non.ep.data.step[-self$extrapolation.ids,]
+      
+      # For numerical steps check multivariate envelope
+      if (self$step.type == "numerical") {
+        self$extrapolation.ids = private$compute.ep(self$data, self$data.step, self$feature.types, self$method)
+        if (!is.null(self$extrapolation.ids)) {
+          self$non.ep.data = self$non.ep.data[-self$extrapolation.ids,]
+          self$non.ep.data.step = self$non.ep.data.step[-self$extrapolation.ids,]
+        }
       }
     },
     data = NULL,
     data.step = NULL,
     feature.types = NULL,
     method = NULL,
-    extrapolation.ids = NULL,
+    step.type = NULL,
+    extrapolation.ids = 0,
     non.ep.data = NULL,
     non.ep.data.step = NULL
   ),

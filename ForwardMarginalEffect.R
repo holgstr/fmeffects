@@ -38,11 +38,15 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
       self$extrapolation.detector = ExtrapolationDetector$new(data = self$predictor$data$X,
                                                               data.step = self$data.step,
                                                               feature.types = self$predictor$data$feature.types,
-                                                              method = self$ep.method)
+                                                              method = self$ep.method,
+                                                              step.type = self$step.type)
       
-      self$fme = private$compute.fme(self$predictor,
+      self$fme = private$compute.fme(self$feature,
+                                     self$predictor,
                                      self$extrapolation.detector$non.ep.data,
                                      self$extrapolation.detector$non.ep.data.step,
+                                     self$step.size,
+                                     self$step.type,
                                      self$extrapolation.detector$extrapolation.ids)
     },
     feature = NULL,
@@ -60,7 +64,6 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
     make.step = function(feature, predictor, step.size, step.type) {
       df = data.table::copy(predictor$data$X)
       if (step.type == "numerical") {
-        #for (n_col in 1:length(feature)) {
         for (n_col in seq_len(length(feature))) {
           colname = feature[n_col]
           data.table::set(df, j = colname, value = df[, ..colname] + step.size[n_col])
@@ -74,10 +77,17 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
     },
     
     # Function that computes the forward marginal effect after extrapolation point detection
-    compute.fme = function(predictor, data, data.step, extrapolation.ids) {
-      y.hat.diff = predictor$predict(data.step) - predictor$predict(data)
+    compute.fme = function(feature, predictor, data, data.step, step.size, step.type, extrapolation.ids) {
       df = data.table::copy(predictor$data$X)
-      df[-self$extrapolation.detector$extrapolation.ids, fme := y.hat.diff]
+      # For categorical features, we can only compare observations which are not in the reference category
+      if (step.type == "categorical") {
+        setkeyv(df, feature)
+        df = df[!step.size]
+        setkeyv(data, feature)
+        data = data[!step.size]
+      }
+      y.hat.diff = predictor$predict(data.step) - predictor$predict(data)
+      df[!self$extrapolation.detector$extrapolation.ids, fme := y.hat.diff]
       df[]
     }
   )
