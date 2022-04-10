@@ -17,12 +17,12 @@ Boston$chas = as.factor(Boston$chas)
 forest = randomForest(medv ~ ., data = Boston)
 predictor = Predictor$new(forest, data = Boston)
 
-#eff <- FeatureEffect$new(predictor, feature = "rm", grid.size = "a")
-
-fme = ForwardMarginalEffect$new(feature = c("chas"),
+#eff <- FeatureEffect$new(predictor, feature = "rm", grid.size = 30, method = "pdp+ice")
+#plot(eff)
+fme = ForwardMarginalEffect$new(feature = c("age"),
                                 predictor = predictor,
-                                step.size = c("0"),
+                                step.size = c(9),
                                 ep.method = "envelope")
-fme$data.step
-
+fme$fme
+summary(fme$fme$fme)
 
