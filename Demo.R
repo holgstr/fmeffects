@@ -21,9 +21,16 @@ predictor = Predictor$new(forest, data = Boston)
 #eff <- FeatureEffect$new(predictor, feature = "rm", grid.size = 30, method = "pdp+ice")
 #plot(eff)
 
-a = ForwardMarginalEffect$new(feature = c("age"),
+#model = forest
+#observation = as.data.frame(predictor$data$X[4,])
+#feature = "age"
+#step.size = 0.5
+
+a = ForwardMarginalEffect$new(feature = c("age", "tax"),
                           predictor = predictor,
-                          step.size = c(6),
+                          step.size = c(1, 5),
                           ep.method = "envelope")
-NonLinearityMeasure$new(predictor, predictor$data$X[3:32], feature, step.size, nlm.intervals = 1)$nlm
+#NonLinearityMeasure$new(predictor, predictor$data$X[4,], feature, step.size, nlm.intervals = 1)$nlm
+#nonLinearityMeasure(model, observation, feature, step.size)
+
 

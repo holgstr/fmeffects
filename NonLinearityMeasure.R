@@ -1,21 +1,21 @@
 NonLinearityMeasure <- R6Class("NonLinearityMeasure",
   public = list(
-    initialize = function(predictor, data, feature, step.size, nlm.intervals) {
+    initialize = function(predictor, observation, feature, step.size, nlm.intervals) {
     
       self$predictor = predictor
-      self$data = data
+      self$observation = observation
       self$feature = feature
       self$step.size = step.size
       self$nlm.intervals = nlm.intervals
       self$nlm = private$nlm.compute(self$predictor,
-                                     self$data[1,],
+                                     self$observation,
                                      self$feature,
                                      self$step.size,
                                      self$nlm.intervals)
       
     },
     predictor = NULL,
-    data = NULL,
+    observation = NULL,
     feature = NULL,
     step.size = NULL,
     nlm.intervals = NULL,
