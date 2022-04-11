@@ -8,7 +8,7 @@ NonLinearityMeasure <- R6Class("NonLinearityMeasure",
       self$step.size = step.size
       self$nlm.intervals = nlm.intervals
       self$nlm = private$nlm.compute(self$predictor,
-                                     as.data.frame(self$data)[1,],
+                                     self$data[1,],
                                      self$feature,
                                      self$step.size,
                                      self$nlm.intervals)
@@ -26,7 +26,11 @@ NonLinearityMeasure <- R6Class("NonLinearityMeasure",
     nlm.compute = function(predictor, observation, feature, step.size, subintervals) {
       ## Helper function for the path at t
       path.t = function(observation, feature, step.size, t) {
-        observation[, feature] = observation[, feature] + t * step.size
+        observation = data.table::copy(observation)
+        for (n_col in seq_len(length(feature))) {
+          colname = feature[n_col]
+          data.table::set(observation, j = colname, value = observation[, ..colname] + t * step.size[n_col])
+        }
         return(observation)
       }
       ## Helper function for Simpson's 3/8 Rule (Composite)
@@ -46,7 +50,11 @@ NonLinearityMeasure <- R6Class("NonLinearityMeasure",
         pred = predictor$predict(observation.t)
         # Compute Secant at t
         secant.start = predictor$predict(observation)
-        observation[ , feature] = observation[ , feature] + step.size
+        observation = data.table::copy(observation)
+        for (n_col in seq_len(length(feature))) {
+          colname = feature[n_col]
+          data.table::set(observation, j = colname, value = observation[, ..colname] + step.size[n_col])
+        }
         secant.step = predictor$predict(observation)
         secant = as.numeric(secant.start) + (t * as.numeric(secant.step - secant.start))
         # Compute Deviation
