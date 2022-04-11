@@ -25,7 +25,7 @@ ExtrapolationDetector <- R6Class("ExtrapolationDetector",
     feature.types = NULL,
     method = NULL,
     step.type = NULL,
-    extrapolation.ids = 0,
+    extrapolation.ids = integer(),
     non.ep.data = NULL,
     non.ep.data.step = NULL
   ),

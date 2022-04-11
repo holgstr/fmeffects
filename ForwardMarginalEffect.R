@@ -86,8 +86,17 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
         setkeyv(data, feature)
         data = data[!step.size]
       }
+      # Compute fmes, alternative 1:
       y.hat.diff = predictor$predict(data.step) - predictor$predict(data)
       df[!self$extrapolation.detector$extrapolation.ids, fme := y.hat.diff]
+      # Compute fmes, alternative 2:
+      #non.extrapolation.ids = setdiff(1:nrow(df), extrapolation.ids)
+      #for (n_row in seq_len(length(non.extrapolation.ids))) {
+        #data.table::set(df,
+                        #i = non.extrapolation.ids[n_row],
+                        #j = "fme",
+                        #value = as.numeric(predictor$predict(data.step[n_row,]) - predictor$predict(data[n_row,])))
+      #}
       df[]
     }
   )
