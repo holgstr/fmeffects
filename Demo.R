@@ -12,25 +12,28 @@ files = list.files(pattern = "(.R)$")
 sapply(files[which(files != "Demo.R")], source)
 
 # Demo ------------------------------------------------------------------
+set.seed(123)
 data("Boston", package = "MASS")
 Boston$chas = as.factor(Boston$chas)
 forest = randomForest(medv ~ ., data = Boston)
 predictor = Predictor$new(forest, data = Boston)
-#observation = data.table::copy(predictor$data$X[2,])
 
 #eff <- FeatureEffect$new(predictor, feature = "rm", grid.size = 30, method = "pdp+ice")
 #plot(eff)
 
-#model = forest
-#observation = as.data.frame(predictor$data$X[4,])
-#feature = "age"
-#step.size = 0.5
-
-a = ForwardMarginalEffect$new(feature = c("age", "tax"),
+# Example categorical step
+a = ForwardMarginalEffect$new(feature = c("chas"),
                           predictor = predictor,
-                          step.size = c(1, 5),
-                          ep.method = "envelope")
-#NonLinearityMeasure$new(predictor, predictor$data$X[4,], feature, step.size, nlm.intervals = 1)$nlm
-#nonLinearityMeasure(model, observation, feature, step.size)
+                          step.size = "0",
+                          ep.method = "envelope", # atm envelope is only checked for numerical features
+                          nlm.intervals = 1)
+a$results
 
+# Example numerical step
+b = ForwardMarginalEffect$new(feature = c("age", "ptratio"),
+                              predictor = predictor,
+                              step.size = c(1, 1),
+                              ep.method = "envelope",
+                              nlm.intervals = 1)
+b$results
 

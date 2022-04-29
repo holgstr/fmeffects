@@ -28,7 +28,7 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
       # Check if ep.method is one of the options provided
       assert_choice(ep.method, choices = c("none", "mcec", "envelope"))
       
-      # Check if nlm.intervals is an integer of length 1 and greater 0
+      # Check if nlm.intervals is an integer of length 1 and >= 1
       assert_integerish(nlm.intervals, lower = 1, len = 1)
       
       self$feature = feature
@@ -39,19 +39,18 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
       
       self$data.step = private$make.step(self$feature, self$predictor, self$step.size, self$step.type)
       
-      self$extrapolation.detector = ExtrapolationDetector$new(data = self$predictor$data$X,
-                                                              data.step = self$data.step,
-                                                              feature.types = self$predictor$data$feature.types,
-                                                              method = self$ep.method,
-                                                              step.type = self$step.type)
+      self$extrapolation.ids = ExtrapolationDetector$new(data = self$predictor$data$X,
+                                                         data.step = self$data.step,
+                                                         feature.types = self$predictor$data$feature.types,
+                                                         method = self$ep.method,
+                                                         step.type = self$step.type)$extrapolation.ids
       
       self$results = private$compute.fme.nlm(self$feature,
                                      self$predictor,
-                                     self$extrapolation.detector$non.ep.data,
-                                     self$extrapolation.detector$non.ep.data.step,
+                                     self$data.step,
                                      self$step.size,
                                      self$step.type,
-                                     self$extrapolation.detector$extrapolation.ids,
+                                     self$extrapolation.ids,
                                      self$nlm.intervals)
     },
     feature = NULL,
@@ -61,7 +60,7 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
     ep.method = NULL,
     nlm.intervals = NULL,
     step.type = NULL,
-    extrapolation.detector = NULL,
+    extrapolation.ids = integer(),
     results = NULL
   ),
   private = list(
@@ -85,23 +84,43 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
     # Function that computes the fME (and NLM) after extrapolation point detection
     compute.fme.nlm = function(feature,
                                predictor,
-                               data,
                                data.step,
                                step.size,
                                step.type,
                                extrapolation.ids,
                                nlm.intervals) {
-      df = data.table::copy(predictor$data$X)
-      # For categorical features, we can only compare observations which are not in the reference category
-      if (step.type == "categorical") {
-        setkeyv(df, feature)
-        df = df[!step.size]
+      
+      # Add observation.id as column to data
+      data = data.table::copy(predictor$data$X)
+      data.table::set(data, j = "obs.id", value = 1:nrow(data))
+      
+      # Exclude extrapolation points
+      setkeyv(data, "obs.id")
+      data = data[!extrapolation.ids]
+      
+      # For numerical features:
+      if (step.type == "numerical") {
+        # Add observation.id as column to data.step
+        data.step = data.table::copy(data.step)
+        data.table::set(data.step, j = "obs.id", value = 1:nrow(data.step))
+        #E xclude extrapolation points in data.step
+        setkeyv(data.step, "obs.id")
+        data.step = data.step[!extrapolation.ids]
+      # For categorical features:
+      } else {   
+        # Exclude extrapolation points in data.step
+        data.step = data.table::copy(data)
+        setkeyv(data.step, feature)
+        data.step = data.step[!step.size]
+        data.table::set(data.step, j = feature, value = step.size)
+        # Exclude observations in data that are not in the reference category
         setkeyv(data, feature)
         data = data[!step.size]
       }
+
       # Compute fMEs, alternative 1:
       y.hat.diff = predictor$predict(data.step) - predictor$predict(data)
-      df[!extrapolation.ids, fme := y.hat.diff]
+      data[, fme := y.hat.diff]
       
       # Compute fMEs, alternative 2:
       #non.extrapolation.ids = setdiff(1:nrow(df), extrapolation.ids)
@@ -114,10 +133,10 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
       
       # For numerical features, compute NLMs:
       if (step.type == "numerical") {
-        # Exclude non-extrapolation points and points with fME = 0 from loop:
-        ids = setdiff(1:nrow(df), which(is.na(df$fme) | (df$fme == 0)))
-        for (n_row in seq_len(length(non.extrapolation.ids))) {
-          data.table::set(df,
+        # Exclude observations with fME = 0 from loop:
+        ids = setdiff(1:nrow(data), which(data$fme == 0))
+        for (n_row in seq_len(length(ids))) {
+          data.table::set(data,
                           i = ids[n_row],
                           j = "nlm",
                           value = NonLinearityMeasure$new(predictor,
@@ -126,8 +145,10 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
                                                           step.size,
                                                           nlm.intervals)$nlm)
         }
+        data[, .(obs.id, fme, nlm)]
+      } else {
+        data[, .(obs.id, fme)]
       }
-      df[]
     }
   )
 )
