@@ -12,12 +12,17 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
         assert_set_equal(feature.types, y = c("numerical"))
       }
       
-      # Check if step.size corresponds to feature in length and format
+      # Check if step.size corresponds to feature in length, format and range
       if (length(feature) == 2) { # bivariate
         assert_numeric(step.size, len = 2)
+        range1 = diff(range(predictor$data$X[,..feature][,1]))
+        assert_numeric(step.size[1], len = 1, lower = (-range1), upper = range1)
+        range2 = diff(range(predictor$data$X[,..feature][,2]))
+        assert_numeric(step.size[2], len = 1, lower = (-range2), upper = range2)
         self$step.type = "numerical"
       } else if (feature.types == "numerical"){ # univariate numerical 
-        assert_numeric(step.size, len = 1)
+        range = diff(range(predictor$data$X[,..feature]))
+        assert_numeric(step.size, len = 1, lower = (-range), upper = range)
         self$step.type = "numerical"
       } else { # univariate categorical
         assert_character(step.size, len = 1)
@@ -44,6 +49,9 @@ ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
                                                          feature.types = self$predictor$data$feature.types,
                                                          method = self$ep.method,
                                                          step.type = self$step.type)$extrapolation.ids
+      
+      # Check if there is at least one non-extrapolation point
+      assert_true(length(self$extrapolation.ids) < nrow(predictor$data$X))
       
       self$results = private$compute.fme.nlm(self$feature,
                                      self$predictor,

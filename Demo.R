@@ -27,12 +27,12 @@ a = ForwardMarginalEffect$new(feature = c("chas"),
                           step.size = "0",
                           ep.method = "envelope", # atm envelope is only checked for numerical features
                           nlm.intervals = 1)
-a$results
+#a$results
 
 # Example numerical step
-b = ForwardMarginalEffect$new(feature = c("age", "ptratio"),
+b = ForwardMarginalEffect$new(feature = c("ptratio", "tax"),
                               predictor = predictor,
-                              step.size = c(1, 1),
+                              step.size = c(3, 100),
                               ep.method = "envelope",
                               nlm.intervals = 1)
 b$results
