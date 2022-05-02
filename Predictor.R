@@ -25,21 +25,21 @@ Predictor = R6Class("Predictor",
       }
       
       self$model = model
-      self$feature.names = private$get.feature.names(data, y)
-      self$X = private$get.X(data, self$feature.names)
-      self$feature.types = private$get.feature.types(self$X, self$feature.names)
+      self$feature.names = private$getFeatureNames(data, y)
+      self$X = private$getX(data, self$feature.names)
+      self$feature.types = private$getFeatureTypes(self$X, self$feature.names)
       
     },
     
-    get.X = function(data, feature.names) {
+    getX = function(data, feature.names) {
       return(data[, ..feature.names])
     },
     
-    get.feature.names = function(data, y) {
+    getFeatureNames = function(data, y) {
       return(setdiff(names(data), y))
     },
     
-    get.feature.types = function(X, feature.names) {
+    getFeatureTypes = function(X, feature.names) {
       feature.types = c("integer" = "numerical",
                          "numeric" = "numerical",
                          "character" = "categorical",
