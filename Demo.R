@@ -48,10 +48,22 @@ task = as_task_regr(Boston, id = "BostonHousing", target = "medv")
 learner = lrn("regr.rpart")
 learner$train(task)
 Boston = as.data.table(Boston)
-predictor2= Predictortest$new(model = learner, data = Boston, y = "medv")
 
-# so far only test version of my own predictor class
-predictor2$predict(Boston)
-predictor2$feature.types
-predictor2$feature.names
-predictor2$X
+predictor = Predictor$new(model = learner, data = Boston, y = "medv")
+
+predictor = PredictorMLR3$new(data = Boston, model = learner, y ="medv")
+predictor$predict(Boston)
+predictor$feature.types
+predictor$feature.names
+predictor$X
+
+predictor = PredictorRandomForest$new(data = Boston, model = learner, y ="medv")
+predictor$predict(Boston)
+predictor$feature.types
+predictor$feature.names
+predictor$X
+
+
+
+
+

@@ -1,4 +1,4 @@
-ForwardMarginalEffect <- R6Class("ForwardMarginalEffect",
+ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
   public = list(
     initialize = function(feature, predictor, step.size, ep.method = "none", nlm.intervals = 1) {
       
