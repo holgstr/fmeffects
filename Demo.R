@@ -17,12 +17,8 @@ set.seed(123)
 data("Boston", package = "MASS")
 Boston$chas = as.factor(Boston$chas)
 
-
-
-
 ### Example 1 --------------------------------------
 forest = randomForest(medv ~ ., data = Boston)
-predictor1 = PredictorRandomForest$new(model = forest, data = Boston, y = "medv")
 
 # Example categorical step
 a = ForwardMarginalEffect$new(model = forest,
@@ -33,11 +29,6 @@ a = ForwardMarginalEffect$new(model = forest,
                               ep.method = "envelope", # atm envelope is only checked for numerical features
                               nlm.intervals = 1)
 
-a = ForwardMarginalEffect$new(feature = c("chas"),
-                          predictor = predictor1,
-                          step.size = "0",
-                          ep.method = "envelope", # atm envelope is only checked for numerical features
-                          nlm.intervals = 1)
 a$compute()
 a$results
 
@@ -49,9 +40,6 @@ ForwardMarginalEffect$new(model = forest,
                           step.size = c(3, 100),
                           ep.method = "envelope",
                           nlm.intervals = 1)$compute()$results
-
-
-
 
 ### Example 2 --------------------------------------
 task = as_task_regr(Boston, id = "BostonHousing", target = "medv")

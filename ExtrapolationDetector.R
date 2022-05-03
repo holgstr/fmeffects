@@ -10,7 +10,7 @@ ExtrapolationDetector = R6Class("ExtrapolationDetector",
       
       # Identify extrapolation points (for now only for numerical steps)
       if (self$method == "envelope" & self$step.type == "numerical") {
-        self$extrapolation.ids = private$compute.ep(self$data,
+        self$extrapolation.ids = private$computeEP(self$data,
                                                     self$data.step,
                                                     self$feature.types)
       }
@@ -23,7 +23,7 @@ ExtrapolationDetector = R6Class("ExtrapolationDetector",
     extrapolation.ids = integer()
   ),
   private = list(
-    compute.ep = function(data, data.step, feature.types) {
+    computeEP = function(data, data.step, feature.types) {
       data = data.table::copy(data)
       data.step = data.table::copy(data.step)
       # Firstly, check if numerical features in data.step are in [min, max] of data
