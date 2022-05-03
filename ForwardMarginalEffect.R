@@ -4,10 +4,10 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
       
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
       assert_character(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
-      assert_subset(feature, choices = predictor$data$feature.names)
+      assert_subset(feature, choices = predictor$feature.names)
       
       # Check if feature.types are numeric when feature is of length 2
-      feature.types = predictor$data$feature.types[which(predictor$data$feature.names %in% feature)]
+      feature.types = predictor$feature.types[which(predictor$feature.names %in% feature)]
       if (length(feature) == 2) {
         assert_set_equal(feature.types, y = c("numerical"))
       }
@@ -15,18 +15,18 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
       # Check if step.size corresponds to feature in length, format and range
       if (length(feature) == 2) { # bivariate
         assert_numeric(step.size, len = 2)
-        range1 = diff(range(predictor$data$X[,..feature][,1]))
+        range1 = diff(range(predictor$X[,..feature][,1]))
         assert_numeric(step.size[1], len = 1, lower = (-range1), upper = range1)
-        range2 = diff(range(predictor$data$X[,..feature][,2]))
+        range2 = diff(range(predictor$X[,..feature][,2]))
         assert_numeric(step.size[2], len = 1, lower = (-range2), upper = range2)
         self$step.type = "numerical"
       } else if (feature.types == "numerical"){ # univariate numerical 
-        range = diff(range(predictor$data$X[,..feature]))
+        range = diff(range(predictor$X[,..feature]))
         assert_numeric(step.size, len = 1, lower = (-range), upper = range)
         self$step.type = "numerical"
       } else { # univariate categorical
         assert_character(step.size, len = 1)
-        assert_true(step.size %in% predictor$data$X[,..feature][[1]])
+        assert_true(step.size %in% predictor$X[,..feature][[1]])
         self$step.type = "categorical"
       }
       
@@ -44,14 +44,14 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
       
       self$data.step = private$make.step(self$feature, self$predictor, self$step.size, self$step.type)
       
-      self$extrapolation.ids = ExtrapolationDetector$new(data = self$predictor$data$X,
+      self$extrapolation.ids = ExtrapolationDetector$new(data = self$predictor$X,
                                                          data.step = self$data.step,
-                                                         feature.types = self$predictor$data$feature.types,
+                                                         feature.types = self$predictor$feature.types,
                                                          method = self$ep.method,
                                                          step.type = self$step.type)$extrapolation.ids
       
       # Check if there is at least one non-extrapolation point
-      assert_true(length(self$extrapolation.ids) < nrow(predictor$data$X))
+      assert_true(length(self$extrapolation.ids) < nrow(predictor$X))
       
       self$results = private$compute.fme.nlm(self$feature,
                                      self$predictor,
@@ -75,7 +75,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     
     # Function that computes feature values after the step
     make.step = function(feature, predictor, step.size, step.type) {
-      df = data.table::copy(predictor$data$X)
+      df = data.table::copy(predictor$X)
       if (step.type == "numerical") {
         for (n_col in seq_len(length(feature))) {
           colname = feature[n_col]
@@ -99,7 +99,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
                                nlm.intervals) {
       
       # Add observation.id as column to data
-      data = data.table::copy(predictor$data$X)
+      data = data.table::copy(predictor$X)
       data.table::set(data, j = "obs.id", value = 1:nrow(data))
       
       # Exclude extrapolation points

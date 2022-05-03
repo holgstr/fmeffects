@@ -1,7 +1,7 @@
+# Abstract Predictor Class
 Predictor = R6Class("Predictor",
   public = list(
     
-    # Abstract Class
     initialize = function(...) {
       stop(paste(class(self)[1], "is an abstract class that cannot be initialized."))
     },
@@ -20,7 +20,7 @@ Predictor = R6Class("Predictor",
       assert_data_frame(data, all.missing = FALSE)
       
       # Transform data into data.table if necessary
-      if (test_data_table(data)) {
+      if (!test_data_table(data)) {
         data = as.data.table(data)
       }
       

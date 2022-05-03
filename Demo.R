@@ -22,7 +22,7 @@ Boston$chas = as.factor(Boston$chas)
 
 ### Example 1 --------------------------------------
 forest = randomForest(medv ~ ., data = Boston)
-predictor1 = Predictor$new(forest, data = Boston)
+predictor1 = PredictorRandomForest$new(model = forest, data = Boston, y = "medv")
 
 # Example categorical step
 a = ForwardMarginalEffect$new(feature = c("chas"),
@@ -30,7 +30,7 @@ a = ForwardMarginalEffect$new(feature = c("chas"),
                           step.size = "0",
                           ep.method = "envelope", # atm envelope is only checked for numerical features
                           nlm.intervals = 1)
-#a$results
+a$results
 
 # Example numerical step
 b = ForwardMarginalEffect$new(feature = c("rm", "tax"),
@@ -38,7 +38,7 @@ b = ForwardMarginalEffect$new(feature = c("rm", "tax"),
                               step.size = c(2, 100),
                               ep.method = "envelope",
                               nlm.intervals = 1)
-#b$results
+b$results
 
 
 
@@ -47,7 +47,6 @@ b = ForwardMarginalEffect$new(feature = c("rm", "tax"),
 task = as_task_regr(Boston, id = "BostonHousing", target = "medv")
 learner = lrn("regr.rpart")
 learner$train(task)
-Boston = as.data.table(Boston)
 
 predictor = Predictor$new(model = learner, data = Boston, y = "medv")
 
@@ -62,8 +61,3 @@ predictor$predict(Boston)
 predictor$feature.types
 predictor$feature.names
 predictor$X
-
-
-
-
-
