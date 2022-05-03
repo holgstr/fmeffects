@@ -1,6 +1,9 @@
 ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
   public = list(
-    initialize = function(feature, predictor, step.size, ep.method = "none", nlm.intervals = 1) {
+    initialize = function(model, data, y, feature, step.size, ep.method = "none", nlm.intervals = 1) {
+      
+      # Create Predictor Object
+      self$predictor = private$makePredictor(model, data, y)
       
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
       assert_character(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
@@ -37,12 +40,14 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
       assert_integerish(nlm.intervals, lower = 1, len = 1)
       
       self$feature = feature
-      self$predictor = predictor
       self$step.size = step.size
       self$ep.method = ep.method
       self$nlm.intervals = as.integer(nlm.intervals)
       
-      self$data.step = private$make.step(self$feature, self$predictor, self$step.size, self$step.type)
+    },
+    
+    compute = function() {
+      self$data.step = private$makeStep(self$feature, self$predictor, self$step.size, self$step.type)
       
       self$extrapolation.ids = ExtrapolationDetector$new(data = self$predictor$X,
                                                          data.step = self$data.step,
@@ -53,14 +58,18 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
       # Check if there is at least one non-extrapolation point
       assert_true(length(self$extrapolation.ids) < nrow(predictor$X))
       
-      self$results = private$compute.fme.nlm(self$feature,
-                                     self$predictor,
-                                     self$data.step,
-                                     self$step.size,
-                                     self$step.type,
-                                     self$extrapolation.ids,
-                                     self$nlm.intervals)
+      self$results = private$fme(self$feature,
+                                 self$predictor,
+                                 self$data.step,
+                                 self$step.size,
+                                 self$step.type,
+                                 self$extrapolation.ids,
+                                 self$nlm.intervals)
+      
+      invisible(self)
+      
     },
+    
     feature = NULL,
     predictor = NULL,
     step.size = NULL,
@@ -73,8 +82,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
   ),
   private = list(
     
-    # Function that computes feature values after the step
-    make.step = function(feature, predictor, step.size, step.type) {
+    makeStep = function(feature, predictor, step.size, step.type) {
       df = data.table::copy(predictor$X)
       if (step.type == "numerical") {
         for (n_col in seq_len(length(feature))) {
@@ -89,14 +97,13 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
       df
     },
     
-    # Function that computes the fME (and NLM) after extrapolation point detection
-    compute.fme.nlm = function(feature,
-                               predictor,
-                               data.step,
-                               step.size,
-                               step.type,
-                               extrapolation.ids,
-                               nlm.intervals) {
+    fme = function(feature,
+                   predictor,
+                   data.step,
+                   step.size,
+                   step.type,
+                   extrapolation.ids,
+                   nlm.intervals) {
       
       # Add observation.id as column to data
       data = data.table::copy(predictor$X)
@@ -126,18 +133,9 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
         data = data[!step.size]
       }
 
-      # Compute fMEs, alternative 1:
+      # Compute fMEs:
       y.hat.diff = predictor$predict(data.step) - predictor$predict(data)
       data[, fme := y.hat.diff]
-      
-      # Compute fMEs, alternative 2:
-      #non.extrapolation.ids = setdiff(1:nrow(df), extrapolation.ids)
-      #for (n_row in seq_len(length(non.extrapolation.ids))) {
-        #data.table::set(df,
-                        #i = non.extrapolation.ids[n_row],
-                        #j = "fme",
-                        #value = as.numeric(predictor$predict(data.step[n_row,]) - predictor$predict(data[n_row,])))
-      #}
       
       # For numerical features, compute NLMs:
       if (step.type == "numerical") {
@@ -156,6 +154,14 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
         data[, .(obs.id, fme, nlm)]
       } else {
         data[, .(obs.id, fme)]
+      }
+    },
+    
+    makePredictor = function(model, data, y) {
+      if ("LearnerRegr" %in% class(model)) {
+        return(PredictorMLR3$new(model, data, y))
+      } else if ("randomForest" %in% class(model)) {
+        return(PredictorRandomForest$new(model, data, y))
       }
     }
   )
