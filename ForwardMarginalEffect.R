@@ -3,7 +3,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     initialize = function(model, data, y, feature, step.size, ep.method = "none", nlm.intervals = 1) {
       
       # Create Predictor Object
-      self$predictor = private$makePredictor(model, data, y)
+      predictor = private$makePredictor(model, data, y)
       
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
       assert_character(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
@@ -43,6 +43,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
       self$step.size = step.size
       self$ep.method = ep.method
       self$nlm.intervals = as.integer(nlm.intervals)
+      self$predictor = predictor
       
     },
     
@@ -56,7 +57,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
                                                          step.type = self$step.type)$extrapolation.ids
       
       # Check if there is at least one non-extrapolation point
-      assert_true(length(self$extrapolation.ids) < nrow(predictor$X))
+      assert_true(length(self$extrapolation.ids) < nrow(self$predictor$X))
       
       self$results = private$fme(self$feature,
                                  self$predictor,
