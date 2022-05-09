@@ -1,5 +1,6 @@
 ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
   public = list(
+    
     initialize = function(predictor, feature, step.size, ep.method = "none", nlm.intervals = 1) {
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
