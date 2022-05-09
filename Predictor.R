@@ -14,18 +14,18 @@ Predictor = R6Class("Predictor",
   ),
   private = list(
     
-    initializeSubclass = function(model, data, y) {
+    initializeSubclass = function(model, data, target) {
       
       # Check if data is data.frame
-      assert_data_frame(data, all.missing = FALSE)
+      assertDataFrame(data, all.missing = FALSE)
       
       # Transform data into data.table if necessary
-      if (!test_data_table(data)) {
+      if (!testDataTable(data)) {
         data = as.data.table(data)
       }
       
       self$model = model
-      self$feature.names = private$getFeatureNames(data, y)
+      self$feature.names = private$getFeatureNames(data, target)
       self$X = private$getX(data, self$feature.names)
       self$feature.types = private$getFeatureTypes(self$X, self$feature.names)
       
@@ -35,8 +35,8 @@ Predictor = R6Class("Predictor",
       return(data[, ..feature.names])
     },
     
-    getFeatureNames = function(data, y) {
-      return(setdiff(names(data), y))
+    getFeatureNames = function(data, target) {
+      return(setdiff(names(data), target))
     },
     
     getFeatureTypes = function(X, feature.names) {
@@ -59,8 +59,8 @@ PredictorMLR3 = R6Class("PredictorMLR3",
   inherit = Predictor,
   public = list(
     
-    initialize = function(model, data, y) {
-      private$initializeSubclass(model, data, y)
+    initialize = function(model, data, target) {
+      private$initializeSubclass(model, data, target)
     },
     
     predict = function(newdata) {
@@ -77,8 +77,8 @@ PredictorRandomForest = R6Class("PredictorRandomForest",
   inherit = Predictor,
   public = list(
                           
-    initialize = function(model, data, y) {
-      private$initializeSubclass(model, data, y)
+    initialize = function(model, data, target) {
+      private$initializeSubclass(model, data, target)
     },
                           
     predict = function(newdata) {
@@ -88,3 +88,14 @@ PredictorRandomForest = R6Class("PredictorRandomForest",
     }
   )                      
 )
+
+
+
+# Make Predictor
+makePredictor = function(model, data, target) {
+  if ("LearnerRegr" %in% class(model)) {
+    return(PredictorMLR3$new(model, data, target))
+  } else if ("randomForest" %in% class(model)) {
+    return(PredictorRandomForest$new(model, data, target))
+  }
+}
