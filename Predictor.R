@@ -1,5 +1,6 @@
 # Abstract Predictor Class
 Predictor = R6Class("Predictor",
+                    
   public = list(
     
     initialize = function(...) {
@@ -56,7 +57,9 @@ Predictor = R6Class("Predictor",
 
 # Predictor for regression models of the 'mlr3' package
 PredictorMLR3 = R6Class("PredictorMLR3",
+                        
   inherit = Predictor,
+  
   public = list(
     
     initialize = function(model, data, target) {
@@ -68,13 +71,16 @@ PredictorMLR3 = R6Class("PredictorMLR3",
       names(prediction) = "prediction"
       return(prediction)
     }
+    
   )                      
 )
 
 
 # Predictor for regression models of the 'randomForest' package
 PredictorRandomForest = R6Class("PredictorRandomForest",
+                                
   inherit = Predictor,
+  
   public = list(
                           
     initialize = function(model, data, target) {
@@ -86,6 +92,7 @@ PredictorRandomForest = R6Class("PredictorRandomForest",
       names(prediction) = "prediction"
       return(prediction)
     }
+    
   )                      
 )
 

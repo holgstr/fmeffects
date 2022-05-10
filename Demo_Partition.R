@@ -1,23 +1,37 @@
-require(partykit)
-require(rpart)
+#### Package Dependencies ------------------------------------------------------------------
+require("R6")
+require("data.table")
+require("checkmate")
+require("mlr3verse")
+require("partykit")
+require("rpart")
+
+#### Packages for Demo Purposes ------------------------------------------------------------------
+require("iml")
+require("randomForest")
+
+#### Load Package Content  ------------------------------------------------------------------
+files = list.files(pattern = "(.R)$")
+sapply(files[which(files != "Demo.R" & files != "Demo_Partition.R")], source)
+
+# Demo ------------------------------------------------------------------
+set.seed(123)
+data("Boston", package = "MASS")
+Boston$chas = as.factor(Boston$chas)
+
+### Example 1 --------------------------------------
+forest = randomForest(medv ~ ., data = Boston)
+
 a = FME$new(makePredictor(forest, Boston, "medv"),
                           feature = c("rm", "tax"),
                           step.size = c(1, 100),
                           ep.method = "envelope",
                           nlm.intervals = 1)$compute()
-a$results
 
-data = a$predictor$X[a$results$obs.id,]
-data.table::set(data, j = "fme", value = a$results$fme)
+# tree with exactly 5 partitions
+b = PartitioningCtree$new(a, "partitions", 5)$compute()
+plot(b$tree)
 
-tree1 = ctree(fme ~ ., data = data, control = ctree_control(alpha = 0.81))
-tree2 = as.party(rpart(fme ~ ., data = data, control = rpart.control(minbucket = round(nrow(data)*0.04), cp= 0.0001)))
-
-pruned.tree1 = Pruner$new(tree1, method = "partitions", value = 3)$prune()
-plot(pruned.tree1)
-
-pruned.tree2 = Pruner$new(tree2, method = "max.cov", value = 0.25)$prune()
-plot(pruned.tree2)
-
-#get_paths(tree, i = terminal.nodes)
-
+# the smallest tree that satisfies cov < max.cov in every partition
+c = PartitioningRpart$new(a, "max.cov", 0.8)$compute()
+plot(c$tree)

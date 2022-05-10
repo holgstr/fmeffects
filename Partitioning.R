@@ -1,4 +1,4 @@
-# Abstract Predictor Class
+# Abstract Partioning Class
 Partitioning = R6Class("Partitioning",
   public = list(
     
@@ -8,12 +8,14 @@ Partitioning = R6Class("Partitioning",
     
     compute = function() {
       # Create data for partitioning algorithm
-      data = data.table::copy(object$predictor$X[object$results$obs.id,])
-      data.table::set(data, j = "fme", value = object$results$fme)
-      # Grow deep tree depending on subclass and method
-      self$tree = private$tryGrowing(data, self$method, self$value)
-      # Prune deep tree
-      self$tree = Pruner$new(self$tree, self$method, self$value)$prune()
+      data = data.table::copy(self$object$predictor$X[self$object$results$obs.id,])
+      data.table::set(data, j = "fme", value = self$object$results$fme)
+      if (self$method == "partitions") {
+        self$tree = private$partConstant(data, self$value)
+      } else {
+        self$tree = private$partMaxCov(data, self$value)
+      }
+      invisible(self)
     },
     
     object = NULL,
@@ -45,50 +47,114 @@ Partitioning = R6Class("Partitioning",
       
     },
     
-    tryGrowing = function(data, method, value) {
+    partConstant = function(data, value) {
       
       tree = private$growTree(data)
-      if (method == "partitions") {
-        if (length(nodeids(tree, terminal = TRUE)) < value) {
-          stop(paste(class(self)[1], "seems unable to grow a tree with at least", value, method))
-        }
-      } else {
-        df = as.data.table(data_party(tree))
-        terminal.nodes = nodeids(tree, terminal = TRUE)
-        # function for the cov of a terminal node in a data_party data.table
-        covTerminal = function(data, id) {
-          setkey(data, "(fitted)")
-          fme = unlist(data[.(id)][,1])
-          cov.terminal = sd(fme) / (abs(mean(fme)))
-          return(cov.terminal)
-        }
-        max.cov = max(sapply(terminal.nodes, FUN = function(x) max(covTerminal(df, x))))
-        if (max.cov > value) {
-          stop(paste(class(self)[1], "seems unable to grow a tree with a", method, "of", value))
-        }
+      partitions = length(nodeids(tree, terminal = TRUE))
+      if (partitions < value) {
+        stop(paste(class(self)[1], "was unable to find a tree with at least", value, "terminal nodes"))
+      }
+      for (i in seq_len(partitions - value)) {
+        tree = Pruner$new(tree)$prune()
       }
       return(tree)
+      
+    },
+    
+    partMaxCov = function(data, value) {
+      
+      # Function for the max.cov of all terminal nodes in a party tree
+      covTree = function(tree) {
+        df = as.data.table(data_party(tree))
+        terminal.nodes = nodeids(tree, terminal = TRUE)
+        covMax = function(data, id) {
+          setkey(data, "(fitted)")
+          fme = unlist(data[.(id)][,1])
+          cov.max = sd(fme) / (abs(mean(fme)))
+          return(cov.max)
+        }
+        max.cov = max(sapply(terminal.nodes, FUN = function(x) max(covMax(df, x))))
+        return(max.cov)
+      }
+      
+      tree = private$growTree(data)
+      partitions = length(nodeids(tree, terminal = TRUE))
+      
+      # Find best tree among all trees created by iterative pruning
+      best.tree = tree
+      best.cov = covTree(tree)
+      
+      while (partitions > 2) {
+        tree = Pruner$new(tree)$prune()
+        cov.tree = covTree(tree)
+        if (cov.tree < value) {
+          best.tree = tree
+          best.cov = cov.tree
+        }
+        partitions = length(nodeids(tree, terminal = TRUE))
+      }
+      
+      # Check if best tree is admissible
+      if (length(nodeids(best.tree, terminal = TRUE)) > 1 & best.cov <= value) {
+        return(best.tree)
+      } else {
+        stop(paste(class(self)[1], "was unable to find a tree with a max.cov of", value))
+      }
+      
     }
     
   )
 )
 
 
-# Predictor for regression models of the 'mlr3' package
+# Partioning for Ctree from the 'partykit' package
 PartitioningCtree = R6Class("PartitioningCtree",
+                            
   inherit = Partitioning,
+  
   public = list(
     
     initialize = function(object, method, value) {
       private$initializeSubclass(object, method, value)
     }
+    
   ),
   private = list(
     
     growTree = function(data) {
-      tree = ctree(fme ~ ., data = data, control = ctree_control(alpha = 0.99, minprob = 0.04))
+      tree = ctree(fme ~ .,
+                   data = data,
+                   control = ctree_control(alpha = 0.35,
+                                           minbucket = nrow(data)*0.02))
       return(tree)
     }
     
   )
 )
+
+
+PartitioningRpart = R6Class("PartitioningRpart",
+ inherit = Partitioning,
+ public = list(
+   
+   initialize = function(object, method, value) {
+     private$initializeSubclass(object, method, value)
+   }
+   
+ ),
+ private = list(
+   
+   growTree = function(data) {
+     tree = as.party(rpart(fme ~ .,
+                           data = data,
+                           control = rpart.control(minbucket = round(nrow(data)*0.04),
+                                                   cp= 0.001)))
+     return(tree)
+   }
+   
+ )
+)
+
+
+
+

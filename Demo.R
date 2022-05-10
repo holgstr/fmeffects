@@ -1,12 +1,12 @@
 #### Package Dependencies ------------------------------------------------------------------
-library("R6")
-library("data.table")
-library("checkmate")
-library("mlr3verse")
+require("R6")
+require("data.table")
+require("checkmate")
+require("mlr3verse")
 
 #### Packages for Demo Purposes ------------------------------------------------------------------
-library("iml")
-library("randomForest")
+require("iml")
+require("randomForest")
 
 #### Load Package Content  ------------------------------------------------------------------
 files = list.files(pattern = "(.R)$")
