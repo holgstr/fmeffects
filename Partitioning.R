@@ -6,6 +6,16 @@ Partitioning = R6Class("Partitioning",
       stop(paste(class(self)[1], "is an abstract class that cannot be initialized."))
     },
     
+    compute = function() {
+      # Create data for partitioning algorithm
+      data = data.table::copy(object$predictor$X[object$results$obs.id,])
+      data.table::set(data, j = "fme", value = object$results$fme)
+      # Grow deep tree depending on subclass and method
+      self$tree = private$tryGrowing(data, self$method, self$value)
+      # Prune deep tree
+      self$tree = Pruner$new(self$tree, self$method, self$value)$prune()
+    },
+    
     object = NULL,
     method = NULL,
     value = NULL,
@@ -35,71 +45,50 @@ Partitioning = R6Class("Partitioning",
       
     },
     
-    getX = function(data, feature.names) {
-      return(data[, ..feature.names])
-    },
-    
-    getFeatureNames = function(data, target) {
-      return(setdiff(names(data), target))
-    },
-    
-    getFeatureTypes = function(X, feature.names) {
-      feature.types = c("integer" = "numerical",
-                         "numeric" = "numerical",
-                         "character" = "categorical",
-                         "factor" = "categorical",
-                         "ordered" = "categorical")
-      feature.types = feature.types[unlist(lapply(X, function(x){class(x)[1]}))]
-      names(feature.types) = feature.names
-      return(feature.types)
+    tryGrowing = function(data, method, value) {
+      
+      tree = private$growTree(data)
+      if (method == "partitions") {
+        if (length(nodeids(tree, terminal = TRUE)) < value) {
+          stop(paste(class(self)[1], "seems unable to grow a tree with at least", value, method))
+        }
+      } else {
+        df = as.data.table(data_party(tree))
+        terminal.nodes = nodeids(tree, terminal = TRUE)
+        # function for the cov of a terminal node in a data_party data.table
+        covTerminal = function(data, id) {
+          setkey(data, "(fitted)")
+          fme = unlist(data[.(id)][,1])
+          cov.terminal = sd(fme) / (abs(mean(fme)))
+          return(cov.terminal)
+        }
+        max.cov = max(sapply(terminal.nodes, FUN = function(x) max(covTerminal(df, x))))
+        if (max.cov > value) {
+          stop(paste(class(self)[1], "seems unable to grow a tree with a", method, "of", value))
+        }
+      }
+      return(tree)
     }
-  
+    
   )
 )
 
 
 # Predictor for regression models of the 'mlr3' package
-PredictorMLR3 = R6Class("PredictorMLR3",
-  inherit = Predictor,
+PartitioningCtree = R6Class("PartitioningCtree",
+  inherit = Partitioning,
   public = list(
     
-    initialize = function(model, data, target) {
-      private$initializeSubclass(model, data, target)
-    },
+    initialize = function(object, method, value) {
+      private$initializeSubclass(object, method, value)
+    }
+  ),
+  private = list(
     
-    predict = function(newdata) {
-      prediction = as.data.table(self$model$predict_newdata(newdata))[,3]
-      names(prediction) = "prediction"
-      return(prediction)
+    growTree = function(data) {
+      tree = ctree(fme ~ ., data = data, control = ctree_control(alpha = 0.99, minprob = 0.04))
+      return(tree)
     }
-  )                      
+    
+  )
 )
-
-
-# Predictor for regression models of the 'randomForest' package
-PredictorRandomForest = R6Class("PredictorRandomForest",
-  inherit = Predictor,
-  public = list(
-                          
-    initialize = function(model, data, target) {
-      private$initializeSubclass(model, data, target)
-    },
-                          
-    predict = function(newdata) {
-      prediction = as.data.table(predict(self$model, newdata = newdata))
-      names(prediction) = "prediction"
-      return(prediction)
-    }
-  )                      
-)
-
-
-
-# Make Predictor
-makePredictor = function(model, data, target) {
-  if ("LearnerRegr" %in% class(model)) {
-    return(PredictorMLR3$new(model, data, target))
-  } else if ("randomForest" %in% class(model)) {
-    return(PredictorRandomForest$new(model, data, target))
-  }
-}

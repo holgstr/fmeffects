@@ -14,11 +14,11 @@ Pruner = R6Class("Pruner",
       value = self$value
       
       # function for the cov of the union of a given pair of nodes in a data_party data.table
-      covData = function(data, ids) {
+      covParent = function(data, ids) {
         setkeyv(data, names(data)[2])
         fme = unlist(data[.(ids)][,1])
-        cov.data = sd(fme) / (abs(mean(fme)))
-        return(cov.data)
+        cov.parents = sd(fme) / (abs(mean(fme)))
+        return(cov.parent)
       }
       
       # function that checks if there is an admissible candidate for method "max.cov"
@@ -29,11 +29,11 @@ Pruner = R6Class("Pruner",
       # test expression for the while loop:
       testExp = function() {
         if (method == "partitions") {
-          result = length(terminal.nodes) > value + 1
+          result = length(terminal.nodes) > value
         } else {
           result = TRUE
         }
-        if (length(terminal.nodes) == 3) {
+        if (length(terminal.nodes) == 2) {
           result = FALSE
         }
         return(result)
@@ -42,8 +42,6 @@ Pruner = R6Class("Pruner",
       terminal.nodes = nodeids(tree, terminal = TRUE)
       
       while (testExp()) {
-        # all terminal nodes
-        terminal.nodes = nodeids(tree, terminal = TRUE)
         # all pairs of terminal nodes
         pairs = combn(terminal.nodes, 2)
         # ids of subsequent terminal nodes
@@ -57,7 +55,7 @@ Pruner = R6Class("Pruner",
         # cov of candidates for pruning
         colnames = c("fme", "(fitted)")
         data = as.data.table(data_party(tree))[, ..colnames]
-        cand.cov = apply(cand, 2, FUN = function(x) covData(data, x))
+        cand.cov = apply(cand, 2, FUN = function(x) covParent(data, x))
         # check admissibility for method = "max.cov"
         if (method == "max.cov") {
           if (checkCandidates(cand.cov, value)) {
@@ -68,6 +66,8 @@ Pruner = R6Class("Pruner",
         prune.id = cand[,which.min(cand.cov)][1] - 1
         # prune tree
         tree = nodeprune(tree, ids = prune.id)
+        # set terminal nodes
+        terminal.nodes = nodeids(tree, terminal = TRUE)
       }
       return(tree)
     },
