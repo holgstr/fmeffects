@@ -21,7 +21,7 @@ Boston$chas = as.factor(Boston$chas)
 forest = randomForest(medv ~ ., data = Boston)
 
 # Example categorical step
-a = ForwardMarginalEffect$new(makePredictor(forest, Boston, "medv"),
+a = FME$new(makePredictor(forest, Boston, "medv"),
                               feature = c("chas"),
                               step.size = "0",
                               ep.method = "envelope", # atm envelope is only checked for numerical features
@@ -31,7 +31,7 @@ a$compute()
 a$results
 
 # Example numerical step, class architecture also allows for method chaining like this:
-ForwardMarginalEffect$new(makePredictor(forest, Boston, "medv"),
+FME$new(makePredictor(forest, Boston, "medv"),
                           feature = c("rm", "tax"),
                           step.size = c(3, 100),
                           ep.method = "envelope",
