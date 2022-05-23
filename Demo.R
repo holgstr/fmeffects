@@ -1,59 +1,68 @@
-#### Package Dependencies ------------------------------------------------------------------
+##### Package Dependencies ------------------------------------------------------------------
 require("R6")
 require("data.table")
 require("checkmate")
 require("mlr3verse")
+require("partykit")
+require("rpart")
 
-#### Packages for Demo Purposes ------------------------------------------------------------------
+##### Packages for Demo Purposes ------------------------------------------------------------------
 require("iml")
 require("randomForest")
 
-#### Load Package Content  ------------------------------------------------------------------
+##### Load Package Content  ------------------------------------------------------------------
 files = list.files(pattern = "(.R)$")
 sapply(files[which(files != "Demo.R" & files != "Demo_Partition.R")], source)
 
-# Demo ------------------------------------------------------------------
+##### Demo ------------------------------------------------------------------
 set.seed(123)
 data("Boston", package = "MASS")
 Boston$chas = as.factor(Boston$chas)
 
-### Example 1 --------------------------------------
-forest = randomForest(medv ~ ., data = Boston)
 
-# Example categorical step
+
+
+##### CATEGORICAL STEP EXAMPLE ------------------------------------------------------------------
+
+forest = randomForest(medv ~ ., data = Boston)
 a = FME$new(makePredictor(forest, Boston, "medv"),
                               feature = c("chas"),
                               step.size = "0",
                               ep.method = "envelope", # atm envelope is only checked for numerical features
                               nlm.intervals = 1)
+a$compute()$results
 
-a$compute()
-a$results
+b = PartitioningCtree$new(a, "partitions", 3)$compute()
+plot(b$tree)
 
-# Example numerical step, class architecture also allows for method chaining like this:
-FME$new(makePredictor(forest, Boston, "medv"),
+c = PartitioningRpart$new(a, "max.cov", 6.5)$compute()
+plot(c$tree)
+
+
+
+##### NUMERICAL STEP EXAMPLE ------------------------------------------------------------------
+
+d = FME$new(makePredictor(forest, Boston, "medv"),
                           feature = c("rm", "tax"),
-                          step.size = c(3, 100),
+                          step.size = c(1, 100),
                           ep.method = "envelope",
-                          nlm.intervals = 1)$compute()$results
+                          nlm.intervals = 1)$compute()
 
-### Example 2 --------------------------------------
-task = as_task_regr(Boston, id = "BostonHousing", target = "medv")
-learner = lrn("regr.rpart")$train(task)
+### Partitioning
+## R6
+e = PartitioningCtree$new(d, "max.cov", 2)$compute()
+plot(e$tree)
 
-# Abstract Predictor Class throws error upon initialization
-predictor = Predictor$new(model = learner, data = Boston, target = "medv")
+f = PartitioningRpart$new(d, "partitions", 3)$compute()
+plot(f$tree)
 
-# Predictor for MLR3 models
-predictor = PredictorMLR3$new(data = Boston, model = learner, target ="medv")
-predictor$predict(Boston)
-predictor$feature.types
-predictor$feature.names
-predictor$X
+## User-friendly
+# with default partitioning setting (ctree)
+g = came(d, number.partitions = 7)
+plot(g$tree)
 
-# Predictor for randomForest models
-predictor = PredictorRandomForest$new(data = Boston, model = learner, target ="medv")
-predictor$predict(Boston)
-predictor$feature.types
-predictor$feature.names
-predictor$X
+# or with custom partitioning settings (works for both rpart and ctree)
+h = came(d, number.partitions = 4, tree.control = ctree_control(alpha = 0.01))
+plot(h$tree)
+
+

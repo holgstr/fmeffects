@@ -10,10 +10,15 @@ Partitioning = R6Class("Partitioning",
       # Create data for partitioning algorithm
       data = data.table::copy(self$object$predictor$X[self$object$results$obs.id,])
       data.table::set(data, j = "fme", value = self$object$results$fme)
-      if (self$method == "partitions") {
-        self$tree = private$partConstant(data, self$value)
+      if (is.null(self$tree.control)) {
+        tree = private$growTree(data)
       } else {
-        self$tree = private$partMaxCov(data, self$value)
+        tree = private$growTree(data, self$tree.control)
+      }
+      if (self$method == "partitions") {
+        self$tree = private$partConstant(data, self$value, tree)
+      } else {
+        self$tree = private$partMaxCov(data, self$value, tree)
       }
       invisible(self)
     },
@@ -21,12 +26,13 @@ Partitioning = R6Class("Partitioning",
     object = NULL,
     method = NULL,
     value = NULL,
-    tree = NULL
+    tree = NULL,
+    tree.control = NULL
     
   ),
   private = list(
     
-    initializeSubclass = function(object, method, value) {
+    initializeSubclass = function(object, method, value, tree.control) {
       
       # Check if object is of class 'FME'
       assertClass(object, classes = "FME")
@@ -44,12 +50,12 @@ Partitioning = R6Class("Partitioning",
       self$object = object
       self$method = method
       self$value = value
+      self$tree.control = tree.control
       
     },
     
-    partConstant = function(data, value) {
+    partConstant = function(data, value, tree) {
       
-      tree = private$growTree(data)
       partitions = length(nodeids(tree, terminal = TRUE))
       if (partitions < value) {
         stop(paste(class(self)[1], "was unable to find a tree with at least", value, "terminal nodes"))
@@ -61,7 +67,7 @@ Partitioning = R6Class("Partitioning",
       
     },
     
-    partMaxCov = function(data, value) {
+    partMaxCov = function(data, value, tree) {
       
       # Function for the max.cov of all terminal nodes in a party tree
       covTree = function(tree) {
@@ -73,11 +79,10 @@ Partitioning = R6Class("Partitioning",
           cov.max = sd(fme) / (abs(mean(fme)))
           return(cov.max)
         }
-        max.cov = max(sapply(terminal.nodes, FUN = function(x) max(covMax(df, x))))
+        max.cov = max(sapply(terminal.nodes, FUN = function(x) max(covMax(df, x))), na.rm = TRUE)
         return(max.cov)
       }
       
-      tree = private$growTree(data)
       partitions = length(nodeids(tree, terminal = TRUE))
       
       # Find best tree among all trees created by iterative pruning
@@ -114,18 +119,18 @@ PartitioningCtree = R6Class("PartitioningCtree",
   
   public = list(
     
-    initialize = function(object, method, value) {
-      private$initializeSubclass(object, method, value)
+    initialize = function(object, method, value, tree.control = NULL) {
+      private$initializeSubclass(object, method, value, tree.control)
     }
     
   ),
   private = list(
     
-    growTree = function(data) {
+    growTree = function(data, tree.control = ctree_control(alpha = 0.35,
+                                                           minbucket = nrow(data)*0.02)) {
       tree = ctree(fme ~ .,
                    data = data,
-                   control = ctree_control(alpha = 0.35,
-                                           minbucket = nrow(data)*0.02))
+                   control = tree.control)
       return(tree)
     }
     
@@ -133,22 +138,23 @@ PartitioningCtree = R6Class("PartitioningCtree",
 )
 
 
+# Partioning for Rpart from the 'rpart' package
 PartitioningRpart = R6Class("PartitioningRpart",
  inherit = Partitioning,
  public = list(
    
-   initialize = function(object, method, value) {
-     private$initializeSubclass(object, method, value)
+   initialize = function(object, method, value, tree.control = NULL) {
+     private$initializeSubclass(object, method, value, tree.control)
    }
    
  ),
  private = list(
    
-   growTree = function(data) {
+   growTree = function(data, tree.control = rpart.control(minbucket = round(nrow(data)*0.04),
+                                                          cp= 0.001)) {
      tree = as.party(rpart(fme ~ .,
                            data = data,
-                           control = rpart.control(minbucket = round(nrow(data)*0.04),
-                                                   cp= 0.001)))
+                           control = tree.control))
      return(tree)
    }
    
@@ -156,5 +162,22 @@ PartitioningRpart = R6Class("PartitioningRpart",
 )
 
 
-
-
+# User-friendly function
+came = function(effects, number.partitions = NULL, max.cov = Inf, rp.method = "ctree", tree.control = NULL) {
+  assertChoice(rp.method, choices = c("ctree", "rpart"))
+  makePartitioner = function(rp.method, ...) {
+    if (rp.method == "ctree") {
+      part = PartitioningCtree$new(...)
+    } else if (rp.method == "rpart") {
+      part = PartitioningRpart$new(...)
+    }
+  }
+  if (is.infinite(max.cov) & !is.null(number.partitions)) {
+    part = makePartitioner(rp.method, effects, "partitions", number.partitions, tree.control)$compute()
+  } else if (!is.infinite(max.cov) & is.null(number.partitions)){
+    part = makePartitioner(rp.method, effects, "max.cov", max.cov, tree.control)$compute()
+  } else {
+    stop(paste("Must supply either 'number.partitions' or 'max.cov', not both."))
+  }
+  return(part)
+}
