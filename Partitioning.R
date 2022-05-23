@@ -23,6 +23,10 @@ Partitioning = R6Class("Partitioning",
       invisible(self)
     },
     
+    plot = function() {
+      plot(self$tree)
+    },
+    
     object = NULL,
     method = NULL,
     value = NULL,
@@ -181,3 +185,5 @@ came = function(effects, number.partitions = NULL, max.cov = Inf, rp.method = "c
   }
   return(part)
 }
+
+

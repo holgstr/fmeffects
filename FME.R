@@ -1,7 +1,7 @@
 FME = R6Class("FME",
   public = list(
     
-    initialize = function(predictor, feature, step.size, ep.method = "none", nlm.intervals = 1) {
+    initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = TRUE, nlm.intervals = 1) {
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
       assertCharacter(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
@@ -34,12 +34,16 @@ FME = R6Class("FME",
       # Check if ep.method is one of the options provided
       assertChoice(ep.method, choices = c("none", "mcec", "envelope"))
       
+      # Check if compute.nlm is a logical of length 1
+      assertLogical(compute.nlm, len = 1)
+      
       # Check if nlm.intervals is an integer of length 1 and >= 1
       assertIntegerish(nlm.intervals, lower = 1, len = 1)
       
       self$feature = feature
       self$step.size = step.size
       self$ep.method = ep.method
+      self$compute.nlm = compute.nlm
       self$nlm.intervals = as.integer(nlm.intervals)
       self$predictor = predictor
       
@@ -63,6 +67,7 @@ FME = R6Class("FME",
                                  self$step.size,
                                  self$step.type,
                                  self$extrapolation.ids,
+                                 self$compute.nlm,
                                  self$nlm.intervals)
       
       invisible(self)
@@ -74,6 +79,7 @@ FME = R6Class("FME",
     step.size = NULL,
     data.step = NULL,
     ep.method = NULL,
+    compute.nlm = TRUE,
     nlm.intervals = NULL,
     step.type = NULL,
     extrapolation.ids = integer(),
@@ -102,6 +108,7 @@ FME = R6Class("FME",
                    step.size,
                    step.type,
                    extrapolation.ids,
+                   compute.nlm,
                    nlm.intervals) {
       
       # Add observation.id as column to data
@@ -137,7 +144,7 @@ FME = R6Class("FME",
       data[, fme := y.hat.diff]
       
       # For numerical features, compute NLMs:
-      if (step.type == "numerical") {
+      if (step.type == "numerical" & compute.nlm == TRUE) {
         # Exclude observations with fME = 0 from loop:
         ids = setdiff(1:nrow(data), which(data$fme == 0))
         for (n_row in seq_len(length(ids))) {
@@ -150,9 +157,9 @@ FME = R6Class("FME",
                                                           step.size,
                                                           nlm.intervals)$nlm)
         }
-        data[, .(obs.id, fme, nlm)]
+        return(data[, .(obs.id, fme, nlm)])
       } else {
-        data[, .(obs.id, fme)]
+        return(data[, .(obs.id, fme)])
       }
     }
   )

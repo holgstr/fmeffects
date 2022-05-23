@@ -41,6 +41,16 @@ plot(c$tree)
 
 
 ##### NUMERICAL STEP EXAMPLE ------------------------------------------------------------------
+### FME without NLMs
+
+d1 = FME$new(makePredictor(forest, Boston, "medv"),
+             feature = c("rm", "tax"),
+             step.size = c(1, 100),
+             ep.method = "envelope",
+             compute.nlm = FALSE,
+             nlm.intervals = 1)$compute()
+d1$results
+
 
 d = FME$new(makePredictor(forest, Boston, "medv"),
                           feature = c("rm", "tax"),
@@ -51,7 +61,7 @@ d = FME$new(makePredictor(forest, Boston, "medv"),
 ### Partitioning
 ## R6
 e = PartitioningCtree$new(d, "max.cov", 2)$compute()
-plot(e$tree)
+e$plot()
 
 f = PartitioningRpart$new(d, "partitions", 3)$compute()
 plot(f$tree)
@@ -63,6 +73,6 @@ plot(g$tree)
 
 # or with custom partitioning settings (works for both rpart and ctree)
 h = came(d, number.partitions = 4, tree.control = ctree_control(alpha = 0.01))
-plot(h$tree)
+h$plot()
 
 
