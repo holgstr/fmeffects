@@ -42,7 +42,6 @@ plot(c$tree)
 
 ##### NUMERICAL STEP EXAMPLE ------------------------------------------------------------------
 ### FME without NLMs
-
 d1 = FME$new(makePredictor(forest, Boston, "medv"),
              feature = c("rm", "tax"),
              step.size = c(1, 100),
@@ -51,7 +50,7 @@ d1 = FME$new(makePredictor(forest, Boston, "medv"),
              nlm.intervals = 1)$compute()
 d1$results
 
-
+### FME with NLMs is default (NLM computation takes >98% of computing time)
 d = FME$new(makePredictor(forest, Boston, "medv"),
                           feature = c("rm", "tax"),
                           step.size = c(1, 100),

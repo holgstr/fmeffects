@@ -1,5 +1,7 @@
 summary.Partitioning = function(partitioning) {
-  return(length(nodeids(partitioning$tree, terminal = TRUE)))
+  ans = length(nodeids(partitioning$tree, terminal = TRUE))
+  class(ans) = "summary.Partitioning"
+  ans
 }
 summary.Partitioning(c)
 summary(c)
