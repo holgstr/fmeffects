@@ -28,7 +28,7 @@ ExtrapolationDetector = R6Class("ExtrapolationDetector",
       data.step = data.table::copy(data.step)
       # Firstly, check if numerical features in data.step are in [min, max] of data
       names.num = names(feature.types[feature.types == "numerical"])
-      data.step.num = data.step[ ,..names.num]
+      data.step.num = data.step[ , names.num, with=FALSE]
       minmax = rbind(data[, lapply(.SD, FUN = function(x) min(x, na.rm = TRUE)), .SDcols = names.num],
                      data[, lapply(.SD, FUN = function(x) max(x, na.rm = TRUE)), .SDcols = names.num])
       data.step.num$envelope = apply(data.step.num, 1, function(x) !all(unlist(x) >= minmax[1,] & unlist(x) <= minmax[2,]))
