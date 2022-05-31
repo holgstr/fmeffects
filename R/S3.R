@@ -1,0 +1,8 @@
+summary.Partitioning = function(partitioning) {
+  #ans = length(nodeids(partitioning$tree, terminal = TRUE))
+  #class(ans) = "summary.Partitioning"
+  #ans
+  partitioning
+}
+
+

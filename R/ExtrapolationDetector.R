@@ -1,13 +1,13 @@
 ExtrapolationDetector = R6Class("ExtrapolationDetector",
   public = list(
     initialize = function(data, data.step, feature.types, method, step.type) {
-      
+
       self$data = data
       self$data.step = data.step
       self$feature.types = feature.types
       self$method = method
       self$step.type = step.type
-      
+
       # Identify extrapolation points (for now only for numerical steps)
       if (self$method == "envelope" & self$step.type == "numerical") {
         self$extrapolation.ids = private$computeEP(self$data,
