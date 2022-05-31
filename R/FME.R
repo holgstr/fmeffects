@@ -121,7 +121,7 @@ FME = R6Class("FME",
         # Add observation.id as column to data.step
         data.step = data.table::copy(data.step)
         data.table::set(data.step, j = "obs.id", value = 1:nrow(data.step))
-        #E xclude extrapolation points in data.step
+        #Exclude extrapolation points in data.step
         setkeyv(data.step, "obs.id")
         data.step = data.step[!extrapolation.ids]
       # For categorical features:
