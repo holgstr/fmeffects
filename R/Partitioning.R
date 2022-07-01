@@ -25,7 +25,11 @@ Partitioning = R6Class("Partitioning",
     },
 
     plot = function() {
-      PartitioningPlot$new(self$tree, self$object)$plot
+      if ("nlm" %in% names(self$object$results)) {
+        PartitioningPlot$new(self$tree, self$object)$plot
+      } else {
+        PartitioningPlot$new(self$tree, self$object, has.nlm = FALSE)$plot
+      }
     },
 
     object = NULL,
