@@ -25,7 +25,7 @@ Partitioning = R6Class("Partitioning",
     },
 
     plot = function() {
-      plot(self$tree)
+      PartitioningPlot$new(self$tree, self$object)$plot
     },
 
     object = NULL,
@@ -48,7 +48,7 @@ Partitioning = R6Class("Partitioning",
 
       # Check if value is sensible and within range
       if (method == "partitions") {
-        assertIntegerish(value, lower = 2, upper = 10, len = 1)
+        assertIntegerish(value, lower = 2, upper = 8, len = 1)
       } else {
         assertNumeric(value, lower = sqrt(.Machine$double.eps))
       }
@@ -120,15 +120,24 @@ Partitioning = R6Class("Partitioning",
         terminal.nodes = nodeids(tree, from = node.id, terminal = TRUE)
         is.terminal = node.id %in% terminal.nodes
         data = as.data.table(data_party(tree))
-        data.table::set(data, j = "nlm", value = object$results$nlm)
-        setkey(data, "(fitted)")
-        data = data[.(terminal.nodes),]
-        res = list("n" = nrow(data),
-                   "cAME" = mean(data$fme),
-                   "CoV(FME)" = sd(data$fme) / (abs(mean(data$fme))),
-                   "cANLM" = mean(data$nlm),
-                   "CoV(NLM)" = sd(data$nlm) / (abs(mean(data$nlm))),
-                   "is.terminal.node" = is.terminal)
+        if (!("nlm" %in% names(object$results))) {
+          setkey(data, "(fitted)")
+          data = data[.(terminal.nodes),]
+          res = list("n" = nrow(data),
+                     "cAME" = mean(data$fme),
+                     "CoV(FME)" = sd(data$fme) / (abs(mean(data$fme))),
+                     "is.terminal.node" = is.terminal)
+        } else {
+          data.table::set(data, j = "nlm", value = object$results$nlm)
+          setkey(data, "(fitted)")
+          data = data[.(terminal.nodes),]
+          res = list("n" = nrow(data),
+                     "cAME" = mean(data$fme),
+                     "CoV(FME)" = sd(data$fme) / (abs(mean(data$fme))),
+                     "cANLM" = mean(data$nlm),
+                     "CoV(NLM)" = sd(data$nlm) / (abs(mean(data$nlm))),
+                     "is.terminal.node" = is.terminal)
+        }
         res
       }
       lapply(nodes, FUN = function(x) nodeResults(tree, object, x))
