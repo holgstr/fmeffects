@@ -59,11 +59,16 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                        ylab(""),
                                        #geom_density(lwd = 0.4,
                                        #mapping = aes(x = fme, y = ..scaled..)),
-                                       geom_vline(lwd = 1, mapping = aes(xintercept = fmemean)),
-                                       theme_bw()),
+                                       geom_vline(lwd = 1.2, mapping = aes(xintercept = fmemean)),
+                                       theme_bw(),
+                                       theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
+                                             axis.title = element_text(size = 10.5),
+                                             axis.text.x   = element_text(colour = "black"),
+                                             axis.text.y   = element_text(colour = "black"))),
                          height = 0.68,
                          nudge_x = -0.028,
-                         nudge_y = -0.13)
+                         nudge_y = -0.13) +
+          theme(legend.position = "none")
       } else {
         # Plot for tree without nlm computed
 
@@ -114,8 +119,12 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                        ylab(""),
                                        #geom_density(lwd = 0.4,
                                        #mapping = aes(x = fme, y = ..scaled..)),
-                                       geom_vline(lwd = 1, mapping = aes(xintercept = fmemean)),
-                                       theme_bw()),
+                                       geom_vline(lwd = 1.2, mapping = aes(xintercept = fmemean)),
+                                       theme_bw(),
+                                       theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
+                                             axis.title = element_text(size = 10.5),
+                                             axis.text.x   = element_text(colour = "black"),
+                                             axis.text.y   = element_text(colour = "black"))),
                          height = 0.43,
                          nudge_x = -0.028,
                          nudge_y = -0.15) +
@@ -130,14 +139,19 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                        #geom_density(lwd = 0.4,
                                        #show.legend = FALSE,
                                        #mapping = aes(x = nlm, y = ..scaled..)),
-                                       geom_vline(lwd = 1, mapping = aes(xintercept = nlmmean)),
+                                       geom_vline(lwd = 1.2, mapping = aes(xintercept = nlmmean)),
                                        theme_bw(),
+                                       theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
+                                             axis.title = element_text(size = 10.5),
+                                             axis.text.x   = element_text(colour = "black"),
+                                             axis.text.y   = element_text(colour = "black")),
                                        scale_fill_manual(values = c("cornflowerblue", "aliceblue")),
                                        scale_x_continuous(breaks=seq(0, 1, 0.5),
                                                           labels=c("\u2264 0", as.character(seq(0.5, 1, 0.5))))),
                          height = 0.43,
                          nudge_x = -0.028,
-                         nudge_y = -0.42)
+                         nudge_y = -0.42) +
+          theme(legend.position = "none")
       }
       p
     }

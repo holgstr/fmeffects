@@ -16,5 +16,5 @@ print.Partitioning = function(partitioning) {
 }
 
 plot.Partitioning = function(partitioning) {
-  plot(partitioning$tree)
+  partitioning$plot()
 }

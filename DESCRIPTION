@@ -18,4 +18,5 @@ Depends:
     checkmate,
     data.table,
     partykit,
+    ggparty,
     R6
