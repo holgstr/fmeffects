@@ -67,7 +67,7 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                              axis.text.y   = element_text(colour = "black"))),
                          height = 0.68,
                          nudge_x = -0.028,
-                         nudge_y = -0.13) +
+                         nudge_y = -0.14) +
           theme(legend.position = "none")
       } else {
         # Plot for tree without nlm computed
@@ -127,7 +127,7 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                              axis.text.y   = element_text(colour = "black"))),
                          height = 0.43,
                          nudge_x = -0.028,
-                         nudge_y = -0.15) +
+                         nudge_y = -0.16) +
           geom_node_plot(gglist = list(geom_histogram(lwd = 0.3,
                                                       linetype = "solid",
                                                       colour = "black",
@@ -150,7 +150,7 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                                           labels=c("\u2264 0", as.character(seq(0.5, 1, 0.5))))),
                          height = 0.43,
                          nudge_x = -0.028,
-                         nudge_y = -0.42) +
+                         nudge_y = -0.43) +
           theme(legend.position = "none")
       }
       p

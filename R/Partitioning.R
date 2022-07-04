@@ -129,7 +129,7 @@ Partitioning = R6Class("Partitioning",
           data = data[.(terminal.nodes),]
           res = list("n" = nrow(data),
                      "cAME" = mean(data$fme),
-                     "CoV(FME)" = sd(data$fme) / (abs(mean(data$fme))),
+                     "CoV(fME)" = sd(data$fme) / (abs(mean(data$fme))),
                      "is.terminal.node" = is.terminal)
         } else {
           data.table::set(data, j = "nlm", value = object$results$nlm)
@@ -137,7 +137,7 @@ Partitioning = R6Class("Partitioning",
           data = data[.(terminal.nodes),]
           res = list("n" = nrow(data),
                      "cAME" = mean(data$fme),
-                     "CoV(FME)" = sd(data$fme) / (abs(mean(data$fme))),
+                     "CoV(fME)" = sd(data$fme) / (abs(mean(data$fme))),
                      "cANLM" = mean(data$nlm),
                      "CoV(NLM)" = sd(data$nlm) / (abs(mean(data$nlm))),
                      "is.terminal.node" = is.terminal)
@@ -216,7 +216,7 @@ came = function(effects, number.partitions = NULL, max.cov = Inf, rp.method = "c
   } else if (!is.infinite(max.cov) & is.null(number.partitions)){
     part = makePartitioner(rp.method, effects, "max.cov", max.cov, tree.control)$compute()
   } else {
-    stop(paste("Must supply either 'number.partitions' or 'max.cov', not both."))
+    stop(paste("Must supply either 'number.partitions' or 'max.cov'."))
   }
   return(part)
 }

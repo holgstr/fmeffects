@@ -161,3 +161,17 @@ FME = R6Class("FME",
     }
   )
 )
+
+
+# User-friendly function
+
+
+# User-friendly function
+fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = TRUE, nlm.intervals = 1) {
+  return(FME$new(makePredictor(model, data, target),
+          feature = feature,
+          step.size = step.size,
+          ep.method = ep.method,
+          compute.nlm = compute.nlm,
+          nlm.intervals = nlm.intervals)$compute())
+}
