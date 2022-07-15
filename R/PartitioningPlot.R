@@ -70,11 +70,11 @@ PartitioningPlot = R6Class("PartitioningPlot",
                          nudge_y = -0.14) +
           theme(legend.position = "none")
       } else {
-        # Plot for tree without nlm computed
+        # Plot for tree with nlm computed
 
         tree$data$nlm = object$results$nlm
         dt$nlm = object$results$nlm
-        dt[, d := mean(nlm), by = `(fitted)`]
+        dt[, d := mean(nlm, na.rm = TRUE), by = `(fitted)`]
         tree$data$nlmmean = dt$d
         tree$data$nlmplot = tree$data$nlm
         tree$data$nlmplot[tree$data$nlm <= 0.05 ] = 0
@@ -93,11 +93,11 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                       },
                                     cANLM =
                                       function(data, node) {
-                                        list(round(mean(node$data$nlm), 2))
+                                        list(round(mean(node$data$nlm, na.rm = TRUE), 2))
                                       },
                                     cANLM_cov =
                                       function(data, node) {
-                                        list(round(sd(node$data$nlm) / (abs(mean(node$data$nlm))), 2))
+                                        list(round(sd(node$data$nlm, na.rm = TRUE) / (abs(mean(node$data$nlm, na.rm = TRUE))), 2))
                                       }
                     )) +
           geom_edge() +
@@ -133,7 +133,8 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                                       colour = "black",
                                                       show.legend = FALSE,
                                                       mapping = aes(x = nlmplot, y = ..count.., fill = iszero),
-                                                      binwidth = 0.1),
+                                                      binwidth = 0.1,
+                                                      na.rm = TRUE),
                                        xlab("NLM"),
                                        ylab(""),
                                        #geom_density(lwd = 0.4,

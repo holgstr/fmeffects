@@ -1,7 +1,7 @@
 FME = R6Class("FME",
   public = list(
 
-    initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = TRUE, nlm.intervals = 1) {
+    initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
       assertCharacter(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
@@ -34,7 +34,7 @@ FME = R6Class("FME",
       # Check if ep.method is one of the options provided
       assertChoice(ep.method, choices = c("none", "mcec", "envelope"))
 
-      # Check if compute.nlm is a logical of length 1
+      # Check if compute.nlm is TRUE
       assertLogical(compute.nlm, len = 1)
 
       # Check if nlm.intervals is an integer of length 1 and >= 1
