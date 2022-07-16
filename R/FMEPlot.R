@@ -213,32 +213,36 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
       private$initializeSubclass(results, data, feature, step.size)
     },
 
-    plot = function() {
-      df = as.data.frame(self$df)
-      countmax = max(hist(df$fme,
-                          breaks = seq(min(df$fme),
-                                       max(df$fme),
-                                       l=min(round(nrow(df))*0.4, 20)+1),
-                          plot = FALSE)$counts)
-      ggplot(df) +
-        geom_histogram(lwd = 0.3,
-                       linetype = "solid",
-                       colour = "black",
-                       fill = "cornflowerblue",
-                       show.legend = FALSE,
-                       mapping = aes(x = fme, y = ..count..),
-                       bins = min(round(nrow(df))*0.4, 20),
-                       na.rm = TRUE) +
-        geom_density(mapping = aes(x = fme, y = ..scaled..*countmax)) +
-        geom_vline(lwd = 1.2, mapping = aes(xintercept = mean(fme))) +
-        geom_label(x = mean(df$fme), y = countmax*0.9, label = 'AME', fill = 'white') +
-        xlab(paste0("fME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
-        ylab("") +
-        theme_bw() +
-        theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
-              axis.title = element_text(size = 12),
-              axis.text.x   = element_text(colour = "black", size = 10),
-              axis.text.y   = element_text(colour = "black", size = 10))
+    plot = function(with.nlm = FALSE) {
+      if (with.nlm == FALSE) {
+        df = as.data.frame(self$df)
+        countmax = max(hist(df$fme,
+                            breaks = seq(min(df$fme),
+                                         max(df$fme),
+                                         l=min(round(nrow(df))*0.4, 20)+1),
+                            plot = FALSE)$counts)
+        ggplot(df) +
+          geom_histogram(lwd = 0.3,
+                         linetype = "solid",
+                         colour = "black",
+                         fill = "cornflowerblue",
+                         show.legend = FALSE,
+                         mapping = aes(x = fme, y = ..count..),
+                         bins = min(round(nrow(df))*0.4, 20),
+                         na.rm = TRUE) +
+          geom_density(mapping = aes(x = fme, y = ..scaled..*countmax)) +
+          geom_vline(lwd = 1.2, mapping = aes(xintercept = mean(fme))) +
+          geom_label(x = mean(df$fme), y = countmax*0.9, label = 'AME', fill = 'white') +
+          xlab(paste0("fME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
+          ylab("") +
+          theme_bw() +
+          theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
+                axis.title = element_text(size = 12),
+                axis.text.x   = element_text(colour = "black", size = 10),
+                axis.text.y   = element_text(colour = "black", size = 10))
+      } else {
+        stop("Cannot plot NLM because NLM can only be computed for numerical features.")
+      }
     }
   )
 )
