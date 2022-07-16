@@ -19,4 +19,6 @@ Depends:
     data.table,
     partykit,
     ggparty,
+    ggplot2,
+    cowplot,
     R6
