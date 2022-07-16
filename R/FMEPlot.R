@@ -22,7 +22,7 @@ FMEPlot = R6Class("FMEPlot",
       self$step.size = step.size
 
       results = data.table::copy(results)
-      add = data[, .SD, .SDcols = feature]
+      add = data[, .SD, .SDcols = self$feature]
       add = add[i = results$obs.id]
       self$df = cbind(results, add)
 
@@ -111,7 +111,7 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
                 axis.text.y   = element_text(colour = "black", size = 10),
                 legend.title = element_text(color = "black", size = 12),
                 legend.text = element_text(color = "black", size = 10))
-        plot_grid(pfme, pnlm, ncol = 2, rel_widths = c(0.5, 0.5))
+        suppressWarnings(plot_grid(pfme, pnlm, ncol = 2, rel_widths = c(0.5, 0.5)))
       } else {
         stop("Only possible to plot NLM for FME objects with NLM computed.")
       }
@@ -230,7 +230,7 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
                          mapping = aes(x = fme, y = ..count..),
                          bins = min(round(nrow(df))*0.4, 20),
                          na.rm = TRUE) +
-          geom_density(mapping = aes(x = fme, y = ..scaled..*countmax)) +
+          geom_density(mapping = aes(x = fme, y = ..scaled..*countmax), adjust = 1.5) +
           geom_vline(lwd = 1.2, mapping = aes(xintercept = mean(fme))) +
           geom_label(x = mean(df$fme), y = countmax*0.9, label = 'AME', fill = 'white') +
           xlab(paste0("fME (category: ", self$step.size, ", feature: ", self$feature, ")")) +

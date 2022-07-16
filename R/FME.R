@@ -74,12 +74,12 @@ FME = R6Class("FME",
     plot = function(with.nlm = FALSE) {
       if (self$step.type == "categorical") {
         FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
-      } else if (length(feature) == 1) {
+      } else if (length(self$feature) == 1) {
         FMEPlotUnivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
       } else {
         FMEPlotBivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
       }
-    }
+    },
 
     feature = NULL,
     predictor = NULL,
