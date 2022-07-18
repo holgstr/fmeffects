@@ -41,7 +41,6 @@ NonLinearityMeasure <- R6Class("NonLinearityMeasure",
           m = (i-1)/s
           integrals[i] = 1/8/s * (f(0/s + m) + 3 * f(1/3/s + m) + 3 * f(2/3/s + m) + f(1/s + m))
         }
-        print(sum(integrals))
         return(sum(integrals))
       }
       ## Deviation Predictor and Secant
