@@ -139,7 +139,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
       pfme = ggplot(df) +
         geom_point(aes(x = x1, y = fme),
                    colour = "black",
-                   fill= "cornflowerblue",
+                   fill= "#1E9B8AFF",
                    size = 3.8,
                    shape = 21,
                    alpha = 0.55) +
@@ -187,7 +187,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
           xlab(self$feature) +
           ylab("NLM") +
           theme_bw() +
-          scale_fill_manual(values = c("aliceblue", "cornflowerblue")) +
+          scale_fill_manual(values = c("aliceblue", "#1E9B8AFF")) +
           scale_y_continuous(breaks=seq(0, 1.0, 0.25),
                              labels=c("\u2264 0", as.character(seq(0.25, 1, 0.25)))) +
           theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
@@ -225,7 +225,7 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
           geom_histogram(lwd = 0.3,
                          linetype = "solid",
                          colour = "black",
-                         fill = "cornflowerblue",
+                         fill = "#1E9B8AFF",
                          show.legend = FALSE,
                          mapping = aes(x = fme, y = ..count..),
                          bins = min(round(nrow(df))*0.4, 20),
