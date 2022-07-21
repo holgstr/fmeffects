@@ -67,6 +67,12 @@ FME = R6Class("FME",
                                  self$compute.nlm,
                                  self$nlm.intervals)
 
+      # Descriptive statistics for the results
+      self$ame = mean(self$results$fme)
+      if ("nlm" %in% names(self$results)) {
+        self$anlm = mean(self$results$nlm, na.rm = TRUE)
+      }
+
       invisible(self)
 
     },
@@ -90,7 +96,9 @@ FME = R6Class("FME",
     nlm.intervals = NULL,
     step.type = NULL,
     extrapolation.ids = integer(),
-    results = NULL
+    results = NULL,
+    ame = NULL,
+    anlm = NULL
   ),
   private = list(
 
