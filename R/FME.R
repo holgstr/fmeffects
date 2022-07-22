@@ -1,6 +1,28 @@
+#' @title R6 Class representing a forward marginal effect (FME)
+#'
+#' @description The FME is a forward difference in prediction due to a specified change in feature values
 FME = R6Class("FME",
   public = list(
+    #' @description
+    #' Create a new FME object.
+    #' @param predictor `Predictor` object.
+    #' @param feature Feature vector.
+    #' @param step.size Vector of step sizes.
+    #' @param ep.method String specifying extrapolation detection method.
+    #' @param compute.nlm Compute NLM with FMEs?
+    #' @param nlm.intervals How many intervals for NLM computation.
+    #' @return A new `FME` object.
+    #' @examples
+    #' set.seed(123)
+    #' data("Boston", package = "MASS")
+    #' Boston$chas = as.factor(Boston$chas)
 
+    #' FME$new(makePredictor(forest, Boston, "medv"),
+    #'        feature = c("rm", "tax"),
+    #'        step.size = c(1, 100),
+    #'        ep.method = "envelope",
+    #'        compute.nlm = FALSE,
+    #'        nlm.intervals = 1)$compute()
     initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
@@ -40,7 +62,9 @@ FME = R6Class("FME",
       # Check if nlm.intervals is an integer of length 1 and >= 1
       assertIntegerish(nlm.intervals, lower = 1, len = 1)
 
+      #' @field feature vector of features
       self$feature = feature
+      #' @field step.size vector of step sizes for features specified by "feature"
       self$step.size = step.size
       self$ep.method = ep.method
       self$compute.nlm = compute.nlm
@@ -183,8 +207,14 @@ FME = R6Class("FME",
 
 # User-friendly function
 
-
-# User-friendly function
+#' @title User-friendly function to compute FMEs
+#'
+#' @description This is a wrapper function that provides a user-friendly interface by abstracting away the R6 functionality of the package.
+#' @param model `Predictor` object.
+#' @param data data.table or data.frame object.
+#' @examples
+#' R code here
+#' ...
 fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = TRUE, nlm.intervals = 1) {
   return(FME$new(makePredictor(model, data, target),
           feature = feature,

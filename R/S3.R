@@ -1,7 +1,13 @@
+#' Prints summary of FME partitioning.
+#'
+#' @export
 summary.Partitioning = function(partitioning) {
   print(partitioning)
 }
 
+#' Prints an FME partitioning.
+#'
+#' @export
 print.Partitioning = function(partitioning) {
   cat("\n")
   cat(class(partitioning)[1])
@@ -19,6 +25,9 @@ print.Partitioning = function(partitioning) {
   res
 }
 
+#' Plots an FME partitioning.
+#'
+#' @export
 plot.Partitioning = function(partitioning) {
   partitioning$plot()
 }
