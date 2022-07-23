@@ -1,6 +1,7 @@
 #' @title R6 Class representing a forward marginal effect (FME)
 #'
-#' @description The FME is a forward difference in prediction due to a specified change in feature values
+#' @description The FME is a forward difference in prediction due to a specified change in feature values.
+#' @export
 FME = R6Class("FME",
   public = list(
     #' @description
@@ -9,20 +10,21 @@ FME = R6Class("FME",
     #' @param feature Feature vector.
     #' @param step.size Vector of step sizes.
     #' @param ep.method String specifying extrapolation detection method.
-    #' @param compute.nlm Compute NLM with FMEs?
-    #' @param nlm.intervals How many intervals for NLM computation.
+    #' @param compute.nlm Compute NLM with FMEs? Defaults to `FALSE`.
+    #' @param nlm.intervals How many intervals for NLM computation. Defaults to `1`.
     #' @return A new `FME` object.
     #' @examples
-    #' set.seed(123)
+    #' # Train a model:
     #' data("Boston", package = "MASS")
-    #' Boston$chas = as.factor(Boston$chas)
-
-    #' FME$new(makePredictor(forest, Boston, "medv"),
-    #'        feature = c("rm", "tax"),
-    #'        step.size = c(1, 100),
-    #'        ep.method = "envelope",
-    #'        compute.nlm = FALSE,
-    #'        nlm.intervals = 1)$compute()
+    #' forest = randomForest(medv ~ ., data = Boston)
+    #'
+    #' # Create an `FME` object:
+    #' effects = FME$new(makePredictor(forest, Boston, "medv"),
+    #'                   feature = c("rm", "tax"),
+    #'                   step.size = c(1, 100),
+    #'                   ep.method = "envelope",
+    #'                   compute.nlm = FALSE,
+    #'                   nlm.intervals = 1)
     initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
@@ -62,9 +64,8 @@ FME = R6Class("FME",
       # Check if nlm.intervals is an integer of length 1 and >= 1
       assertIntegerish(nlm.intervals, lower = 1, len = 1)
 
-      #' @field feature vector of features
+
       self$feature = feature
-      #' @field step.size vector of step sizes for features specified by "feature"
       self$step.size = step.size
       self$ep.method = ep.method
       self$compute.nlm = compute.nlm
@@ -73,6 +74,12 @@ FME = R6Class("FME",
 
     },
 
+    #' @description
+    #' Computes results, i.e., FME (and NLMs) for non-extrapolation points, for an `FME` object.
+    #' @return An `FME` object with results.
+    #' @examples
+    #' # Compute results:
+    #' effects$compute()
     compute = function() {
       self$data.step = private$makeStep(self$feature, self$predictor, self$step.size, self$step.type)
       self$extrapolation.ids = ExtrapolationDetector$new(data = self$predictor$X,
@@ -101,6 +108,12 @@ FME = R6Class("FME",
 
     },
 
+    #' @description
+    #' Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an `FME` object.
+    #' @param with.nlm plots NLMs if computed, defaults to `FALSE`.
+    #' @examples
+    #' # Compute results:
+    #' effects$plot()
     plot = function(with.nlm = FALSE) {
       if (self$step.type == "categorical") {
         FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
@@ -111,17 +124,29 @@ FME = R6Class("FME",
       }
     },
 
+    #' @field feature vector of features
     feature = NULL,
+    #' @field predictor `Predictor` object
     predictor = NULL,
+    #' @field step.size vector of step sizes for features specified by "feature"
     step.size = NULL,
+    #' @field data.step the data.table with the data matrix after the step
     data.step = NULL,
+    #' @field ep.method string specifying extrapolation detection method
     ep.method = NULL,
+    #' @field compute.nlm logical specifying if NLM should be computed
     compute.nlm = TRUE,
+    #' @field nlm.intervals number of intervals for computing NLMs
     nlm.intervals = NULL,
+    #' @field step.type `"numerical"` or `"categorical"`
     step.type = NULL,
+    #' @field extrapolation.ids vector of observation ids classified as extrapolation points
     extrapolation.ids = integer(),
+    #' @field results data.table with FMEs and NLMs computed
     results = NULL,
+    #' @field ame Average Marginal Effect (AME) of observations in `results`
     ame = NULL,
+    #' @field anlm Average Non-linearity Measure (ANLM) of observations in `results`
     anlm = NULL
   ),
   private = list(
@@ -207,14 +232,42 @@ FME = R6Class("FME",
 
 # User-friendly function
 
-#' @title User-friendly function to compute FMEs
+#' @title Computes FMEs.
 #'
-#' @description This is a wrapper function that provides a user-friendly interface by abstracting away the R6 functionality of the package.
-#' @param model `Predictor` object.
-#' @param data data.table or data.frame object.
+#' @description This is a wrapper function for `FME$new(...)$compute()`.
+#' It computes forward marginal effects (FMEs) for a specified change in feature values.
+#' @param model the (trained) model, with the ability to predict on new data. This must be an `LearnerRegr` (`mlr3`) or `randomForest` (`randomForest`) object.
+#' @param data the data used for computing FMEs, must be data.frame or data.table.
+#' @param target a string specifying the target variable.
+#' @param feature a character vector of the names of the feature variables affected by the step.
+#' For numerical steps, this must have length 1 or 2.
+#' For categorical steps, this must have length 1.
+#' @param step.size a numeric vector of the step lengths in the features affected by the step.
+#' For numerical steps, this must have length 1 or 2.
+#' For categorical steps, this is the name of the reference category.
+#' @param ep.method string specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
+#' @param compute.nlm compute NLMs for FMEs for numerical steps. Defaults to `TRUE`.
+#' @param nlm.intervals number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to `1`.
+#' @return `FME` object with FMEs computed.
+#' @references
+#' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
-#' R code here
-#' ...
+#' # Train a model:
+#' data("Boston", package = "MASS")
+#' forest = randomForest(medv ~ ., data = Boston)
+#'
+#' # Compute FMEs:
+#' effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",
+#'               step.size = 1, ep.method = "envelope", )
+#'
+#' # Analyze results:
+#' summary(effects)
+#' plot(effects)
+#'
+#' # Extract results:
+#' effects$results
+#'
+#' @export
 fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = TRUE, nlm.intervals = 1) {
   return(FME$new(makePredictor(model, data, target),
           feature = feature,

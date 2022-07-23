@@ -1,15 +1,26 @@
-# Abstract Predictor Class
+#' @title R6 Class representing a predictor
+#'
+#' @description This is the abstract superclass for predictor objects like [PredictorMLR3] and [PredictorRandomForest].
+#' A Predictor contains information about an ML model's prediction function and training data.
+#' @export
 Predictor = R6Class("Predictor",
 
   public = list(
 
+    #' @description Create a Predictor object
+    #' @param ...
+    #' Predictor cannot be initialized, only its subclasses
     initialize = function(...) {
       stop(paste(class(self)[1], "is an abstract class that cannot be initialized."))
     },
 
+    #' @field model The (trained) model, with the ability to predict on new data.
     model = NULL,
+    #' @field X A data.table with feature and target variables.
     X = NULL,
+    #' @field feature.names A character vector with the names of the features in X.
     feature.names = NULL,
+    #' @field feature.types A character vector with the types (numerical or categorical) of the features in X.
     feature.types = NULL
 
   ),
@@ -56,50 +67,24 @@ Predictor = R6Class("Predictor",
 )
 
 
-# Predictor for regression models of the 'mlr3' package
-PredictorMLR3 = R6Class("PredictorMLR3",
-
-  inherit = Predictor,
-
-  public = list(
-
-    initialize = function(model, data, target) {
-      private$initializeSubclass(model, data, target)
-    },
-
-    predict = function(newdata) {
-      prediction = as.data.table(self$model$predict_newdata(newdata))[,3]
-      names(prediction) = "prediction"
-      return(prediction)
-    }
-
-  )
-)
-
-
-# Predictor for regression models of the 'randomForest' package
-PredictorRandomForest = R6Class("PredictorRandomForest",
-
-  inherit = Predictor,
-
-  public = list(
-
-    initialize = function(model, data, target) {
-      private$initializeSubclass(model, data, target)
-    },
-
-    predict = function(newdata) {
-      prediction = as.data.table(predict(self$model, newdata = newdata))
-      names(prediction) = "prediction"
-      return(prediction)
-    }
-
-  )
-)
-
-
-
-# Make Predictor
+#' @title User-friendly function to create a [Predictor].
+#'
+#' @description A wrapper function that creates the correct subclass of `Predictor` by automatically from `model`. Can be passed to the constructor of `FME`.
+#' @param model the (trained) model, with the ability to predict on new data.
+#' @param data the data used for computing FMEs, must be data.frame or data.table.
+#' @param target a string specifying the target variable.
+#' @examples
+#' # Train a model:
+#' data("Boston", package = "MASS")
+#' forest = randomForest(medv ~ ., data = Boston)
+#'
+#' # Create the predictor:
+#' predictor = makePredictor(forest, Boston, "medv")
+#'
+#' # This instantiated an object of the correct subclass of `Predictor`:
+#' class(predictor)
+#' [1] "PredictorRandomForest" "Predictor" "R6"
+#' @export
 makePredictor = function(model, data, target) {
   if ("LearnerRegr" %in% class(model)) {
     return(PredictorMLR3$new(model, data, target))

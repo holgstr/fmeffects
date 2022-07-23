@@ -2,7 +2,7 @@
 % Please edit documentation in R/FME.R
 \name{fme}
 \alias{fme}
-\title{User-friendly function to compute FMEs}
+\title{Computes FMEs.}
 \usage{
 fme(
   model,
@@ -16,14 +16,50 @@ fme(
 )
 }
 \arguments{
-\item{model}{\code{Predictor} object.}
+\item{model}{the (trained) model, with the ability to predict on new data. This must be an \code{LearnerRegr} (\code{mlr3}) or \code{randomForest} (\code{randomForest}) object.}
 
-\item{data}{data.table or data.frame object.}
+\item{data}{the data used for computing FMEs, must be data.frame or data.table.}
+
+\item{target}{a string specifying the target variable.}
+
+\item{feature}{a character vector of the names of the feature variables affected by the step.
+For numerical steps, this must have length 1 or 2.
+For categorical steps, this must have length 1.}
+
+\item{step.size}{a numeric vector of the step lengths in the features affected by the step.
+For numerical steps, this must have length 1 or 2.
+For categorical steps, this is the name of the reference category.}
+
+\item{ep.method}{string specifying the method used for extrapolation detection. One of \code{"none"} or \code{"envelope"}. Defaults to \code{"none"}.}
+
+\item{compute.nlm}{compute NLMs for FMEs for numerical steps. Defaults to \code{TRUE}.}
+
+\item{nlm.intervals}{number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to \code{1}.}
+}
+\value{
+\code{FME} object with FMEs computed.
 }
 \description{
-This is a wrapper function that provides a user-friendly interface by abstracting away the R6 functionality of the package.
+This is a wrapper function for \code{FME$new(...)$compute()}.
+It computes forward marginal effects (FMEs) for a specified change in feature values.
 }
 \examples{
-R code here
-...
+# Train a model:
+data("Boston", package = "MASS")
+forest = randomForest(medv ~ ., data = Boston)
+
+# Compute FMEs:
+effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",
+              step.size = 1, ep.method = "envelope", )
+
+# Analyze results:
+summary(effects)
+plot(effects)
+
+# Extract results:
+effects$results
+
+}
+\references{
+Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 }

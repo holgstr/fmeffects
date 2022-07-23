@@ -22,3 +22,17 @@ Depends:
     ggplot2,
     cowplot,
     R6
+Collate: 
+    'ExtrapolationDetector.R'
+    'FME.R'
+    'FMEPlot.R'
+    'NonLinearityMeasure.R'
+    'Partitioning.R'
+    'PartitioningCtree.R'
+    'PartitioningPlot.R'
+    'PartitioningRpart.R'
+    'Predictor.R'
+    'PredictorMLR3.R'
+    'PredictorRandomForest.R'
+    'Pruner.R'
+    'S3.R'

@@ -1,11 +1,24 @@
-# Abstract Partioning Class
+#' @title R6 Class representing a partitioning
+#'
+#' @description This is the abstract superclass for partitioning objects like [PartitioningCtree] and [PartitioningRpart].
+#' A Partitioning contains information about feature subspaces with conditional average marginal effects (cAME) computed for `FME` objects.
+#' @export
 Partitioning = R6Class("Partitioning",
   public = list(
 
+    #' @description Create a Partitioning object
+    #' @param ...
+    #' Partitioning cannot be initialized, only its subclasses
     initialize = function(...) {
       stop(paste(class(self)[1], "is an abstract class that cannot be initialized."))
     },
 
+    #' @description
+    #' Computes the partitioning, i.e., feature subspaces with more homogeneous FMEs, for an `FME` object.
+    #' @return An `Partitioning` object with results.
+    #' @examples
+    #' # Compute results for an arbitrary partitioning:
+    #' subspaces$compute()
     compute = function() {
       # Create data for partitioning algorithm
       data = data.table::copy(self$object$predictor$X[self$object$results$obs.id,])
@@ -24,6 +37,11 @@ Partitioning = R6Class("Partitioning",
       invisible(self)
     },
 
+    #' @description
+    #' Plots results, i.e., a decision tree and summary statistics of the feature subspaces, for an `Partitioning` object after `$compute()` has been run.
+    #' @examples
+    #' # Plot an arbitrary partitioning:
+    #' subspaces$plot()
     plot = function() {
       if ("nlm" %in% names(self$object$results)) {
         PartitioningPlot$new(self$tree, self$object)$plot
@@ -32,11 +50,17 @@ Partitioning = R6Class("Partitioning",
       }
     },
 
+    #' @field object an `FME` object with results computed
     object = NULL,
+    #' @field method the method for finding feature subspaces
     method = NULL,
+    #' @field value the value of `method`
     value = NULL,
+    #' @field results descriptive statistics of the resulting feature subspaces
     results = NULL,
+    #' @field tree the tree representing the partitioning, a `party` object
     tree = NULL,
+    #' @field tree.control control parameters for the RP algorithm
     tree.control = NULL
 
   ),
@@ -151,57 +175,45 @@ Partitioning = R6Class("Partitioning",
 )
 
 
-# Partioning for Ctree from the 'partykit' package
-PartitioningCtree = R6Class("PartitioningCtree",
-
-  inherit = Partitioning,
-
-  public = list(
-
-    initialize = function(object, method, value, tree.control = NULL) {
-      private$initializeSubclass(object, method, value, tree.control)
-    }
-
-  ),
-  private = list(
-
-    growTree = function(data, tree.control = ctree_control(alpha = 0.35,
-                                                           minbucket = nrow(data)*0.02)) {
-      tree = ctree(fme ~ .,
-                   data = data,
-                   control = tree.control)
-      return(tree)
-    }
-
-  )
-)
-
-
-# Partioning for Rpart from the 'rpart' package
-PartitioningRpart = R6Class("PartitioningRpart",
- inherit = Partitioning,
- public = list(
-
-   initialize = function(object, method, value, tree.control = NULL) {
-     private$initializeSubclass(object, method, value, tree.control)
-   }
-
- ),
- private = list(
-
-   growTree = function(data, tree.control = rpart.control(minbucket = round(nrow(data)*0.04),
-                                                          cp= 0.001)) {
-     tree = as.party(rpart(fme ~ .,
-                           data = data,
-                           control = tree.control))
-     return(tree)
-   }
-
- )
-)
-
-
 # User-friendly function
+
+#' @title Computes a partitioning for an `FME`
+#'
+#' @description This is a wrapper function that creates the correct subclass of `Partitioning`.
+#' It computes feature subspaces for semi-global interpretations of FMEs via recursive partitioning (RP).
+#' @param effects an `FME` object with FMEs computed.
+#' @param number.partitions the exact number of partitions required.
+#' Either `number.partitions` or `max.cov` can be specified.
+#' @param max.cov the maximum coefficient of variation required in each partition.
+#' Among multiple partitionings with this criterion identified, the one with lowest number of partitions is selected.
+#' Either `number.partitions` or `max.cov` can be specified.
+#' @param rp.method one of `"ctree"` or `"rpart"`. The RP algorithm used for growing the decision tree.
+#' @param tree.control control parameters for the RP algorithm. One of `"ctree.control(...)"` or `"rpart.control(...)"`.
+#' #' @return `Partitioning` object with identified feature subspaces.
+#' @references
+#' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
+#' @examples
+#' # Train a model and compute FMEs:
+#' data("Boston", package = "MASS")
+#' forest = randomForest(medv ~ ., data = Boston)
+#' effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",
+#'               step.size = 1, ep.method = "envelope", )
+#'
+#' # Find a partitioning with exactly 3 subspaces:
+#' subspaces = came(effects, number.partitions = 3)
+#'
+#' # Find a partitioning with a maximum coefficient of variation of 4, use `rpart`:
+#' subspaces = came(effects, max.cov = 4, rp.method = "rpart")
+#'
+#' # Analyze results:
+#' summary(subspaces)
+#' plot(subspaces)
+#'
+#' # Extract results:
+#' subspaces$results
+#' subspaces$tree
+#'
+#' @export
 came = function(effects, number.partitions = NULL, max.cov = Inf, rp.method = "ctree", tree.control = NULL) {
   assertChoice(rp.method, choices = c("ctree", "rpart"))
   makePartitioner = function(rp.method, ...) {

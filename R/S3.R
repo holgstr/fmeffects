@@ -1,3 +1,31 @@
+### FME
+
+
+#' Prints summary of an FME object.
+#'
+#' @export
+summary.FME = function(fme) {
+  print(fme)
+}
+
+#' Prints an FME object.
+#'
+#' @export
+print.FME = function(fme) {
+  cat("ADD RESULTS FOR PRINT HERE")
+}
+
+#' Plots an FME object.
+#' @param with.nlm plots NLMs alongside FMEs, defaults to `FALSE`.
+#' @export
+plot.FME = function(fme, with.nlm = FALSE) {
+  fme$plot(with.nlm)
+}
+
+
+### PARTITIONING
+
+
 #' Prints summary of FME partitioning.
 #'
 #' @export
