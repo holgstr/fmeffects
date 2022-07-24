@@ -37,6 +37,8 @@ subspaces$plot()
 \item{\code{tree}}{the tree representing the partitioning, a \code{party} object}
 
 \item{\code{tree.control}}{control parameters for the RP algorithm}
+
+\item{\code{computed}}{logical specifying if compute() has been run}
 }
 \if{html}{\out{</div>}}
 }

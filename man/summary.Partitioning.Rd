@@ -2,10 +2,10 @@
 % Please edit documentation in R/S3.R
 \name{summary.Partitioning}
 \alias{summary.Partitioning}
-\title{Prints summary of FME partitioning.}
+\title{Prints summary of an FME Partitioning.}
 \usage{
 \method{summary}{Partitioning}(partitioning)
 }
 \description{
-Prints summary of FME partitioning.
+Prints summary of an FME Partitioning.
 }

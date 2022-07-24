@@ -2,10 +2,10 @@
 % Please edit documentation in R/S3.R
 \name{plot.Partitioning}
 \alias{plot.Partitioning}
-\title{Plots an FME partitioning.}
+\title{Plots an FME Partitioning.}
 \usage{
 \method{plot}{Partitioning}(partitioning)
 }
 \description{
-Plots an FME partitioning.
+Plots an FME Partitioning.
 }
