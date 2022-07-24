@@ -91,10 +91,16 @@ summary.Partitioning = function(partitioning) {
     if (length(grep("CoV", names(res))) == 2) {
       names(res)[grep("CoV", names(res))[2]] = c("CoV(NLM)")
     }
-    print(res[which(res$is.terminal.node == TRUE), -(ncol(res))], row.names = FALSE)
+
+    res = res[c(1,which(res$is.terminal.node == TRUE)), -(ncol(res))]
+    res$"" = c("*", rep("", nrow(res) - 1))
+    print(res, row.names = FALSE)
     cat("---\n")
-    cat("cANLM:  ≤0 implies non-linearity, 1 implies linearity\n\n")
-    cat(paste0("AME (Global): ", round(partitioning$object$ame, 4)))
+    cat("* root node (non-partitioned)")
+    if ("nlm" %in% names(partitioning$object$results)) {
+      cat("\ncANLM:  ≤0 implies non-linearity, 1 implies linearity")
+    }
+    cat(paste0("\n\nAME (Global): ", round(partitioning$object$ame, 4)))
     if ("nlm" %in% names(partitioning$object$results)) {
       cat(paste0("\nANLM (Global): ", round(partitioning$object$anlm, 2)))
     }

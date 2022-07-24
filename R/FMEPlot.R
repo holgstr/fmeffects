@@ -53,7 +53,8 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
         geom_point(aes(x = x1, y = x2, fill = fme),
                    size = 3.8,
                    shape = 21,
-                   alpha = 0.7) +
+                   alpha = 0.7,
+                   position = "identity") +
         scale_fill_viridis_c(guide_legend("fME")) +
         geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
                          xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
@@ -151,7 +152,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
                      arrow = arrow(length = unit(0.5, "cm")),
                      lineend = "round", linejoin = "mitre") +
         geom_hline(lwd = 1.2, mapping = aes(yintercept = mean(fme))) +
-        geom_label(x = max(x1) - 0.05 * range.x1, y = mean(df$fme), label = 'AME', fill = 'white') +
+        geom_label(x = max(x1) - 0.05 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
         xlab(self$feature[1]) +
         ylab("fME") +
         theme_bw() +
@@ -185,7 +186,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
                        lineend = "round", linejoin = "mitre",
                        na.rm = FALSE) +
           geom_hline(lwd = 1.2, mapping = aes(yintercept = meannlm)) +
-          geom_label(x = max(x1) - 0.05 * range.x1, y = meannlm, label = 'ANLM', fill = 'white') +
+          geom_label(x = max(x1) - 0.05 * range.x1, y = meannlm, label = paste0('ANLM: ', round(meannlm, 2)), fill = 'white') +
           xlab(self$feature) +
           ylab("NLM") +
           theme_bw() +
@@ -234,7 +235,7 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
                          na.rm = TRUE) +
           geom_density(mapping = aes(x = fme, y = ..scaled..*countmax), adjust = 1.5) +
           geom_vline(lwd = 1.2, mapping = aes(xintercept = mean(fme))) +
-          geom_label(x = mean(df$fme), y = countmax*0.9, label = 'AME', fill = 'white') +
+          geom_label(x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
           xlab(paste0("fME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
           ylab("") +
           theme_bw() +
