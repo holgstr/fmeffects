@@ -166,22 +166,24 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
         pfme
       } else if ("nlm" %in% names(df)) {
         meannlm = mean(df$nlm, na.rm = TRUE)
-        df$nlm = sapply(df$nlm, FUN = function(x) {max(x, 0)})
-        range.nlm = diff(range(df$nlm))
+        df$nlm = sapply(df$nlm, FUN = function(x) {max(x, 0, na.rm = TRUE)})
+        range.nlm = diff(range(df$nlm, na.rm = FALSE))
         pnlm = ggplot(df) +
           geom_point(aes(x = x1, y = nlm, fill = cut(nlm, c(-Inf, 0.0001, Inf))),
                      colour = "black",
                      size = 3.8,
                      shape = 21,
                      alpha = 0.55,
-                     show.legend = FALSE) +
+                     show.legend = FALSE,
+                     na.rm = FALSE) +
           geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
                            xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
-                           y = min(nlm)-0.03*range.nlm,
-                           yend = min(nlm)-0.03*range.nlm),
+                           y = min(nlm, na.rm = FALSE)-0.03*range.nlm,
+                           yend = min(nlm, na.rm = FALSE)-0.03*range.nlm),
                        colour = 'black', size = 1,
                        arrow = arrow(length = unit(0.5, "cm")),
-                       lineend = "round", linejoin = "mitre") +
+                       lineend = "round", linejoin = "mitre",
+                       na.rm = FALSE) +
           geom_hline(lwd = 1.2, mapping = aes(yintercept = meannlm)) +
           geom_label(x = max(x1) - 0.05 * range.x1, y = meannlm, label = 'ANLM', fill = 'white') +
           xlab(self$feature) +

@@ -20,7 +20,7 @@ summary.FME = function(fme) {
   # empty object
   if (fme$computed == FALSE) {
     cat("\n\n<<<This is an FME object without results>>>\n")
-    cat("<<<Call $compute() to compute FMEs>>>")
+    cat("<<<Call $compute() to compute FMEs>>>\n\n")
   } else {
     cat(paste0(", EPs: ", length(fme$extrapolation.ids), " of ",
                nrow(fme$results) + length(fme$extrapolation.ids), " obs. (",
@@ -45,7 +45,7 @@ print.FME = function(fme) {
   }
   # empty object
   if (fme$computed == FALSE) {
-    cat("\n<This is an FME object without results>\n")
+    cat("\n<This is an FME object without results>\n\n")
   } else {
     # non-empty object
     cat(paste0("\nAverage Marginal Effect (AME):\n  ", round(fme$ame, 4)))
@@ -83,7 +83,7 @@ summary.Partitioning = function(partitioning) {
   # empty object
   if (partitioning$computed == FALSE) {
     cat("<<<This is an Partitioning object without results>>>\n")
-    cat("<<<Call $compute() to compute>>>\n")
+    cat("<<<Call $compute() to compute>>>\n\n")
   } else {
     # non-empty object
     res = do.call(rbind.data.frame, partitioning$results)
@@ -116,7 +116,7 @@ print.Partitioning = function(partitioning) {
   cat("\n\n")
   # empty object
   if (partitioning$computed == FALSE) {
-    cat("\n<This is a Partitioning object without results>\n")
+    cat("\n<This is a Partitioning object without results>\n\n")
   } else {
     # non-empty object
     res = do.call(rbind.data.frame, partitioning$results)
