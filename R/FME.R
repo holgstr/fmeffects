@@ -103,7 +103,7 @@ FME = R6Class("FME",
       if ("nlm" %in% names(self$results)) {
         self$anlm = mean(self$results$nlm, na.rm = TRUE)
       }
-
+      self$computed = TRUE
       invisible(self)
 
     },
@@ -147,7 +147,10 @@ FME = R6Class("FME",
     #' @field ame Average Marginal Effect (AME) of observations in `results`
     ame = NULL,
     #' @field anlm Average Non-linearity Measure (ANLM) of observations in `results`
-    anlm = NULL
+    anlm = NULL,
+    #' @field computed logical specifying if compute() has been run
+    computed = FALSE
+
   ),
   private = list(
 

@@ -34,6 +34,7 @@ Partitioning = R6Class("Partitioning",
         self$tree = private$partMaxCov(data, self$value, tree)
       }
       self$results = private$getResults(self$tree, self$object)
+      self$computed = TRUE
       invisible(self)
     },
 
@@ -61,7 +62,9 @@ Partitioning = R6Class("Partitioning",
     #' @field tree the tree representing the partitioning, a `party` object
     tree = NULL,
     #' @field tree.control control parameters for the RP algorithm
-    tree.control = NULL
+    tree.control = NULL,
+    #' @field computed logical specifying if compute() has been run
+    computed = FALSE
 
   ),
   private = list(
@@ -70,6 +73,9 @@ Partitioning = R6Class("Partitioning",
 
       # Check if object is of class 'FME'
       assertClass(object, classes = "FME")
+
+      # Check if object has FMEs computed
+      assertTRUE(object$computed)
 
       # Check if method is sensible
       assertChoice(method, choices = c("partitions", "max.cov"))
