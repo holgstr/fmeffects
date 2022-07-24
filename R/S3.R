@@ -2,7 +2,7 @@
 
 
 #' Prints summary of an FME object.
-#'
+#' @param fme object of class `FME`.
 #' @export
 summary.FME = function(fme) {
   cat("\n")
@@ -34,7 +34,7 @@ summary.FME = function(fme) {
 }
 
 #' Prints an FME object.
-#'
+#' @param fme object of class `FME`.
 #' @export
 print.FME = function(fme) {
   cat("\n")
@@ -57,6 +57,7 @@ print.FME = function(fme) {
 }
 
 #' Plots an FME object.
+#' @param fme object of class `FME`.
 #' @param with.nlm plots NLMs alongside FMEs, defaults to `FALSE`.
 #' @export
 plot.FME = function(fme, with.nlm = FALSE) {
@@ -68,7 +69,7 @@ plot.FME = function(fme, with.nlm = FALSE) {
 
 
 #' Prints summary of an FME Partitioning.
-#'
+#' @param partitioning object of class `Partitioning`.
 #' @export
 summary.Partitioning = function(partitioning) {
   cat("\n")
@@ -102,7 +103,7 @@ summary.Partitioning = function(partitioning) {
 }
 
 #' Prints an FME Partitioning.
-#'
+#' @param partitioning object of class `Partitioning`.
 #' @export
 print.Partitioning = function(partitioning) {
   cat("\n")
@@ -129,7 +130,7 @@ print.Partitioning = function(partitioning) {
 }
 
 #' Plots an FME Partitioning.
-#'
+#' @param partitioning object of class `Partitioning`.
 #' @export
 plot.Partitioning = function(partitioning) {
   partitioning$plot()

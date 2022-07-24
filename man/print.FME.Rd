@@ -6,6 +6,9 @@
 \usage{
 \method{print}{FME}(fme)
 }
+\arguments{
+\item{fme}{object of class \code{FME}.}
+}
 \description{
 Prints an FME object.
 }

@@ -6,6 +6,9 @@
 \usage{
 \method{print}{Partitioning}(partitioning)
 }
+\arguments{
+\item{partitioning}{object of class \code{Partitioning}.}
+}
 \description{
 Prints an FME Partitioning.
 }

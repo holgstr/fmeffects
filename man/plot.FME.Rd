@@ -7,6 +7,8 @@
 \method{plot}{FME}(fme, with.nlm = FALSE)
 }
 \arguments{
+\item{fme}{object of class \code{FME}.}
+
 \item{with.nlm}{plots NLMs alongside FMEs, defaults to \code{FALSE}.}
 }
 \description{

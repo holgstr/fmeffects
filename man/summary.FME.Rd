@@ -6,6 +6,9 @@
 \usage{
 \method{summary}{FME}(fme)
 }
+\arguments{
+\item{fme}{object of class \code{FME}.}
+}
 \description{
 Prints summary of an FME object.
 }

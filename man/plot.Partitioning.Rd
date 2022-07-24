@@ -6,6 +6,9 @@
 \usage{
 \method{plot}{Partitioning}(partitioning)
 }
+\arguments{
+\item{partitioning}{object of class \code{Partitioning}.}
+}
 \description{
 Plots an FME Partitioning.
 }
