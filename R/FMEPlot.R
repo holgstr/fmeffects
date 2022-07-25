@@ -42,7 +42,7 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
       private$initializeSubclass(results, data, feature, step.size)
     },
 
-    plot = function(with.nlm = FALSE) {
+    plot = function(with.nlm = FALSE, jitter) {
       df = as.data.frame(self$df)
       x1 = df[,which(self$feature[1] == names(df))]
       range.x1 = diff(range(x1))
@@ -50,11 +50,13 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
       range.x2 = diff(range(x2))
 
       pfme = ggplot(df) +
-        geom_point(aes(x = x1, y = x2, fill = fme),
+        geom_jitter(aes(x = x1, y = x2, fill = fme),
                    size = 3.8,
                    shape = 21,
                    alpha = 0.7,
-                   position = "identity") +
+                   #position = "identity") +
+                   width = jitter[1],
+                   height = jitter[2]) +
         scale_fill_viridis_c(guide_legend("fME")) +
         geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
                          xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
@@ -85,10 +87,12 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
       } else if ("nlm" %in% names(df)) {
         df$nlm = sapply(df$nlm, FUN = function(x) {max(x, 0)})
         pnlm = ggplot(df) +
-          geom_point(aes(x = x1, y = x2, fill = nlm),
+          geom_jitter(aes(x = x1, y = x2, fill = nlm),
                      size = 3.8,
                      shape = 21,
-                     alpha = 0.7) +
+                     alpha = 0.7,
+                     width = jitter[1],
+                     height = jitter[2]) +
           scale_fill_viridis_c(guide_legend("NLM"),
                                breaks=c(0.98, 0.5, 0.01),
                                labels = c("1.0", "0.5", "\u2264 0")) +
@@ -131,19 +135,21 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
       private$initializeSubclass(results, data, feature, step.size)
     },
 
-    plot = function(with.nlm = FALSE) {
+    plot = function(with.nlm = FALSE, jitter) {
       df = as.data.frame(self$df)
       x1 = df[,which(self$feature == names(df))]
       range.x1 = diff(range(x1))
       range.fme = diff(range(df$fme))
 
       pfme = ggplot(df) +
-        geom_point(aes(x = x1, y = fme),
+        geom_jitter(aes(x = x1, y = fme),
                    colour = "black",
                    fill= "#1E9B8AFF",
                    size = 3.8,
                    shape = 21,
-                   alpha = 0.55) +
+                   alpha = 0.55,
+                   width = jitter[1],
+                   height = jitter[2]) +
         geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
                          xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
                          y = min(fme)-0.03*range.fme,
@@ -170,11 +176,13 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
         df$nlm = sapply(df$nlm, FUN = function(x) {max(x, 0, na.rm = TRUE)})
         range.nlm = diff(range(df$nlm, na.rm = FALSE))
         pnlm = ggplot(df) +
-          geom_point(aes(x = x1, y = nlm, fill = cut(nlm, c(-Inf, 0.0001, Inf))),
+          geom_jitter(aes(x = x1, y = nlm, fill = cut(nlm, c(-Inf, 0.0001, Inf))),
                      colour = "black",
                      size = 3.8,
                      shape = 21,
                      alpha = 0.55,
+                     width = jitter[1],
+                     height = jitter[2],
                      show.legend = FALSE,
                      na.rm = FALSE) +
           geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
@@ -216,7 +224,10 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
       private$initializeSubclass(results, data, feature, step.size)
     },
 
-    plot = function(with.nlm = FALSE) {
+    plot = function(with.nlm = FALSE, jitter) {
+      if (jitter != c(0,0)) {
+        stop("You supplied an invalid argument (jitter). Jittering is not possible for categorical steps.")
+      }
       if (with.nlm == FALSE) {
         df = as.data.frame(self$df)
         countmax = max(hist(df$fme,

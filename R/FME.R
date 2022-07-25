@@ -110,17 +110,20 @@ FME = R6Class("FME",
 
     #' @description
     #' Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an `FME` object.
-    #' @param with.nlm plots NLMs if computed, defaults to `FALSE`.
+    #' @param with.nlm Plots NLMs if computed, defaults to `FALSE`.
+    #' @param jitter Jitters data. A two-dimensional numeric vector, corresponds to `"width"` and `"height"`. See `?ggplot2::geom_jitter` for details.
+    #' Not available if `step.type` is categorical.
+    #' Defaults to no jittering, i.e., c(0, 0).
     #' @examples
     #' # Compute results:
     #' effects$plot()
-    plot = function(with.nlm = FALSE) {
+    plot = function(with.nlm = FALSE, jitter = c(0, 0)) {
       if (self$step.type == "categorical") {
-        FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
+        FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, jitter)
       } else if (length(self$feature) == 1) {
-        FMEPlotUnivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
+        FMEPlotUnivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, jitter)
       } else {
-        FMEPlotBivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
+        FMEPlotBivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, jitter)
       }
     },
 

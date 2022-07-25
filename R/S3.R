@@ -59,9 +59,12 @@ print.FME = function(fme) {
 #' Plots an FME object.
 #' @param fme object of class `FME`.
 #' @param with.nlm plots NLMs alongside FMEs, defaults to `FALSE`.
+#' @param jitter Jitters data. A two-dimensional numeric vector, corresponds to `"width"` and `"height"`. See `?ggplot2::geom_jitter` for details.
+#' Not available if `step.type` is categorical.
+#' Defaults to no jittering, i.e., c(0, 0).
 #' @export
-plot.FME = function(fme, with.nlm = FALSE) {
-  fme$plot(with.nlm)
+plot.FME = function(fme, with.nlm = FALSE, jitter = c(0,0)) {
+  fme$plot(with.nlm, jitter)
 }
 
 
