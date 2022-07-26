@@ -101,7 +101,7 @@ FME = R6Class("FME",
       # Descriptive statistics for the results
       self$ame = mean(self$results$fme)
       if ("nlm" %in% names(self$results)) {
-        self$anlm = mean(self$results$nlm, na.rm = TRUE)
+        self$anlm = round(mean(self$results$nlm, na.rm = TRUE), 2)
       }
       self$computed = TRUE
       invisible(self)

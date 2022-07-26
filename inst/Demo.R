@@ -2,12 +2,14 @@
 ## DEMO: INTERPRETING FORWARD MARGINAL EFFECTS ON WASHINGTON BIKESHARE DATA
 #####--------------------------------------------------------------------------
 
+
 ##### INSTALLATION ------------------------------------------------------------
 
 set.seed(123)
 library(devtools)
-install_github("holgstr/fme", force = TRUE)
+install_github("holgstr/fme", force = TRUE, upgrade = "never")
 library(fme)
+
 
 ##### DATA --------------------------------------------------------------------
 
@@ -15,10 +17,14 @@ library(fme)
 require(OpenML)
 require(farff)
 bikes = as.data.table(getOMLDataSet(data.id = 42712)$data)
+bikes$year = as.factor(bikes$year)
 bikes = bikes[,-c(10,13,14)]
-bikes = bikes[hour %inrange% c(7,8)]
-bikes = bikes[year == 1]
-bikes = bikes[, -c(2)]
+#bikes = bikes[hour %inrange% c(7,8)]
+bikes = bikes[hour == 7]
+bikes = bikes[, -c(4)]
+#bikes = bikes[year == 1]
+#bikes = bikes[, -c(2)]
+
 
 #### TRAIN MODEL --------------------------------------------------------------
 
@@ -26,6 +32,8 @@ bikes = bikes[, -c(2)]
 library(mlr3verse)
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
+forest$model
+
 
 #### COMPUTE MARGINAL EFFECTS -------------------------------------------------
 
@@ -38,8 +46,44 @@ pred = makePredictor(model = forest, data = bikes, target = "count")
 # However, computing fMEs effectively requires only the fme() funtion:
 ?fme
 
-# Compute fME for the cat. feature "weather", with ref. category "rain":
-effects = fme(model = forest, data = bikes, target = "count", feature = "weather", step.size = "rain")
+
+### CATEGORICAL FEATURES ------------------------------------------------------
+
+# Compute MEs for the cat. feature "weather", with ref. category "rain":
+effects = fme(model = forest,
+              data = bikes,
+              target = "count",
+              feature = "weather",
+              step.size = "rain")
+
+# We have created an object of class 'FME':
+class(effects)
+
+# We can produce a summary to inspect the object:
+summary(effects)
+
+# Or we can inspect MEs of individual observations:
+head(effects$results)
+
+# Finally, we visualize the MEs with plot():
 plot(effects)
-p = plot(effects)
-ggsave("weather_rain.pdf", p, units = "cm", width = 14, height = 8.4)
+
+#p = plot(effects)
+#ggsave("weather_rain.pdf", p, units = "cm", width = 14, height = 8.4)
+
+
+### NUMERICAL FEATURES --------------------------------------------------------
+
+# Compute fMEs for the num. feature "temp", with step size 3
+# This corresponds to a temperature increase of 3 degrees celsius:
+# Caveat: We compute NLMs. This might take several minutes depending on your computer:
+effects2 = fme(model = forest,
+               data = bikes,
+               target = "count",
+               feature = "temp",
+               step.size = 3,
+               ep.method = "envelope",
+               compute.nlm = TRUE)
+
+
+
