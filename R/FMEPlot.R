@@ -250,7 +250,7 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
           geom_density(mapping = aes(x = fme, y = ..scaled..*countmax), adjust = 1.5) +
           geom_vline(lwd = 1.2, mapping = aes(xintercept = mean(fme))) +
           geom_label(x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
-          xlab(paste0("fME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
+          xlab(paste0("ME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
           ylab("") +
           theme_bw() +
           theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
