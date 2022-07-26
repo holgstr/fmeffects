@@ -1,10 +1,10 @@
 Package: fme
-Title: What the Package Does (One Line, Title Case)
+Title: Forward Marginal Effects
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+    person("Holger", "Loewe", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: Computes Forward Marginal Effects (FME) for arbitrary supervised regression models.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
