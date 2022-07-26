@@ -43,6 +43,7 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
     },
 
     plot = function(with.nlm = FALSE, jitter) {
+      assertNumeric(jitter, len = 2)
       df = as.data.frame(self$df)
       x1 = df[,which(self$feature[1] == names(df))]
       range.x1 = diff(range(x1))
@@ -136,6 +137,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
     },
 
     plot = function(with.nlm = FALSE, jitter) {
+      assertNumeric(jitter, len = 2)
       df = as.data.frame(self$df)
       x1 = df[,which(self$feature == names(df))]
       range.x1 = diff(range(x1))
@@ -225,7 +227,8 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
     },
 
     plot = function(with.nlm = FALSE, jitter) {
-      if (jitter != c(0,0)) {
+      assertNumeric(jitter, len = 2)
+      if (!(jitter[1] == 0 & jitter[2] == 0)) {
         stop("You supplied an invalid argument (jitter). Jittering is not possible for categorical steps.")
       }
       if (with.nlm == FALSE) {
