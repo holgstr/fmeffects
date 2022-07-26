@@ -4,12 +4,16 @@
 \alias{plot.FME}
 \title{Plots an FME object.}
 \usage{
-\method{plot}{FME}(fme, with.nlm = FALSE)
+\method{plot}{FME}(fme, with.nlm = FALSE, jitter = c(0, 0))
 }
 \arguments{
 \item{fme}{object of class \code{FME}.}
 
 \item{with.nlm}{plots NLMs alongside FMEs, defaults to \code{FALSE}.}
+
+\item{jitter}{Jitters data. A two-dimensional numeric vector, corresponds to \code{"width"} and \code{"height"}. See \code{?ggplot2::geom_jitter} for details.
+Not available if \code{step.type} is categorical.
+Defaults to no jittering, i.e., c(0, 0).}
 }
 \description{
 Plots an FME object.

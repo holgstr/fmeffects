@@ -40,9 +40,9 @@ Create a new PredictorMLR3 object.
 \describe{
 \item{\code{model}}{\code{LearnerRegr} object.}
 
-\item{\code{data}}{the data used for computing FMEs, must be data.frame or data.table.}
+\item{\code{data}}{The data used for computing FMEs, must be data.frame or data.table.}
 
-\item{\code{target}}{a string specifying the target variable.}
+\item{\code{target}}{A string specifying the target variable.}
 }
 \if{html}{\out{</div>}}
 }
@@ -59,7 +59,7 @@ Predicts on an observation \code{"newdata"}.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{newdata}}{the feature vector for which the target should be predicted.}
+\item{\code{newdata}}{The feature vector for which the target should be predicted.}
 }
 \if{html}{\out{</div>}}
 }

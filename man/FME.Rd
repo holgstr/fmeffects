@@ -11,33 +11,33 @@ fme(
   feature,
   step.size,
   ep.method = "none",
-  compute.nlm = TRUE,
+  compute.nlm = FALSE,
   nlm.intervals = 1
 )
 }
 \arguments{
-\item{model}{the (trained) model, with the ability to predict on new data. This must be an \code{LearnerRegr} (\code{mlr3}) or \code{randomForest} (\code{randomForest}) object.}
+\item{model}{The (trained) model, with the ability to predict on new data. This must be an \code{LearnerRegr} (\code{mlr3}) or \code{randomForest} (\code{randomForest}) object.}
 
-\item{data}{the data used for computing FMEs, must be data.frame or data.table.}
+\item{data}{The data used for computing FMEs, must be data.frame or data.table.}
 
-\item{target}{a string specifying the target variable.}
+\item{target}{A string specifying the target variable.}
 
-\item{feature}{a character vector of the names of the feature variables affected by the step.
+\item{feature}{A character vector of the names of the feature variables affected by the step.
 For numerical steps, this must have length 1 or 2.
 For categorical steps, this must have length 1.}
 
-\item{step.size}{a numeric vector of the step lengths in the features affected by the step.
+\item{step.size}{A numeric vector of the step lengths in the features affected by the step.
 For numerical steps, this must have length 1 or 2.
 For categorical steps, this is the name of the reference category.}
 
-\item{ep.method}{string specifying the method used for extrapolation detection. One of \code{"none"} or \code{"envelope"}. Defaults to \code{"none"}.}
+\item{ep.method}{String specifying the method used for extrapolation detection. One of \code{"none"} or \code{"envelope"}. Defaults to \code{"none"}.}
 
-\item{compute.nlm}{compute NLMs for FMEs for numerical steps. Defaults to \code{TRUE}.}
+\item{compute.nlm}{Compute NLMs for FMEs for numerical steps. Defaults to \code{FALSE}.}
 
-\item{nlm.intervals}{number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to \code{1}.}
+\item{nlm.intervals}{Number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to \code{1}.}
 }
 \value{
-\code{FME} object with FMEs computed.
+\code{FME} Object with FMEs computed.
 }
 \description{
 This is a wrapper function for \code{FME$new(...)$compute()}.
