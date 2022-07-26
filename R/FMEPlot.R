@@ -52,9 +52,9 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
 
       pfme = ggplot(df) +
         geom_jitter(aes(x = x1, y = x2, fill = fme),
-                   size = 3.8,
+                   size = 2.8,
                    shape = 21,
-                   alpha = 0.7,
+                   alpha = 0.6,
                    #position = "identity") +
                    width = jitter[1],
                    height = jitter[2]) +
@@ -89,9 +89,9 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
         df$nlm = sapply(df$nlm, FUN = function(x) {max(x, 0)})
         pnlm = ggplot(df) +
           geom_jitter(aes(x = x1, y = x2, fill = nlm),
-                     size = 3.8,
+                     size = 2.8,
                      shape = 21,
-                     alpha = 0.7,
+                     alpha = 0.6,
                      width = jitter[1],
                      height = jitter[2]) +
           scale_fill_viridis_c(guide_legend("NLM"),
@@ -147,9 +147,9 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
         geom_jitter(aes(x = x1, y = fme),
                    colour = "black",
                    fill= "#1E9B8AFF",
-                   size = 3.8,
+                   size = 2.8,
                    shape = 21,
-                   alpha = 0.55,
+                   alpha = 0.5,
                    width = jitter[1],
                    height = jitter[2]) +
         geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
@@ -180,9 +180,9 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
         pnlm = ggplot(df) +
           geom_jitter(aes(x = x1, y = nlm, fill = cut(nlm, c(-Inf, 0.0001, Inf))),
                      colour = "black",
-                     size = 3.8,
+                     size = 2.8,
                      shape = 21,
-                     alpha = 0.55,
+                     alpha = 0.5,
                      width = jitter[1],
                      height = jitter[2],
                      show.legend = FALSE,

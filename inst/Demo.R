@@ -62,6 +62,9 @@ class(effects)
 # We can produce a summary to inspect the object:
 summary(effects)
 
+# We can extract the AME with:
+effects$ame
+
 # Or we can inspect MEs of individual observations:
 head(effects$results)
 
