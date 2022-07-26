@@ -252,7 +252,7 @@ FME = R6Class("FME",
 #' For numerical steps, this must have length 1 or 2.
 #' For categorical steps, this is the name of the reference category.
 #' @param ep.method string specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
-#' @param compute.nlm compute NLMs for FMEs for numerical steps. Defaults to `TRUE`.
+#' @param compute.nlm compute NLMs for FMEs for numerical steps. Defaults to `FALSE`.
 #' @param nlm.intervals number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to `1`.
 #' @return `FME` object with FMEs computed.
 #' @references
@@ -274,7 +274,7 @@ FME = R6Class("FME",
 #' effects$results
 #'
 #' @export
-fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = TRUE, nlm.intervals = 1) {
+fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
   return(FME$new(makePredictor(model, data, target),
           feature = feature,
           step.size = step.size,
