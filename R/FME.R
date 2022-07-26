@@ -281,4 +281,5 @@ fme = function(model, data, target, feature, step.size, ep.method = "none", comp
           ep.method = ep.method,
           compute.nlm = compute.nlm,
           nlm.intervals = nlm.intervals)$compute())
+  print("Test")
 }
