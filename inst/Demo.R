@@ -78,7 +78,7 @@ plot(effects)
 ### NUMERICAL FEATURES --------------------------------------------------------
 
 # Compute fMEs for the num. feature "temp", with step size 3
-# This corresponds to a temperature increase of 3 degrees celsius:
+# This corresponds to a temperature increase of 3 degrees celsius
 # Caveat: We compute NLMs. This might take several minutes depending on your computer:
 effects2 = fme(model = forest,
                data = bikes,
@@ -88,5 +88,14 @@ effects2 = fme(model = forest,
                ep.method = "envelope",
                compute.nlm = TRUE)
 
+# We can extract the AME and the ANLM with:
+effects2$ame
+effects2$anlm
 
+# Finally, we visualize the MEs with plot()
+# We include NLMs and jitter the points (see ?geom_jitter) to avoid overlapping:
+plot(effects2, with.nlm = TRUE, jitter = c(0.2, 0))
+
+p2 = plot(effects2, with.nlm = TRUE, jitter = c(0.2, 0))
+ggsave("temp_3.pdf", p2, units = "cm", width = 18.5, height = 8.4)
 
