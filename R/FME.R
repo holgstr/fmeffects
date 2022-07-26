@@ -275,11 +275,11 @@ FME = R6Class("FME",
 #'
 #' @export
 fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
+  print("Test")
   return(FME$new(makePredictor(model, data, target),
           feature = feature,
           step.size = step.size,
           ep.method = ep.method,
           compute.nlm = compute.nlm,
           nlm.intervals = nlm.intervals)$compute())
-  print("Test")
 }
