@@ -160,7 +160,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
                      arrow = arrow(length = unit(0.5, "cm")),
                      lineend = "round", linejoin = "mitre") +
         geom_hline(lwd = 1.2, mapping = aes(yintercept = mean(fme))) +
-        geom_label(x = max(x1) - 0.1 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white', size = 10) +
+        geom_label(x = max(x1) - 0.2 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white', size = 10) +
         xlab(self$feature[1]) +
         ylab("fME") +
         theme_bw() +
@@ -196,7 +196,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
                        lineend = "round", linejoin = "mitre",
                        na.rm = FALSE) +
           geom_hline(lwd = 1.2, mapping = aes(yintercept = meannlm)) +
-          geom_label(x = max(x1) - 0.1 * range.x1, y = meannlm, label = paste0('ANLM: ', round(meannlm, 2)), fill = 'white', size = 10) +
+          geom_label(x = max(x1) - 0.2 * range.x1, y = meannlm, label = paste0('ANLM: ', round(meannlm, 2)), fill = 'white', size = 10) +
           xlab(self$feature) +
           ylab("NLM") +
           theme_bw() +
