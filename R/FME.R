@@ -242,19 +242,19 @@ FME = R6Class("FME",
 #'
 #' @description This is a wrapper function for `FME$new(...)$compute()`.
 #' It computes forward marginal effects (FMEs) for a specified change in feature values.
-#' @param model the (trained) model, with the ability to predict on new data. This must be an `LearnerRegr` (`mlr3`) or `randomForest` (`randomForest`) object.
-#' @param data the data used for computing FMEs, must be data.frame or data.table.
-#' @param target a string specifying the target variable.
-#' @param feature a character vector of the names of the feature variables affected by the step.
+#' @param model The (trained) model, with the ability to predict on new data. This must be an `LearnerRegr` (`mlr3`) or `randomForest` (`randomForest`) object.
+#' @param data The data used for computing FMEs, must be data.frame or data.table.
+#' @param target A string specifying the target variable.
+#' @param feature A character vector of the names of the feature variables affected by the step.
 #' For numerical steps, this must have length 1 or 2.
 #' For categorical steps, this must have length 1.
-#' @param step.size a numeric vector of the step lengths in the features affected by the step.
+#' @param step.size A numeric vector of the step lengths in the features affected by the step.
 #' For numerical steps, this must have length 1 or 2.
 #' For categorical steps, this is the name of the reference category.
-#' @param ep.method string specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
-#' @param compute.nlm compute NLMs for FMEs for numerical steps. Defaults to `FALSE`.
-#' @param nlm.intervals number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to `1`.
-#' @return `FME` object with FMEs computed.
+#' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
+#' @param compute.nlm Compute NLMs for FMEs for numerical steps. Defaults to `FALSE`.
+#' @param nlm.intervals Number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to `1`.
+#' @return `FME` Object with FMEs computed.
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
