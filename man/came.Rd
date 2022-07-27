@@ -13,19 +13,19 @@ came(
 )
 }
 \arguments{
-\item{effects}{an \code{FME} object with FMEs computed.}
+\item{effects}{An \code{FME} object with FMEs computed.}
 
-\item{number.partitions}{the exact number of partitions required.
+\item{number.partitions}{The exact number of partitions required.
 Either \code{number.partitions} or \code{max.cov} can be specified.}
 
-\item{max.cov}{the maximum coefficient of variation required in each partition.
+\item{max.cov}{The maximum coefficient of variation required in each partition.
 Among multiple partitionings with this criterion identified, the one with lowest number of partitions is selected.
 Either \code{number.partitions} or \code{max.cov} can be specified.}
 
-\item{rp.method}{one of \code{"ctree"} or \code{"rpart"}. The RP algorithm used for growing the decision tree.}
+\item{rp.method}{One of \code{"ctree"} or \code{"rpart"}. The RP algorithm used for growing the decision tree. Defaults to \code{"ctree"}.}
 
-\item{tree.control}{control parameters for the RP algorithm. One of \code{"ctree.control(...)"} or \code{"rpart.control(...)"}.
-#' @return \code{Partitioning} object with identified feature subspaces.}
+\item{tree.control}{Control parameters for the RP algorithm. One of \code{"ctree.control(...)"} or \code{"rpart.control(...)"}.
+#' @return \code{Partitioning} Object with identified feature subspaces.}
 }
 \description{
 This is a wrapper function that creates the correct subclass of \code{Partitioning}.

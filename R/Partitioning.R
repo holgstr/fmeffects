@@ -187,15 +187,15 @@ Partitioning = R6Class("Partitioning",
 #'
 #' @description This is a wrapper function that creates the correct subclass of `Partitioning`.
 #' It computes feature subspaces for semi-global interpretations of FMEs via recursive partitioning (RP).
-#' @param effects an `FME` object with FMEs computed.
-#' @param number.partitions the exact number of partitions required.
+#' @param effects An `FME` object with FMEs computed.
+#' @param number.partitions The exact number of partitions required.
 #' Either `number.partitions` or `max.cov` can be specified.
-#' @param max.cov the maximum coefficient of variation required in each partition.
+#' @param max.cov The maximum coefficient of variation required in each partition.
 #' Among multiple partitionings with this criterion identified, the one with lowest number of partitions is selected.
 #' Either `number.partitions` or `max.cov` can be specified.
-#' @param rp.method one of `"ctree"` or `"rpart"`. The RP algorithm used for growing the decision tree.
-#' @param tree.control control parameters for the RP algorithm. One of `"ctree.control(...)"` or `"rpart.control(...)"`.
-#' #' @return `Partitioning` object with identified feature subspaces.
+#' @param rp.method One of `"ctree"` or `"rpart"`. The RP algorithm used for growing the decision tree. Defaults to `"ctree"`.
+#' @param tree.control Control parameters for the RP algorithm. One of `"ctree.control(...)"` or `"rpart.control(...)"`.
+#' #' @return `Partitioning` Object with identified feature subspaces.
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples

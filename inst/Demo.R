@@ -72,7 +72,7 @@ head(effects$results)
 plot(effects)
 
 #p = plot(effects)
-#ggsave("weather_rain.pdf", p, units = "cm", width = 14, height = 8.4)
+#ggsave("weather_rain.pdf", p, units = "cm", width = 12.5, height = 8.4)
 
 
 ### NUMERICAL FEATURES --------------------------------------------------------
@@ -96,6 +96,45 @@ effects2$anlm
 # We include NLMs and jitter the points (see ?geom_jitter) to avoid overlapping:
 plot(effects2, with.nlm = TRUE, jitter = c(0.2, 0))
 
-p2 = plot(effects2, with.nlm = TRUE, jitter = c(0.2, 0))
-ggsave("temp_3.pdf", p2, units = "cm", width = 18.5, height = 8.4)
+#p2 = plot(effects2, with.nlm = TRUE, jitter = c(0.2, 0))
+#grDevices::cairo_pdf("temp_3.pdf", width = 7.28, height = 3.31)
+#p2
+#dev.off()
+
+# Compute fMEs for the num. features "temp" and "humidity", with step sizes -2, -0.1
+# This corresponds to a temperature increase of 3 degrees celsius
+effects3 = fme(model = forest,
+               data = bikes,
+               target = "count",
+               feature = c("temp", "humidity"),
+               step.size = c(-2, -0.1),
+               ep.method = "envelope",
+               compute.nlm = TRUE)
+
+# Finally, we visualize the MEs with plot()
+# We include NLMs and jitter the points (see ?geom_jitter) to avoid overlapping:
+plot(effects3, with.nlm = TRUE, jitter = c(0.02, 0.02))
+
+#p3 = plot(effects3, with.nlm = TRUE, jitter = c(0.2, 0.02))
+#grDevices::cairo_pdf("temphumid.pdf", width = 9, height = 3.51)
+#p3
+#dev.off()
+
+
+### SEMI-GLOBAL INTERPRETATIONS -----------------------------------------------
+
+# We can identify feature subspaces with more homogeneous effects with the came() function
+# Let us assume we want to find three partitions:
+subspaces = came(effects = effects3, number.partitions = 3)
+
+# We can produce a summary to inspect the object:
+summary(subspaces)
+
+# Finally, we visualize the partitioning with plot()
+plot(subspaces)
+
+#p4 = plot(subspaces)
+#grDevices::cairo_pdf("subspaces.pdf", width = 9, height = 6)
+#p4
+#dev.off()
 
