@@ -138,3 +138,29 @@ plot(subspaces)
 #p4
 #dev.off()
 
+# Let us assume we want to find a partitioning for 'effects',
+# i.e., the categorical feature change of 'weather' to 'rain'
+subspaces2 = came(effects = effects,
+                  max.cov = 3,
+                  rp.method = "rpart",
+                  tree.control = rpart.control(minsplit = 100, cp= 0.1))
+
+# We visualize the partitioning with plot()
+plot(subspaces2)
+
+#p5 = plot(subspaces2)
+#grDevices::cairo_pdf("subspaces2.pdf", width = 6, height = 4.5)
+#p5
+#dev.off()
+
+# In fme, we use assertions to ensure a user make sensible inputs:
+came(effects = effects2, max.cov = 1.5, number.partitions = 8)
+
+# A partitioning with 8 partitions can be created and plotted with:
+plot(came(effects = effects2, number.partitions = 8))
+
+#p6 = plot(came(effects = effects2, number.partitions = 8))
+#grDevices::cairo_pdf("subspaces3.pdf", width = 16, height = 8)
+#p6
+#dev.off()
+
