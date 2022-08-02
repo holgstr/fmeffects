@@ -19,11 +19,9 @@ require(farff)
 bikes = as.data.table(getOMLDataSet(data.id = 42712)$data)
 bikes$year = as.factor(bikes$year)
 bikes = bikes[,-c(10,13,14)]
-#bikes = bikes[hour %inrange% c(7,8)]
 bikes = bikes[hour == 7]
 bikes = bikes[, -c(4)]
-#bikes = bikes[year == 1]
-#bikes = bikes[, -c(2)]
+
 
 
 #### TRAIN MODEL --------------------------------------------------------------
