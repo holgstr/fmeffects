@@ -102,7 +102,7 @@ plot(effects2, with.nlm = TRUE, jitter = c(0.2, 0))
 #dev.off()
 
 # Compute fMEs for the num. features "temp" and "humidity", with step sizes -2, -0.1
-# This corresponds to a temperature increase of 3 degrees celsius
+# This corresponds to a temperature decrease of 2 degrees celsius and a decrease in humidity by 10 percentage points:
 effects3 = fme(model = forest,
                data = bikes,
                target = "count",
