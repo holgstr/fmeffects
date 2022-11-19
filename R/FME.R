@@ -258,7 +258,7 @@ FME = R6Class("FME",
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
-#' # Train a model:
+#' # Trains a model:
 #' data("Boston", package = "MASS")
 #' forest = randomForest::randomForest(medv ~ ., data = Boston)
 #'
