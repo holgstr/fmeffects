@@ -1,0 +1,33 @@
+---
+title: "fme"
+author: "Holger Löwe"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+vignette: >
+  %\VignetteIndexEntry{FME}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+This vignette focuses on computing and visualizing forward marginal effects (FMEs).
+
+### Setup
+
+
+
+```{r, eval=FALSE}
+library("fme")   
+```
+
+------
+
+## References
+
+...
