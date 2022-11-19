@@ -260,7 +260,7 @@ FME = R6Class("FME",
 #' @examples
 #' # Train a model:
 #' data("Boston", package = "MASS")
-#' forest = randomForest(medv ~ ., data = Boston)
+#' forest = randomForest::randomForest(medv ~ ., data = Boston)
 #'
 #' # Compute FMEs:
 #' effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",

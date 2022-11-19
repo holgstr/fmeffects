@@ -76,7 +76,7 @@ Predictor = R6Class("Predictor",
 #' @examples
 #' # Train a model:
 #' data("Boston", package = "MASS")
-#' forest = randomForest(medv ~ ., data = Boston)
+#' forest = randomForest::randomForest(medv ~ ., data = Boston)
 #'
 #' # Create the predictor:
 #' predictor = makePredictor(forest, Boston, "medv")
