@@ -20,7 +20,7 @@ The `fme` package computes, aggregates and visualizes forward marginal effects (
 
 ### Installation
 
-The latest version of ´fme´ can be installed directly from GitHub:
+The latest version of `fme` can be installed directly from GitHub:
 
 ```{r, eval=FALSE}
 library(devtools)
