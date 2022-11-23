@@ -110,11 +110,11 @@ effects2 = fme(model = forest,
                data = bikes,
                target = "count",
                feature = "temp",
-               step.size = 2,
+               step.size = 3,
                ep.method = "envelope")
 ```
 
-Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 3 degrees °C to the temperature results in the temperature value falling outside the range of `temp` in the overall data. Therefore, we reduce the risk of asking the model to extrapolate.
+Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 3°C to the temperature results in the temperature value falling outside the range of `temp` in the overall data. Therefore, we reduce the risk of asking the model to extrapolate.
 
 ```{r, warning=FALSE}
 plot(effects2, jitter = c(0.2, 0))
