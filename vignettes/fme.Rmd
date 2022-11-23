@@ -1,7 +1,7 @@
 ---
-title: "fme"
+title: "How to use fme"
 author: "Holger Löwe"
-date: "`r Sys.Date()`"
+#date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -9,25 +9,160 @@ output:
 params:
   EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 vignette: >
-  %\VignetteIndexEntry{FME}
+  %\VignetteIndexEntry{How to use fme}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ## Introduction
 
-This vignette focuses on computing and visualizing forward marginal effects (FMEs).
+The `fme` package computes, aggregates and visualizes forward marginal effects (FMEs) for any supervised machine learning (ML) model. The concept of FMEs is explained here, for a more in-depth understanding refer to the [paper][1]. In addition, `fme` can be asked to compute a non-linearity measure (NLM) to inform about the non-linearity of the shape of the prediction function along the forward difference. Users who are interested in semi-global interpretations of FMEs can use the `came()` function, more on which can be found [here](#Semi-global Interpretations). 
 
-### Setup
+### Installation
 
-
+The latest version of ´fme´ can be installed directly from GitHub:
 
 ```{r, eval=FALSE}
-library("fme")   
+library(devtools)
+install_github("holgstr/fme")
+library(fme)   
 ```
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(123)
+library(fme) 
+```
+
+### Example Data and Model
+
+For demonstration purposes, we will consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It was obtained from the OpenML database and contains information about hourly bike sharing usage in Washington, D.C. for the years 2011-2012. The original [data set][2] has 17,379 observations and 15 variables. Here, we consider a subset of the data: We are interested in predicting `count` (the total number of bikes lent out to users) during the period from 7 to 8 a.m. The
+data used for training the model has 727 observations and 11 features.
+
+```{r, echo=FALSE, message=FALSE}
+# Import data from the OpenML database
+library(OpenML)
+library(farff)
+library(data.table)
+bikes = as.data.table(getOMLDataSet(data.id = 42712)$data)
+bikes$year = as.factor(bikes$year)
+bikes = bikes[,-c(10,13,14)]
+bikes = bikes[hour == 7]
+bikes = bikes[, -c(4)]  
+```
+
+```{r}
+head(bikes) 
+```
+
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any ML model. See here for a list of models currently supported by the `fme` package. Let's try it with a random forest using the `ranger` algorithm, as included in the `mlr3` framework:
+
+```{r, message=FALSE}
+library(mlr3verse)
+forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+```
+
+
+## Compute FMEs
+
+The concept of the FME applies to both categorical and numerical features.
+
+### Categorical Features
+
+For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `step.size`. In other words, we take the prediction for the original observation and subtract the prediction for the same observation, but changing the value in the categorical feature to `step.size`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
+
+```{r}
+effects = fme(model = forest,
+              data = bikes,
+              target = "count",
+              feature = "weather",
+              step.size = "rain")
+```
+
+Note that the FME is defined observation-wise, which means we have computed the FME for every observation in the data with non-rainy weather. We can use `summary()` to aggregate the FMEs to produce a global estimate of the effect:
+```{r}
+summary(effects)
+```
+As you can see, the average marginal effect (AME) of `rain` is -55. The AME is computed as a simple mean over all observation-wise FMEs. Therefore, while holding all other features constant, rainy weather can be expected to reduce bike sharing usage by 55. \
+Also, we can extract all relevant aggregate information from the `effects` object:
+```{r}
+effects$ame
+```
+For a more in-depth analysis, you can inspect the FME for each observation in the data set:
+```{r}
+head(effects$results)
+```
+Or, even better, you can plot the empirical distribution of the FMEs:
+```{r, warning=FALSE}
+plot(effects)
+```
+
+### Numerical Features
+
+FMEs for numerical features are defined for multivariate feature changes, i.e., `step.size` can be a vector. The `fme()` function accepts both univariate (e.g., `step.size = c(1)`) and bivariate (e.g., `step.size = c(1, 1)`) feature changes.
+
+#### Univariate Feature Changes
+
+One might be interested in the FME of an increase in temperature by 3 degrees Celsius (°C)
+on bike sharing usage. Thus, we compute FMEs for the` feature = "temp"` and `step.size = 3`.
+
+```{r}
+effects2 = fme(model = forest,
+               data = bikes,
+               target = "count",
+               feature = "temp",
+               step.size = 2,
+               ep.method = "envelope")
+```
+
+Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 3 degrees °C to the temperature results in the temperature value falling outside the range of `temp` in the overall data. Therefore, we reduce the risk of asking the model to extrapolate.
+
+```{r, warning=FALSE}
+plot(effects2, jitter = c(0.2, 0))
+```
+
+The black arrow indicates direction and magnitude of `step.size`. The horizontal line in the plot indicates that on average, the FME of a temperature increase of 3°C on bike sharing usage is roughly 9. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FMEs tends to be positive for lower temperature values (0-17°C), they tend to be negative for higher temperature values (>17°C).
+
+#### Bivariate Feature Changes
+
+Bivariate feature changes can be considered when one is interested in the combined effect of two features on the target variable. Let's assume you want to estimate the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
+
+```{r}
+effects3 = fme(model = forest,
+               data = bikes,
+               target = "count",
+               feature = c("temp", "humidity"),
+               step.size = c(-3, -0.1),
+               ep.method = "envelope")
+
+plot(effects3, jitter = c(0.1, 0.02))
+```
+
+The plot for bivariate FMEs uses a color scale to indicate direction and magnitude of the estimated effect. Let's check the AME:
+
+```{r}
+effects3$ame
+```
+
+It seems that a combined decrease in temperature by 3°C and humidity by 10 percentage points seems to result in slightly lower bike sharing usage (on average). However, a quick check of the variance of FMEs tells us that effects are highly heterogeneous:
+
+```{r}
+var(effects3$results$fme)
+```
+
+Therefore, it could be interesting to move the interpretation of feature effects from a global to a semi-global perspective via the `came()` function.  
 
 ------
 
+## Semi-global Interpretations
+
 ## References
 
-...
+Fanaee-T, H. and Gama, J. (2014). Event labeling combining ensemble detectors and background knowledge,
+Progress in Artificial Intelligence 2(2): 113–127.
+
+Vanschoren, J., van Rijn, J. N., Bischl, B. and Torgo, L. (2013). Openml: networked science in machine
+learning, SIGKDD Explorations 15(2): 49–60. URL: http://doi.acm.org/10.1145/2641190.264119
+
+[1]: https://arxiv.org/abs/2201.08837
+
+[2]: https://www.openml.org/search?type=data&status=active&id=42712
