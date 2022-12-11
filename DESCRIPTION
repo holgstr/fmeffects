@@ -8,7 +8,7 @@ Description: Computes Forward Marginal Effects (FME) for arbitrary supervised re
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.2
 Suggests: 
     mlr3,
     randomForest,
@@ -35,3 +35,4 @@ Collate:
     'PredictorRandomForest.R'
     'Pruner.R'
     'S3.R'
+    'bikes.R'

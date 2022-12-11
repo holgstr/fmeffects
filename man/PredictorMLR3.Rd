@@ -20,12 +20,6 @@ It is recommended to use \code{\link[=makePredictor]{makePredictor()}} for const
 \item \href{#method-PredictorMLR3-clone}{\code{PredictorMLR3$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-PredictorMLR3-new"></a>}}
 \if{latex}{\out{\hypertarget{method-PredictorMLR3-new}{}}}

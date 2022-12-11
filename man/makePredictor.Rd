@@ -19,7 +19,7 @@ A wrapper function that creates the correct subclass of \code{Predictor} by auto
 \examples{
 # Train a model:
 data("Boston", package = "MASS")
-forest = randomForest(medv ~ ., data = Boston)
+forest = randomForest::randomForest(medv ~ ., data = Boston)
 
 # Create the predictor:
 predictor = makePredictor(forest, Boston, "medv")

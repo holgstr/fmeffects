@@ -21,8 +21,8 @@ It is recommended to use \code{\link[=came]{came()}} for construction of Partiti
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="fme" data-topic="Partitioning" data-id="compute"><a href='../../fme/html/Partitioning.html#method-Partitioning-compute'><code>fme::Partitioning$compute()</code></a></li>
-<li><span class="pkg-link" data-pkg="fme" data-topic="Partitioning" data-id="plot"><a href='../../fme/html/Partitioning.html#method-Partitioning-plot'><code>fme::Partitioning$plot()</code></a></li>
+<li><span class="pkg-link" data-pkg="fme" data-topic="Partitioning" data-id="compute"><a href='../../fme/html/Partitioning.html#method-Partitioning-compute'><code>fme::Partitioning$compute()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="fme" data-topic="Partitioning" data-id="plot"><a href='../../fme/html/Partitioning.html#method-Partitioning-plot'><code>fme::Partitioning$plot()</code></a></span></li>
 </ul>
 </details>
 }}

@@ -20,12 +20,6 @@ It is recommended to use \code{\link[=makePredictor]{makePredictor()}} for const
 \item \href{#method-PredictorRandomForest-clone}{\code{PredictorRandomForest$clone()}}
 }
 }
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
-<ul>
-</ul>
-</details>
-}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-PredictorRandomForest-new"></a>}}
 \if{latex}{\out{\hypertarget{method-PredictorRandomForest-new}{}}}
