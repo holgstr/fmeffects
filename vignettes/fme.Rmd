@@ -33,42 +33,31 @@ set.seed(123)
 library(fme) 
 ```
 
-### Example Data and Model
+### Example
 
-For demonstration purposes, we will consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It was obtained from the OpenML database and contains information about hourly bike sharing usage in Washington, D.C. for the years 2011-2012. The original [data set][2] has 17,379 observations and 15 variables. Here, we consider a subset of the data: We are interested in predicting `count` (the total number of bikes lent out to users) during the period from 7 to 8 a.m. The
-data used for training the model has 727 observations and 11 features.
-
-```{r, echo=FALSE, message=FALSE}
-# Import data from the OpenML database
-library(OpenML)
-library(farff)
-library(data.table)
-bikes = as.data.table(getOMLDataSet(data.id = 42712)$data)
-bikes$year = as.factor(bikes$year)
-bikes = bikes[,-c(10,13,14)]
-bikes = bikes[hour == 7]
-bikes = bikes[, -c(4)]  
-```
+For demonstration purposes, we will consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It contains information about bike sharing usage in Washington, D.C. for the years 2011-2012 during the period from 7 to 8 a.m. We are interested in predicting `count` (the total number of bikes lent out to users).
 
 ```{r}
+data(bikes)
 head(bikes) 
 ```
 
-FMEs are a model-agnostic interpretation method, i.e., they can be applied to any ML model. See here for a list of models currently supported by the `fme` package. Let's try it with a random forest using the `ranger` algorithm, as included in the `mlr3` framework:
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any supervised regression and binary classification model. See [here][1] for a list of models currently supported by the `fme` package. Let's try it with a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
 library(mlr3verse)
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 ```
 
+---
 
 ## Compute FMEs
 
-The concept of the FME applies to both categorical and numerical features.
+The concept of the FME applies to both categorical and numerical features. They can be computed with the `fme()` function.
 
 ### Categorical Features
 
-For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `step.size`. In other words, we take the prediction for the original observation and subtract the prediction for the same observation, but changing the value in the categorical feature to `step.size`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
+For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `step.size`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
 
 ```{r}
 effects = fme(model = forest,
@@ -149,11 +138,28 @@ It seems that a combined decrease in temperature by 3°C and humidity by 10 perc
 var(effects3$results$fme)
 ```
 
-Therefore, it could be interesting to move the interpretation of feature effects from a global to a semi-global perspective via the `came()` function.  
+Therefore, it could be interesting to move the interpretation of feature effects from a global to a semi-global perspective via the `came()` function.
 
 ------
 
 ## Semi-global Interpretations
+
+You can use `came()` on a specific FME object to compute subspaces of the feature space where FMEs are more homogeneous. Let's take the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, and see if we can find three appropriate subspaces.
+
+```{r}
+subspaces = came(effects = effects3, number.partitions = 3)
+summary(subspaces)
+```
+
+As can be seen, the CTREE algorithm was used to partition the feature space into three subspaces. The coefficient of variation (CoV) is used as a criterion to measure homogeneity in each subspace. We can see that the CoV is substantially smaller in each of the subspaces than in the root node, i.e. the global feature space. The conditional AME (cAME) can be used to interpret how the expected FME varies across the subspaces. Let's visualize our results:
+
+```{r}
+plot(subspaces)
+```
+
+In this case, we get a decision tree that assigns observations to a feature subspace according to the weather situation (`weather`) and season (`season`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. With cAMEs of 6.68, -9.39, and 16.71, respectively, the expected ME is estimated to vary substantially in direction and magnitude across the subspaces. For example, the cAME is highest on rainy days. It turns negative on non-rainy days in spring, summer and winter.
+
+---
 
 ## References
 
@@ -166,3 +172,5 @@ learning, SIGKDD Explorations 15(2): 49–60. URL: http://doi.acm.org/10.1145/26
 [1]: https://arxiv.org/abs/2201.08837
 
 [2]: https://www.openml.org/search?type=data&status=active&id=42712
+
+[3]: https://mlr3learners.mlr-org.com/

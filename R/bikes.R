@@ -1,7 +1,6 @@
 #' Regression data of the usage of rental bikes in Washington D.C., USA
 #'
-#' This data set contains the (daily) total number of bikes lent out to users between 7 to 8 a.m. across the Capital Bikeshare system in Washington, D.C. in 2011-12, among
-#' a number of other covariates.
+#' This data set contains information on hourly bike sharing usage in Washington, D.C. for the years 2011-2012. The target variable is \code{count}, the total number of bikes lent out to users at a specific time.
 #'
 #' This data frame contains the following columns:
 #' \describe{
