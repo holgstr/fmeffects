@@ -1,5 +1,5 @@
 ---
-title: "How to use fme"
+title: "Get started"
 #date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:

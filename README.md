@@ -7,11 +7,12 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 
 # **`fme`**: Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-The `fme` package is designed to compute, aggregate and visualize
-[forward marginal effects (FMEs)](https://arxiv.org/abs/2201.08837) for
-arbitrary supervised machine learning models. Currently, it supports
-regression models such as random forests or gradient-boosted trees.
-Also, we are working to extend it to binary classification models.
+The `fme` package implements [forward marginal effects
+(FMEs)](https://arxiv.org/abs/2201.08837), a model-agnostic method for
+interpreting feature effects in supervised machine learning models.
+Currently, we support regression models included in the [mlr3
+framework](https://mlr3learners.mlr-org.com/). We are working to extend
+it to binary classification.
 
 ## Installation
 
