@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # **`fme`**: Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-The `fme` package is designed to compute, aggregate and visualize [forward marginal effects (FMEs)][1] for arbitrary supervised machine learning models. Currently, it supports regression models such as random forests or gradient-boosted trees. Also, we are working to extend it to binary classification models.
+The `fme` package implements [forward marginal effects (FMEs)][1], a model-agnostic method for interpreting feature effects in supervised machine learning models. Currently, we support regression models included in the [mlr3 framework][2]. We are working to extend it to binary classification. 
 
 ## Installation
 
@@ -50,3 +50,4 @@ plot(effects, jitter = c(0.2, 0))
 
 [1]: https://arxiv.org/abs/2201.08837
 
+[2]: https://mlr3learners.mlr-org.com/

@@ -1,6 +1,5 @@
 ---
 title: "How to use fme"
-author: "Holger Löwe"
 #date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
@@ -16,7 +15,7 @@ vignette: >
 
 ## Introduction
 
-The `fme` package computes, aggregates and visualizes forward marginal effects (FMEs) for any supervised machine learning (ML) model. The concept of FMEs is explained here, for a more in-depth understanding refer to the [paper][1]. In addition, `fme` can be asked to compute a non-linearity measure (NLM) to inform about the non-linearity of the shape of the prediction function along the forward difference. Users who are interested in semi-global interpretations of FMEs can use the `came()` function, more on which can be found [here](#Semi-global Interpretations). 
+The `fme` package computes, aggregates and visualizes forward marginal effects (FMEs) for any supervised machine learning model. For a more in-depth understanding, refer to the [paper][1]. The package has two main functions: `fme()` computes FMEs for a given model and data, and `came()` finds subspaces of the feature space where FMEs are more homogeneous.
 
 ### Installation
 
