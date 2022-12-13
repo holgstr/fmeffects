@@ -27,7 +27,7 @@ PredictorMLR3 = R6Class("PredictorMLR3",
     #' Predicts on an observation `"newdata"`.
     #' @param newdata The feature vector for which the target should be predicted.
     predict = function(newdata) {
-      if ("LearnerRegr" %in% class(model)) {
+      if ("LearnerRegr" %in% class(self$model)) {
         prediction = as.data.table(self$model$predict_newdata(newdata))[,3]
       }
       if ("LearnerClassif" %in% class(self$model)) {
