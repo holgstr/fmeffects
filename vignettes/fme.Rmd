@@ -15,7 +15,7 @@ vignette: >
 
 ## Introduction
 
-The `fme` package computes, aggregates and visualizes forward marginal effects (FMEs) for any supervised machine learning model. For a more in-depth understanding, refer to the [paper][1]. The package has two main functions: `fme()` computes FMEs for a given model and data, and `came()` finds subspaces of the feature space where FMEs are more homogeneous.
+The `fme` package computes, aggregates and visualizes forward marginal effects (FMEs) for any supervised machine learning model. For a more in-depth understanding, refer to the [paper][1]. The package has two main functions: `fme()` computes FMEs for a given model and data, and `came()` finds subspaces of the feature space where FMEs are more homogeneous. 
 
 ### Installation
 
@@ -54,25 +54,31 @@ forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target =
 
 FMEs can be used to compute feature effects for both numerical and categorical features. This can be done with the `fme()` function.
 
-### Categorical Features
+### Numerical Features
 
-For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `step.size`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
+The most common application is to compute the FME for a single numerical feature, i.e., a univariate feature effect. The variable of interest must be specified with the `feature` argument. In this case, `step.size` can be any number deemed most useful for the purpose of interpretation. Most of the time, this will be a unit change, e.g., `step.size = 1`. As the concept of numerical FMEs extends to multivariate feature effects as well, `fme()` can be asked to compute a bivariate feature effect as well. In this case, `feature` needs to be supplied with the names of two numerical features, and `step.size` requires a vector, e.g., `step.size = c(1, 1)`.
+
+#### Univariate Feature Effects
+
+Assume we are interested in the effect of temperature on bike sharing usage. Specifically, we set `step.size = 1` to investigate the FME of an increase in temperature by 1 degree Celsius (°C). Thus, we compute FMEs for ` feature = "temp"` and `step.size = 1`.
 
 ```{r}
 effects = fme(model = forest,
-              data = bikes,
-              target = "count",
-              feature = "weather",
-              step.size = "rain")
+               data = bikes,
+               target = "count",
+               feature = "temp",
+               step.size = 1,
+               ep.method = "envelope")
 ```
 
-Note that the FME is defined observation-wise, which means we have computed the FME for every observation in the data with non-rainy weather. We can use `summary()` to aggregate the FMEs to produce a global estimate of the effect:
+Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 1°C to the temperature results in the temperature value falling outside the range of `temp` in the overall data. Thereby, we reduce the risk of asking the model to extrapolate.
 
-```{r}
-summary(effects)
+```{r, warning=FALSE}
+plot(effects, jitter = c(0.2, 0))
 ```
 
-As you can see, the average marginal effect (AME) of `rain` is -55. The AME is computed as a simple mean over all observation-wise FMEs. Therefore, while holding all other features constant, rainy weather can be expected to reduce bike sharing usage by 55. \
+The black arrow indicates direction and magnitude of `step.size`. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FME tends to be positive for lower temperature values (0-17°C), it turns negative for higher temperature values (>17°C). \
+
 Also, we can extract all relevant aggregate information from the `effects` object:
 
 ```{r}
@@ -85,66 +91,55 @@ For a more in-depth analysis, you can inspect the FME for each observation in th
 head(effects$results)
 ```
 
-Or, even better, you can plot the empirical distribution of the FMEs:
-
-```{r, warning=FALSE}
-plot(effects)
-```
-
-### Numerical Features
-
-FMEs for numerical features are defined for multivariate feature effects, i.e., `step.size` can be a vector. The `fme()` function accepts both univariate (e.g., `step.size = c(1)`) and bivariate (e.g., `step.size = c(1, 1)`) feature changes.
-
-#### Univariate Feature Effects
-
-One might be interested in the FME of an increase in temperature by 3 degrees Celsius (°C)
-on bike sharing usage. Thus, we compute FMEs for the` feature = "temp"` and `step.size = 3`.
-
-```{r}
-effects2 = fme(model = forest,
-               data = bikes,
-               target = "count",
-               feature = "temp",
-               step.size = 3,
-               ep.method = "envelope")
-```
-
-Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 3°C to the temperature results in the temperature value falling outside the range of `temp` in the overall data. Therefore, we reduce the risk of asking the model to extrapolate.
-
-```{r, warning=FALSE}
-plot(effects2, jitter = c(0.2, 0))
-```
-
-The black arrow indicates direction and magnitude of `step.size`. The horizontal line in the plot indicates that on average, the FME of a temperature increase of 3°C on bike sharing usage is roughly 9. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FMEs tends to be positive for lower temperature values (0-17°C), they tend to be negative for higher temperature values (>17°C).
 
 #### Bivariate Feature Effects
 
-Bivariate feature effects can be considered when one is interested in the combined effect of two features on the target variable. Let's assume you want to estimate the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
+Bivariate feature effects can be considered when one is interested in the combined effect of two features on the target variable. Let's assume we want to estimate the effect of a decrease in temperature by 3°C, combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
 
 ```{r}
-effects3 = fme(model = forest,
+effects2 = fme(model = forest,
                data = bikes,
                target = "count",
                feature = c("temp", "humidity"),
                step.size = c(-3, -0.1),
                ep.method = "envelope")
 
-plot(effects3, jitter = c(0.1, 0.02))
+plot(effects2, jitter = c(0.1, 0.02))
 ```
 
 The plot for bivariate FMEs uses a color scale to indicate direction and magnitude of the estimated effect. Let's check the AME:
 
 ```{r}
-effects3$ame
+effects2$ame
 ```
 
-It seems that a combined decrease in temperature by 3°C and humidity by 10 percentage points seems to result in slightly lower bike sharing usage (on average). However, a quick check of the variance of FMEs tells us that effects are highly heterogeneous:
+It seems that a combined decrease in temperature by 3°C and humidity by 10 percentage points seems to result in slightly lower bike sharing usage (on average). However, a quick check of the variance of the FMEs implies that effects are highly heterogeneous:
 
 ```{r}
-var(effects3$results$fme)
+var(effects2$results$fme)
 ```
 
-Therefore, it could be interesting to move the interpretation of feature effects from a global to a semi-global perspective via the `came()` function.
+Therefore, it could be interesting to move the interpretation of feature effects from a global to a [semi-global perspective][Semi-global Interpretations] via the `came()` function.
+
+### Categorical Features
+
+For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `step.size`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
+
+```{r}
+effects3 = fme(model = forest,
+              data = bikes,
+              target = "count",
+              feature = "weather",
+              step.size = "rain")
+summary(effects3)
+```
+
+Here, the AME of `rain` is -55. Therefore, while holding all other features constant, rainy weather can be expected to reduce bike sharing usage by 55. \
+For categorical feature effects, we can plot the empirical distribution of the FMEs:
+
+```{r, warning=FALSE}
+plot(effects3)
+```
 
 ------
 
@@ -153,11 +148,11 @@ Therefore, it could be interesting to move the interpretation of feature effects
 You can use `came()` on a specific FME object to compute subspaces of the feature space where FMEs are more homogeneous. Let's take the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, and see if we can find three appropriate subspaces.
 
 ```{r}
-subspaces = came(effects = effects3, number.partitions = 3)
+subspaces = came(effects = effects2, number.partitions = 3)
 summary(subspaces)
 ```
 
-As can be seen, the CTREE algorithm was used to partition the feature space into three subspaces. The coefficient of variation (CoV) is used as a criterion to measure homogeneity in each subspace. We can see that the CoV is substantially smaller in each of the subspaces than in the root node, i.e. the global feature space. The conditional AME (cAME) can be used to interpret how the expected FME varies across the subspaces. Let's visualize our results:
+As can be seen, the CTREE algorithm was used to partition the feature space into three subspaces. The coefficient of variation (CoV) is used as a criterion to measure homogeneity in each subspace. We can see that the CoV is substantially smaller in each of the subspaces than in the root node, i.e., the global feature space. The conditional AME (cAME) can be used to interpret how the expected FME varies across the subspaces. Let's visualize our results:
 
 ```{r}
 plot(subspaces)
