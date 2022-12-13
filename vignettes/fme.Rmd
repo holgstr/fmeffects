@@ -41,7 +41,7 @@ data(bikes)
 head(bikes) 
 ```
 
-FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression and binary classification model. The `fme` package supports model from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression and binary classification model. Before you can compute FMEs, you need a trained model. The `fme` package supports models from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
 library(mlr3verse)
@@ -52,7 +52,7 @@ forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target =
 
 ## Compute FMEs
 
-The concept of the FME applies to both categorical and numerical features. They can be computed with the `fme()` function.
+FMEs can be used to compute feature effects for both numerical and categorical features. This can be done with the `fme()` function.
 
 ### Categorical Features
 
@@ -67,28 +67,35 @@ effects = fme(model = forest,
 ```
 
 Note that the FME is defined observation-wise, which means we have computed the FME for every observation in the data with non-rainy weather. We can use `summary()` to aggregate the FMEs to produce a global estimate of the effect:
+
 ```{r}
 summary(effects)
 ```
+
 As you can see, the average marginal effect (AME) of `rain` is -55. The AME is computed as a simple mean over all observation-wise FMEs. Therefore, while holding all other features constant, rainy weather can be expected to reduce bike sharing usage by 55. \
 Also, we can extract all relevant aggregate information from the `effects` object:
+
 ```{r}
 effects$ame
 ```
+
 For a more in-depth analysis, you can inspect the FME for each observation in the data set:
+
 ```{r}
 head(effects$results)
 ```
+
 Or, even better, you can plot the empirical distribution of the FMEs:
+
 ```{r, warning=FALSE}
 plot(effects)
 ```
 
 ### Numerical Features
 
-FMEs for numerical features are defined for multivariate feature changes, i.e., `step.size` can be a vector. The `fme()` function accepts both univariate (e.g., `step.size = c(1)`) and bivariate (e.g., `step.size = c(1, 1)`) feature changes.
+FMEs for numerical features are defined for multivariate feature effects, i.e., `step.size` can be a vector. The `fme()` function accepts both univariate (e.g., `step.size = c(1)`) and bivariate (e.g., `step.size = c(1, 1)`) feature changes.
 
-#### Univariate Feature Changes
+#### Univariate Feature Effects
 
 One might be interested in the FME of an increase in temperature by 3 degrees Celsius (°C)
 on bike sharing usage. Thus, we compute FMEs for the` feature = "temp"` and `step.size = 3`.
@@ -110,9 +117,9 @@ plot(effects2, jitter = c(0.2, 0))
 
 The black arrow indicates direction and magnitude of `step.size`. The horizontal line in the plot indicates that on average, the FME of a temperature increase of 3°C on bike sharing usage is roughly 9. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FMEs tends to be positive for lower temperature values (0-17°C), they tend to be negative for higher temperature values (>17°C).
 
-#### Bivariate Feature Changes
+#### Bivariate Feature Effects
 
-Bivariate feature changes can be considered when one is interested in the combined effect of two features on the target variable. Let's assume you want to estimate the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
+Bivariate feature effects can be considered when one is interested in the combined effect of two features on the target variable. Let's assume you want to estimate the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
 
 ```{r}
 effects3 = fme(model = forest,
