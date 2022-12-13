@@ -41,7 +41,7 @@ data(bikes)
 head(bikes) 
 ```
 
-FMEs are a model-agnostic interpretation method, i.e., they can be applied to any supervised regression and binary classification model. See [here][1] for a list of models currently supported by the `fme` package. Let's try it with a random forest using the `ranger` algorithm:
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression and binary classification model. The `fme` package supports model from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
 library(mlr3verse)

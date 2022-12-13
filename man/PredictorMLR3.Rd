@@ -5,7 +5,7 @@
 \title{PredictorMLR3}
 \description{
 This task specializes \link{Predictor} for \code{mlr3} regression models.
-The \code{model} is assumed to be a \code{"LearnerRegr"}.
+The \code{model} is assumed to be a \code{LearnerRegr} or \code{LearnerClassif}.
 
 It is recommended to use \code{\link[=makePredictor]{makePredictor()}} for construction of Predictor objects.
 }
@@ -32,7 +32,7 @@ Create a new PredictorMLR3 object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{model}}{\code{LearnerRegr} object.}
+\item{\code{model}}{\code{LearnerRegr} or \code{LearnerClassif} object.}
 
 \item{\code{data}}{The data used for computing FMEs, must be data.frame or data.table.}
 

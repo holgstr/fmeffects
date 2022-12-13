@@ -75,20 +75,26 @@ Predictor = R6Class("Predictor",
 #' @param target a string specifying the target variable.
 #' @examples
 #' # Train a model:
-#' data("Boston", package = "MASS")
-#' forest = randomForest::randomForest(medv ~ ., data = Boston)
+#'
+#' library(mlr3verse)
+#' data(bikes, package = "fme")
+#' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 #'
 #' # Create the predictor:
-#' predictor = makePredictor(forest, Boston, "medv")
+#' predictor = makePredictor(forest, bikes, "count")
 #'
 #' # This instantiated an object of the correct subclass of `Predictor`:
 #' class(predictor)
-#' [1] "PredictorRandomForest" "Predictor" "R6"
+#' [1] "PredictorMLR3" "Predictor" "R6"
 #' @export
 makePredictor = function(model, data, target) {
-  if ("LearnerRegr" %in% class(model)) {
+  if ("Learner" %in% class(model)) {
     return(PredictorMLR3$new(model, data, target))
-  } else if ("randomForest" %in% class(model)) {
+  }
+  if ("randomForest" %in% class(model)) {
     return(PredictorRandomForest$new(model, data, target))
+  }
+  if (all.equal(c("train", "train.formula"), class(model))) {
+    return(PredictorCaret$new(model, data, target))
   }
 }

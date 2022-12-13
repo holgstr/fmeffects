@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # **`fme`**: Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-The `fme` package implements [forward marginal effects (FMEs)][1], a model-agnostic method for interpreting feature effects in supervised machine learning models. Currently, we support regression models included in the [mlr3 framework][2]. We are working to extend it to binary classification. 
+The `fme` package implements [forward marginal effects (FMEs)][1], a new model-agnostic interpretation method for feature effects in machine learning models. FMEs are conceptually simple and intuitive to work with - we explain [here][3] why you should use them. Currently, `fme` supports binary classification and regression models included in the [caret][4] and [mlr3][2] libraries. 
 
 ## Installation
 
@@ -26,9 +26,9 @@ library(devtools)
 install_github("holgstr/fme")
 ```
 
-## Usage
+## Quickstart
 
-A introduction can be found [here](https://holgstr.github.io/fme/articles/fme.html). The main function to compute FMEs is `fme()`:
+An in-depth tutorial to the package can be found [here](https://holgstr.github.io/fme/articles/fme.html). One advantage of FMEs is that the way they are interpreted is similar to beta coefficients in simple linear regression models. Consider the following example: how does an increase in temperature by 1°C affect bike rentals (`count`)?
 
 ```{r, echo = FALSE, message = FALSE}
 set.seed(123)
@@ -39,7 +39,7 @@ forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target =
 ```
 
 ```{r, message = FALSE, warning = FALSE}
-# Run once to configure your package to use pkgdown
+# Compute and plot FMEs for a model like this:
 effects = fme(model = forest,
               data = bikes,
               target = "count",
@@ -48,6 +48,12 @@ effects = fme(model = forest,
 plot(effects, jitter = c(0.2, 0))
 ```
 
+On average, an increase in temperature by 1°C can be expected to raise the predicted number of bikes rentals by more than 2.
+
 [1]: https://arxiv.org/abs/2201.08837
 
 [2]: https://mlr3learners.mlr-org.com/
+
+[3]: https://holgstr.github.io/fme/articles/fme_theory.html
+
+[4]: https://topepo.github.io/caret/available-models.html

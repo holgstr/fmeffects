@@ -18,13 +18,15 @@ A wrapper function that creates the correct subclass of \code{Predictor} by auto
 }
 \examples{
 # Train a model:
-data("Boston", package = "MASS")
-forest = randomForest::randomForest(medv ~ ., data = Boston)
+
+library(mlr3verse)
+data(bikes, package = "fme")
+forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
 # Create the predictor:
-predictor = makePredictor(forest, Boston, "medv")
+predictor = makePredictor(forest, bikes, "count")
 
 # This instantiated an object of the correct subclass of `Predictor`:
 class(predictor)
-[1] "PredictorRandomForest" "Predictor" "R6"
+[1] "PredictorMLR3" "Predictor" "R6"
 }

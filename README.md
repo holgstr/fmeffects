@@ -8,11 +8,14 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 # **`fme`**: Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
 The `fme` package implements [forward marginal effects
-(FMEs)](https://arxiv.org/abs/2201.08837), a model-agnostic method for
-interpreting feature effects in supervised machine learning models.
-Currently, we support regression models included in the [mlr3
-framework](https://mlr3learners.mlr-org.com/). We are working to extend
-it to binary classification.
+(FMEs)](https://arxiv.org/abs/2201.08837), a new model-agnostic
+interpretation method for feature effects in machine learning models.
+FMEs are conceptually simple and intuitive to work with - we explain
+[here](https://holgstr.github.io/fme/articles/fme_theory.html) why you
+should use them. Currently, `fme` supports binary classification and
+regression models included in the
+[caret](https://topepo.github.io/caret/available-models.html) and
+[mlr3](https://mlr3learners.mlr-org.com/) libraries.
 
 ## Installation
 
@@ -22,14 +25,17 @@ library(devtools)
 install_github("holgstr/fme")
 ```
 
-## Usage
+## Quickstart
 
-A introduction can be found
-[here](https://holgstr.github.io/fme/articles/fme.html). The main
-function to compute FMEs is `fme()`:
+An in-depth tutorial to the package can be found
+[here](https://holgstr.github.io/fme/articles/fme.html). One advantage
+of FMEs is that the way they are interpreted is similar to beta
+coefficients in simple linear regression models. Consider the following
+example: how does an increase in temperature by 1°C affect bike rentals
+(`count`)?
 
 ``` r
-# Run once to configure your package to use pkgdown
+# Compute and plot FMEs for a model like this:
 effects = fme(model = forest,
               data = bikes,
               target = "count",
@@ -39,3 +45,6 @@ plot(effects, jitter = c(0.2, 0))
 ```
 
 ![](man/figures/unnamed-chunk-4-1.png)<!-- -->
+
+On average, an increase in temperature by 1°C can be expected to raise
+the predicted number of bikes rentals by more than 2.
