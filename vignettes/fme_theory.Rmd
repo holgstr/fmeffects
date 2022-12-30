@@ -13,12 +13,56 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Forward Marginal Effects (FMEs) are problably one of the most intuitive ways to interpret feature effects in supervised machine learning models. They are model-agnostic and can be applied to arbitrary regression and (binary) classification models. In some way, they emulate beta coefficients of a linear regression model.
+## Intuition
 
-------
+Forward Marginal Effects (FMEs) are probably one of the most intuitive ways to interpret feature effects in supervised machine learning models. Remember how we interpret beta coefficients of numerical features in a linear regression model $\mathbb{E}[Y] = \beta_{0} + \beta_{1}x_{1} + \ldots + \beta_{p}x_{p}$: \
+
+***If the value of*** $x_{j}$ ***increases by one unit, the predicted outcome increases by*** $\beta_{j}$.\
+
+FMEs make use of this instinct and apply it straightforwardly to any supervised ML model.\
+In short, FMEs are the answer to the following question: \
+
+***What is the change in the predicted outcome if we change the value of the feature by $h$ units?*** \
+
+A few examples: *What is the change in predicted blood pressure if a patients' weight increases by* $h$ *= 1 kg? What is the change in predicted life satisfaction if a person's monthly income increases by* $h$ *= 1,000 US dollars?*
+
+---
+
+## Compute Effects
+
+The big advantage of FMEs is that they are very simple. The FME is defined observation-wise, i. e., it is computed separately for each observation in the data. Often, we are more interested in estimating a global effect, so we do the following:\
+
+**1. Compute the FME for each observation in the data** \
+**2. Compute the Average Marginal Effect (AME)** \
+
+### Numerical Features
+
+#### Univariate Feature Effects
+
+For a given observation $i$ and step size $h_{j}$, the FME of a single numerical feature $x_{j}$ is computed as: \
+\
+$\textrm{FME}_{\mathbf{x}^{(i)}, \, h_{j}} = \widehat{f}(x_{1}^{(i)},\, \ldots, \, x_{j}^{(i)}+h_{j},\, \ldots, \, x_{p}^{(i)})-\widehat{f}(\mathbf{x}^{(i)})$ \
+
+As can be seen from the formula, the FME is simply the difference in predictions between the original observation $x^{(i)}$ and the changed observation $(x_{1}^{(i)},\, \ldots, \, x_{j}^{(i)}+h_{j},\, \ldots, \, x_{p}^{(i)})$, where $h_{j}$ is added to the feature $x_{j}$. \
+
+#### Bivariate Feature Effects
+
+This is just the extension of the univariate FME to two features $x_{j}, x_{k}$ which are affected simultaneously. Therefore, the step size becomes a vector $\mathbf{h} = (h_{j}, h_{j})$, where $h_{j}$ denotes the change in $x_{j}$ and $h_{k}$ the change in $x_{k}$: \
+\
+$\textrm{FME}_{\mathbf{x}^{(i)}, \, \mathbf{h}} = \widehat{f}(x_{1}^{(i)},\, \ldots, \, x_{j}^{(i)}+h_{j},\, \ldots, \, x_{k}^{(i)}+h_{k}, \, \ldots, x_{p}^{(i)})-\widehat{f}(\mathbf{x}^{(i)})$ \
+
+### Categorical Features
+
+### Average Marginal Effects (AME)
+
+The AME is the simple mean of every observation's FME as a global estimate for the feature effect: \
+\
+$\textrm{AME} = \frac{1}{n}\sum_{i = 1}^{n}{\, \textrm{FME}_{\mathbf{x}^{(i)}, \, h_{j}}}$ \
+
+Therefore, the AME is the expected difference in predictions if the feature $x_{j}$ is changed by $h_{j}$ units. For $h_{j}$ = 1, this corresponds to the way we interpret the coefficient $\beta_{j}$ of a linear regression model. However, be careful: the choice of $h_{j}$ can have a strong effect on the estimated FMEs and AME for **non-linear** prediction functions, as is the case with random forests or gradient-boosted trees. \
+
+------------------------------------------------------------------------
 
 ## References
 
 Scholbeck, Christian A., et al. "Marginal Effects for Non-Linear Prediction Functions." arXiv preprint arXiv:2201.08837 (2022).
-
-[1]: https://arxiv.org/abs/2201.08837
