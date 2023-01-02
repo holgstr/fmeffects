@@ -44,13 +44,15 @@ This is a wrapper function for \code{FME$new(...)$compute()}.
 It computes forward marginal effects (FMEs) for a specified change in feature values.
 }
 \examples{
-# Trains a model:
-data("Boston", package = "MASS")
-forest = randomForest::randomForest(medv ~ ., data = Boston)
+# Train a model:
+
+library(mlr3verse)
+data(bikes, package = "fme")
+forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
 # Compute FMEs:
 effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",
-              step.size = 1, ep.method = "envelope", )
+              step.size = 1, ep.method = "envelope")
 
 # Analyze results:
 summary(effects)

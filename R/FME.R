@@ -15,16 +15,16 @@ FME = R6Class("FME",
     #' @return A new `FME` object.
     #' @examples
     #' # Train a model:
-    #' data("Boston", package = "MASS")
-    #' forest = randomForest(medv ~ ., data = Boston)
+    #'
+    #' library(mlr3verse)
+    #' data(bikes, package = "fme")
+    #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
     #'
     #' # Create an `FME` object:
     #' effects = FME$new(makePredictor(forest, Boston, "medv"),
     #'                   feature = c("rm", "tax"),
     #'                   step.size = c(1, 100),
-    #'                   ep.method = "envelope",
-    #'                   compute.nlm = FALSE,
-    #'                   nlm.intervals = 1)
+    #'                   ep.method = "envelope")
     initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
@@ -258,13 +258,15 @@ FME = R6Class("FME",
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
-#' # Trains a model:
-#' data("Boston", package = "MASS")
-#' forest = randomForest::randomForest(medv ~ ., data = Boston)
+#' # Train a model:
+#'
+#' library(mlr3verse)
+#' data(bikes, package = "fme")
+#' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 #'
 #' # Compute FMEs:
 #' effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",
-#'               step.size = 1, ep.method = "envelope", )
+#'               step.size = 1, ep.method = "envelope")
 #'
 #' # Analyze results:
 #' summary(effects)

@@ -34,14 +34,14 @@ library(fme)
 
 ### Example
 
-For demonstration purposes, we will consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It contains information about bike sharing usage in Washington, D.C. for the years 2011-2012 during the period from 7 to 8 a.m. We are interested in predicting `count` (the total number of bikes lent out to users).
+For demonstration purposes, we consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It contains information about bike sharing usage in Washington, D.C. for the years 2011-2012 during the period from 7 to 8 a.m. We are interested in predicting `count` (the total number of bikes lent out to users).
 
 ```{r}
-data(bikes)
-head(bikes) 
+data(bikes, package = "fme")
+str(bikes)
 ```
 
-FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression and binary classification model. Before you can compute FMEs, you need a trained model. The `fme` package supports models from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before you can compute FMEs, you need a trained model. The `fme` package supports models from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
 library(mlr3verse)
@@ -139,6 +139,16 @@ For categorical feature effects, we can plot the empirical distribution of the F
 
 ```{r, warning=FALSE}
 plot(effects3)
+```
+
+### Model Overview with AMEs
+
+In case we just want to produce an informative overview of all feature effects, we can use the `ame()` function:
+
+```{r, warning=FALSE}
+ame(model = forest,
+    data = bikes,
+    target = "count")
 ```
 
 ------

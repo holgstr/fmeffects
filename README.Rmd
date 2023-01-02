@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # **`fme`**: Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-The `fme` package implements [forward marginal effects (FMEs)][1], a new model-agnostic interpretation method for feature effects in machine learning models. FMEs are conceptually simple and intuitive to work with - we explain [here][3] why you should use them. Currently, `fme` supports binary classification and regression models included in the [caret][4] and [mlr3][2] libraries. 
+The `fme` package implements [forward marginal effects (FMEs)][1], a new model-agnostic interpretation method for feature effects in machine learning models. FMEs are conceptually simple and intuitive to work with - we explain [here][3] why you should use them. Currently, `fme` supports regression and (binary) classification models included in the [caret][4] and [mlr3][2] libraries. 
 
 ## Installation
 
@@ -49,6 +49,15 @@ plot(effects, jitter = c(0.2, 0))
 ```
 
 On average, an increase in temperature by 1°C can be expected to raise the predicted number of bikes rentals by more than 2.
+
+Alternatively, we can produce an informative overview of the entire prediction function using Average Marginal Effects based on FMEs:
+
+```{r, message = FALSE, warning = FALSE}
+# Compute and plot FMEs for a model like this:
+ame(model = forest,
+    data = bikes,
+    target = "count")
+```
 
 [1]: https://arxiv.org/abs/2201.08837
 
