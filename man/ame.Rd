@@ -42,10 +42,10 @@ data(bikes, package = "fme")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
 # Compute AMEs for all features:
-ame(model = model, data = bikes, target = "count")
+ame(model = forest, data = bikes, target = "count")
 
 # Compute AMEs for a subset of features with non-default step.sizes:
-ame(model = model, data = bikes, target = "count", features = c(humidity = 0.1, weather = c("clear", "rain")))
+ame(model = forest, data = bikes, target = "count", features = c(humidity = 0.1, weather = c("clear", "rain")))
 
 }
 \references{

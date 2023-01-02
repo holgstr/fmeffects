@@ -21,9 +21,9 @@ FME = R6Class("FME",
     #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
     #'
     #' # Create an `FME` object:
-    #' effects = FME$new(makePredictor(forest, Boston, "medv"),
-    #'                   feature = c("rm", "tax"),
-    #'                   step.size = c(1, 100),
+    #' effects = FME$new(makePredictor(forest, bikes, "count"),
+    #'                   feature = c("temp", "humidity"),
+    #'                   step.size = c(1, 0.01),
     #'                   ep.method = "envelope")
     initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
 
@@ -265,7 +265,7 @@ FME = R6Class("FME",
 #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 #'
 #' # Compute FMEs:
-#' effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",
+#' effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
 #'               step.size = 1, ep.method = "envelope")
 #'
 #' # Analyze results:

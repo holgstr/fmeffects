@@ -200,10 +200,11 @@ Partitioning = R6Class("Partitioning",
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
 #' # Train a model and compute FMEs:
-#' data("Boston", package = "MASS")
-#' forest = randomForest(medv ~ ., data = Boston)
-#' effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",
-#'               step.size = 1, ep.method = "envelope", )
+#' library(mlr3verse)
+#' data(bikes, package = "fme")
+#' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+#' effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
+#'               step.size = 1, ep.method = "envelope")
 #'
 #' # Find a partitioning with exactly 3 subspaces:
 #' subspaces = came(effects, number.partitions = 3)

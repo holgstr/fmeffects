@@ -51,7 +51,7 @@ data(bikes, package = "fme")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
 # Compute FMEs:
-effects = fme(model = forest, data = Boston, target = "medv", feature = "rm",
+effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
               step.size = 1, ep.method = "envelope")
 
 # Analyze results:
