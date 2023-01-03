@@ -85,7 +85,6 @@ Predictor = R6Class("Predictor",
 #'
 #' # This instantiated an object of the correct subclass of `Predictor`:
 #' class(predictor)
-#' [1] "PredictorMLR3" "Predictor" "R6"
 #' @export
 makePredictor = function(model, data, target) {
   if ("Learner" %in% class(model)) {

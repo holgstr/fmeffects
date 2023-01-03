@@ -28,7 +28,7 @@ install_github("holgstr/fme")
 
 ## Quickstart
 
-See [here][5] for an in-depth tutorial. One advantage of FMEs is that they are interpreted similar to beta coefficients in linear regression models. Consider the following example: how does an increase in temperature (`temp`) by 1°C affect bike rentals (`count`)?
+See [here][5] for an in-depth tutorial. The big advantage of FMEs is that they are interpreted similar to beta coefficients in linear regression models. Consider the following example: how does an increase in temperature (`temp`) by 1°C affect bike rentals (`count`)?
 
 ```{r, echo = FALSE, message = FALSE}
 set.seed(123)

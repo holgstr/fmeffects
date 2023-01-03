@@ -28,5 +28,4 @@ predictor = makePredictor(forest, bikes, "count")
 
 # This instantiated an object of the correct subclass of `Predictor`:
 class(predictor)
-[1] "PredictorMLR3" "Predictor" "R6"
 }
