@@ -244,7 +244,7 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
                          colour = "black",
                          fill = "#1E9B8AFF",
                          show.legend = FALSE,
-                         mapping = aes(x = fme, y = ..count..),
+                         mapping = aes(x = fme, y = after_stat(count)),
                          bins = min(round(nrow(df))*0.4, 20),
                          na.rm = TRUE) +
           geom_density(mapping = aes(x = fme, y = ..scaled..*countmax), adjust = 1.5) +
