@@ -1,6 +1,6 @@
 #' @title R6 Class representing a predictor
 #'
-#' @description This is the abstract superclass for predictor objects like [PredictorMLR3] and [PredictorRandomForest].
+#' @description This is the abstract superclass for predictor objects like [PredictorMLR3] and [PredictorCaret].
 #' A Predictor contains information about an ML model's prediction function and training data.
 #' @export
 Predictor = R6Class("Predictor",
@@ -89,9 +89,6 @@ Predictor = R6Class("Predictor",
 makePredictor = function(model, data, target) {
   if ("Learner" %in% class(model)) {
     return(PredictorMLR3$new(model, data, target))
-  }
-  if ("randomForest" %in% class(model)) {
-    return(PredictorRandomForest$new(model, data, target))
   }
   if (all.equal(c("train", "train.formula"), class(model))) {
     return(PredictorCaret$new(model, data, target))

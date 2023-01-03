@@ -1,6 +1,6 @@
 Package: fme
 Title: Forward Marginal Effects
-Version: 0.0.0.9000
+Version: 0.9.1
 Authors@R: 
     person("Holger", "Löwe", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
@@ -12,7 +12,6 @@ RoxygenNote: 7.2.2
 Suggests:
     caret,
     mlr3verse,
-    randomForest,
     rpart
 Depends: 
     checkmate,
@@ -34,7 +33,6 @@ Collate:
     'Predictor.R'
     'PredictorCaret.R'
     'PredictorMLR3.R'
-    'PredictorRandomForest.R'
     'Pruner.R'
     'S3.R'
     'ame.R'

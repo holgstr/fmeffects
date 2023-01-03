@@ -4,7 +4,7 @@
 \alias{Predictor}
 \title{R6 Class representing a predictor}
 \description{
-This is the abstract superclass for predictor objects like \link{PredictorMLR3} and \link{PredictorRandomForest}.
+This is the abstract superclass for predictor objects like \link{PredictorMLR3} and \link{PredictorCaret}.
 A Predictor contains information about an ML model's prediction function and training data.
 }
 \section{Public fields}{
