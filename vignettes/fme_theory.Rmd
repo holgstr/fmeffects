@@ -49,13 +49,14 @@ As can be seen from the formula, the FME is simply the difference in predictions
 
 #### Bivariate Feature Effects
 
-This is just the extension of the univariate FME to two features $x_{j}, x_{k}$ which are affected simultaneously. Therefore, the step size becomes a vector $\mathbf{h} = (h_{j}, h_{k})$, where $h_{j}$ denotes the change in $x_{j}$ and $h_{k}$ the change in $x_{k}$:\
+This is just the extension of the univariate FME to two features $x_{j}, x_{k}$ that are affected simultaneously by a step. Therefore, the step size becomes a vector $\mathbf{h} = (h_{j}, h_{k})$, where $h_{j}$ denotes the change in $x_{j}$ and $h_{k}$ the change in $x_{k}$:\
 \
 $\textrm{FME}_{\mathbf{x}^{(i)}, \, \mathbf{h}} = \widehat{f}(x_{1}^{(i)},\, \ldots, \, x_{j}^{(i)}+h_{j},\, \ldots, \, x_{k}^{(i)}+h_{k}, \, \ldots, x_{p}^{(i)})-\widehat{f}(\mathbf{x}^{(i)})$\
 
 ### Categorical Features
 
-Equivalent to the step size $h_{j}$ of a numerical feature, we select the category of interest $c_{h}$ for a categorical feature $x_{j}$. In theory, we could compute exactly as many FMEs for a categorical feature as it has categories. For a specific category, the FME is:\
+Equivalent to the step size $h_{j}$ of a numerical feature, we select the category of interest $c_{h}$ for a categorical feature $x_{j}$. 
+For a given observation $i$ and category $c_{h}$, the FME is:\
 \
 $\textrm{FME}_{\mathbf{x}^{(i)}, \, c_{h}} = \widehat{f}(c_{h},\, \mathbf{x}_{-j}^{(i)})-\widehat{f}(\mathbf{x}^{(i)}), \, \, \, \, \, \, \, \,x_{j} \neq c_{h}$\
 
