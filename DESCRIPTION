@@ -39,3 +39,5 @@ Collate:
     'S3.R'
     'ame.R'
     'bikes.R'
+URL: https://github.com/holgstr/fme
+BugReports: https://github.com/holgstr/fme/issues

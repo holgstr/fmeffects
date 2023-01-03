@@ -58,7 +58,7 @@ FMEPlotBivariate = R6Class("FMEPlotBivariate",
                    #position = "identity") +
                    width = jitter[1],
                    height = jitter[2]) +
-        scale_fill_viridis_c(guide_legend("fME")) +
+        scale_fill_viridis_c(guide_legend("FME")) +
         geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
                          xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
                          y = min(x2)-0.03*range.x2,
@@ -162,7 +162,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
         geom_hline(lwd = 1.2, mapping = aes(yintercept = mean(fme))) +
         geom_label(x = max(x1) - 0.2 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
         xlab(self$feature[1]) +
-        ylab("fME") +
+        ylab("FME") +
         theme_bw() +
         theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
               axis.title = element_text(size = 12),
@@ -250,7 +250,7 @@ FMEPlotCategorical = R6Class("FMEPlotCategorical",
           geom_density(mapping = aes(x = fme, y = ..scaled..*countmax), adjust = 1.5) +
           geom_vline(lwd = 1.2, mapping = aes(xintercept = mean(fme))) +
           geom_label(x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
-          xlab(paste0("ME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
+          xlab(paste0("FME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
           ylab("") +
           theme_bw() +
           theme(panel.border = element_rect(colour = "black", fill=NA, size=0.7),
