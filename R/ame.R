@@ -49,7 +49,7 @@ ame = function(model, data, target, features = NULL, ep.method = "none") {
             stop(paste("The step size for", feature, "must be numeric"))
           }
           step.size = as.numeric(features[grep(pattern, names(features))])
-          if (!(range(data[,..feature])[2] - range(data[,..feature])[1] >= step.size)) {
+          if (!(range(predictor$X[,..feature])[2] - range(predictor$X[,..feature])[1] >= step.size)) {
             stop(paste("The step size for", feature, "is larger than the range in the data. Please choose smaller step size"))
           }
           fme = fme(model = model,
@@ -69,7 +69,7 @@ ame = function(model, data, target, features = NULL, ep.method = "none") {
         if (predictor$feature.types[i] == "categorical") {
           # Check if step.size is sensible
           categories = features[grep(pattern, names(features))]
-          if (!(all(categories %in% unique(as.vector(data[,..feature])[[1]])))) {
+          if (!(all(categories %in% unique(as.vector(predictor$X[,..feature])[[1]])))) {
             stop(paste("Not all step.sizes supplied are categories of feature", feature))
           }
           for (j in seq_len(length(categories))) {
@@ -100,7 +100,7 @@ ame = function(model, data, target, features = NULL, ep.method = "none") {
       feature = predictor$feature.names[i]
       if (predictor$feature.types[i] == "numerical") {
         # Check if step.sizes = 1 is sensible (for default)
-        if (range(data[,..feature])[2] - range(data[,..feature])[1] <= 1) {
+        if (range(predictor$X[,..feature])[2] - range(predictor$X[,..feature])[1] <= 1) {
           step.size = 0.01
         } else {
           step.size = 1
@@ -119,7 +119,7 @@ ame = function(model, data, target, features = NULL, ep.method = "none") {
                            nrow(fme$results)))
       }
       if (predictor$feature.types[i] == "categorical") {
-        categories = unique(as.vector(data[,..feature])[[1]])
+        categories = unique(as.vector(predictor$X[,..feature])[[1]])
         for (j in seq_len(length(categories))) {
           #catname = paste0(feature, ".", categories[j])
           fme = fme(model = model,
