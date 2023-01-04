@@ -1,6 +1,6 @@
 Package: fme
 Title: Forward Marginal Effects
-Version: 0.9.1
+Version: 0.1.9
 Authors@R: 
     person("Holger", "Löwe", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
