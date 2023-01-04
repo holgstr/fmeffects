@@ -21,7 +21,7 @@ Forward Marginal Effects (FMEs) are probably the most intuitive way to interpret
 
 ***If*** $x_{j}$ ***increases by one unit, the predicted target variable increases by*** $\beta_{j}$.\
 
-FMEs make use of this instinct and apply it straightforwardly to a ML model.\
+FMEs make use of this instinct and apply it straightforwardly to any model.\
 In short, FMEs are the answer to the following question:\
 
 ***What is the change in the predicted target variable if we change the value of the feature by*** $h$ ***units?***\
@@ -74,7 +74,7 @@ Therefore, the AME is the expected difference in the predicted target variable i
 
 ## Why we need FMEs
 
-Marginal effects (ME) are already a widely used concept to interpret statistical models. **However, we believe they are ill-suited to interpret feature effects in most state-of-the-art ML models. Here, we explain why you should abandon MEs in favor of FMEs:** \
+Marginal effects (ME) are already a widely used concept to interpret statistical models. **However, we believe they are ill-suited to interpret feature effects in most ML models. Here, we explain why you should abandon MEs in favor of FMEs:** \
 In most implementations (e.g., Leeper's [margins](https://thomasleeper.com/margins/) package), MEs are computed as numerical approximation of the partial derivative of the prediction function w.r.t. the feature $x_{j}$. In other words, they compute a finite difference quotient, similar to this:\
 \
 $\textrm{dME}_{\mathbf{x}^{(i)}, \, j} = \cfrac{\widehat{f}(x_{1}^{(i)}, \, \ldots,\, x_{j}^{(i)}+h,\, \ldots, \, x_{p}^{(i)})-\widehat{f}(\mathbf{x}^{(i)})}{h}$\
@@ -101,7 +101,7 @@ In a way, the FME is the much smarter, little brother of the dME:\
 - it describes the exact behavior of the prediction function
 - its design corresponds to the way we naturally want to interpret a partial derivative
 - through the flexible choice of $h$, it can be tailored to answer the desired research question
-- it is conceptually simple and researchers can discuss the interpretations because they understand how they are computed
+- it is conceptually simple: researchers can discuss the interpretations because they understand how they are computed
 
 ------------------------------------------------------------------------
 

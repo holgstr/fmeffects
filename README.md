@@ -29,10 +29,10 @@ install_github("holgstr/fme")
 ## Quickstart
 
 See [here](https://holgstr.github.io/fme/articles/fme.html) for an
-in-depth tutorial. One advantage of FMEs is that they are interpreted
-similar to beta coefficients in linear regression models. Consider the
-following example: how does an increase in temperature (`temp`) by 1°C
-affect bike rentals (`count`)?
+in-depth tutorial. The big advantage of FMEs is that they are
+interpreted similar to beta coefficients in linear regression models.
+Consider the following example: how does an increase in temperature
+(`temp`) by 1°C affect bike rentals (`count`)?
 
 ``` r
 # Compute and plot FMEs for a model like this:
@@ -46,7 +46,7 @@ plot(effects, jitter = c(0.2, 0))
 
 ![](man/figures/unnamed-chunk-4-1.png)<!-- -->
 
-On average, an increase in temperature by 1°C can be expected to raise
+On average, an increase in temperature by 1°C results in an increase in
 the predicted number of bikes rentals by more than 2. This is called the
 average marginal effect (AME).
 

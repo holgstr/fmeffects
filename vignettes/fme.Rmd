@@ -45,7 +45,7 @@ data(bikes, package = "fme")
 str(bikes)
 ```
 
-FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before you can compute FMEs, you need a trained model. The `fme` package supports models from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before we can compute FMEs, we need a trained model. The `fme` package supports models from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
 library(mlr3verse)
@@ -89,7 +89,7 @@ Also, we can extract all relevant aggregate information from the `effects` objec
 effects$ame
 ```
 
-For a more in-depth analysis, you can inspect the FME for each observation in the data set:
+For a more in-depth analysis, we can inspect the FME for each observation in the data set:
 
 ```{r}
 head(effects$results)
@@ -147,7 +147,7 @@ plot(effects3)
 
 ### Model Overview with AMEs
 
-In case we just want to produce an informative overview of all feature effects, we can use the `ame()` function:
+For an informative overview of all feature effects in a model, we can use the `ame()` function:
 
 ```{r, warning=FALSE}
 ame(model = forest,
@@ -155,11 +155,24 @@ ame(model = forest,
     target = "count")
 ```
 
+This computes the AME for each feature included in the model, with a default step size of 1 for numerical features (or, 0.01 if their range is smaller than 1). For categorical features, AMEs are computed for all available categories. \
+We can specify a custom subset of features and step sizes using the `features` argument:
+
+```{r, warning=FALSE}
+ame(model = forest,
+    data = bikes,
+    target = "count",
+    features = c(weather = c("rain", "clear"), temp = -1, humidity = 0.1),
+    ep.method = "envelope")
+```
+
+Again, note that often it is advisable to set `ep.method = "envelope"` so we avoid model extrapolation.
+
 ------
 
 ## Semi-global Interpretations
 
-You can use `came()` on a specific FME object to compute subspaces of the feature space where FMEs are more homogeneous. Let's take the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, and see if we can find three appropriate subspaces.
+We can use `came()` on a specific FME object to compute subspaces of the feature space where FMEs are more homogeneous. Let's take the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, and see if we can find three appropriate subspaces.
 
 ```{r}
 subspaces = came(effects = effects2, number.partitions = 3)

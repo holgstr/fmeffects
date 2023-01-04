@@ -48,7 +48,7 @@ effects = fme(model = forest,
 plot(effects, jitter = c(0.2, 0))
 ```
 
-On average, an increase in temperature by 1°C can be expected to raise the predicted number of bikes rentals by more than 2. This is called the average marginal effect (AME).
+On average, an increase in temperature by 1°C results in an increase in the predicted number of bikes rentals by more than 2. This is called the average marginal effect (AME).
 
 Let's compute the AME for each feature of the model:
 
