@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # **`fme`**: Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-This package implements [forward marginal effects (FMEs)][1], a new model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why you should use them. Currently, `fme` supports regression and (binary) classification models included in the [caret][4] and [mlr3][2] libraries. 
+This package implements [forward marginal effects (FMEs)][1], a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why they should be preferred to existing methods. Currently, `fme` supports regression and (binary) classification models from the [caret][4] and [mlr3][2] libraries. 
 
 ## Installation
 
@@ -39,7 +39,7 @@ forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target =
 ```
 
 ```{r, message = FALSE, warning = FALSE}
-# Compute and plot FMEs for a model like this:
+# Compute effects for a trained model 'forest':
 effects = fme(model = forest,
               data = bikes,
               target = "count",
@@ -48,12 +48,12 @@ effects = fme(model = forest,
 plot(effects, jitter = c(0.2, 0))
 ```
 
-On average, an increase in temperature by 1°C results in an increase in the predicted number of bikes rentals by more than 2. This is called the average marginal effect (AME).
+On average, an increase in temperature by 1°C results in an increase in the predicted number of bike rentals by more than 2. This is called the average marginal effect (AME).
 
-Let's compute the AME for each feature of the model:
+Let's compute the AME for every feature of the model:
 
 ```{r, eval = FALSE}
-# Compute and plot FMEs for a model like this:
+# Compute AMEs with default step sizes:
 ame(model = forest,
     data = bikes,
     target = "count")

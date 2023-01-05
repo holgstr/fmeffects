@@ -138,7 +138,7 @@ effects3 = fme(model = forest,
 summary(effects3)
 ```
 
-Here, the AME of `rain` is -55. Therefore, while holding all other features constant, rainy weather can be expected to reduce bike sharing usage by 55. \
+Here, the AME of `rain` is -55. Therefore, while holding all other features constant, a change to rainy weather can be expected to reduce bike sharing usage by 55. \
 For categorical feature effects, we can plot the empirical distribution of the FMEs:
 
 ```{r, warning=FALSE}

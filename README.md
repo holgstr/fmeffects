@@ -8,13 +8,13 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 # **`fme`**: Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
 This package implements [forward marginal effects
-(FMEs)](https://arxiv.org/abs/2201.08837), a new model-agnostic
-framework for interpreting feature effects in machine learning models.
-FMEs are the simplest and most intuitive way to interpret feature
-effects - we explain
-[here](https://holgstr.github.io/fme/articles/fme_theory.html) how they
-are computed and why you should use them. Currently, `fme` supports
-regression and (binary) classification models included in the
+(FMEs)](https://arxiv.org/abs/2201.08837), a model-agnostic framework
+for interpreting feature effects in machine learning models. FMEs are
+the simplest and most intuitive way to interpret feature effects - we
+explain [here](https://holgstr.github.io/fme/articles/fme_theory.html)
+how they are computed and why they should be preferred to existing
+methods. Currently, `fme` supports regression and (binary)
+classification models from the
 [caret](https://topepo.github.io/caret/available-models.html) and
 [mlr3](https://mlr3learners.mlr-org.com/) libraries.
 
@@ -35,7 +35,7 @@ Consider the following example: how does an increase in temperature
 (`temp`) by 1°C affect bike rentals (`count`)?
 
 ``` r
-# Compute and plot FMEs for a model like this:
+# Compute effects for a trained model 'forest':
 effects = fme(model = forest,
               data = bikes,
               target = "count",
@@ -47,13 +47,13 @@ plot(effects, jitter = c(0.2, 0))
 ![](man/figures/unnamed-chunk-4-1.png)<!-- -->
 
 On average, an increase in temperature by 1°C results in an increase in
-the predicted number of bikes rentals by more than 2. This is called the
+the predicted number of bike rentals by more than 2. This is called the
 average marginal effect (AME).
 
-Let’s compute the AME for each feature of the model:
+Let’s compute the AME for every feature of the model:
 
 ``` r
-# Compute and plot FMEs for a model like this:
+# Compute AMEs with default step sizes:
 ame(model = forest,
     data = bikes,
     target = "count")
