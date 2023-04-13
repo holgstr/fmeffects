@@ -16,11 +16,11 @@ fme(
 )
 }
 \arguments{
-\item{model}{The (trained) model, with the ability to predict on new data. This must be an \code{LearnerRegr} (\code{mlr3}) or \code{train} (\code{caret}) object.}
+\item{model}{The (trained) model, with the ability to predict on new data. This must be an \code{Learner} (\code{mlr3}) or \code{train} (\code{caret}) object.}
 
 \item{data}{The data used for computing FMEs, must be data.frame or data.table.}
 
-\item{target}{A string specifying the target variable.}
+\item{target}{A string specifying the model's target variable.}
 
 \item{feature}{A character vector of the names of the feature variables affected by the step.
 For numerical steps, this must have length 1 or 2.

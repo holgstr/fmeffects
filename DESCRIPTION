@@ -22,6 +22,7 @@ Depends:
     cowplot,
     R6
 Collate: 
+    'AME.R'
     'ExtrapolationDetector.R'
     'FME.R'
     'FMEPlot.R'
@@ -35,7 +36,6 @@ Collate:
     'PredictorMLR3.R'
     'Pruner.R'
     'S3.R'
-    'ame.R'
     'bikes.R'
 URL: https://github.com/holgstr/fme
 BugReports: https://github.com/holgstr/fme/issues

@@ -242,9 +242,9 @@ FME = R6Class("FME",
 #'
 #' @description This is a wrapper function for `FME$new(...)$compute()`.
 #' It computes forward marginal effects (FMEs) for a specified change in feature values.
-#' @param model The (trained) model, with the ability to predict on new data. This must be an `LearnerRegr` (`mlr3`) or `train` (`caret`) object.
+#' @param model The (trained) model, with the ability to predict on new data. This must be an `Learner` (`mlr3`) or `train` (`caret`) object.
 #' @param data The data used for computing FMEs, must be data.frame or data.table.
-#' @param target A string specifying the target variable.
+#' @param target A string specifying the model's target variable.
 #' @param feature A character vector of the names of the feature variables affected by the step.
 #' For numerical steps, this must have length 1 or 2.
 #' For categorical steps, this must have length 1.
