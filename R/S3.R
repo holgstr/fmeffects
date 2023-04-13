@@ -90,9 +90,9 @@ summary.Partitioning = function(partitioning) {
   } else {
     # non-empty object
     res = do.call(rbind.data.frame, partitioning$results)
-    names(res)[grep("CoV", names(res))[1]] = c("CoV(fME)")
-    if (length(grep("CoV", names(res))) == 2) {
-      names(res)[grep("CoV", names(res))[2]] = c("CoV(NLM)")
+    names(res)[grep("SD", names(res))[1]] = c("SD(fME)")
+    if (length(grep("SD", names(res))) == 2) {
+      names(res)[grep("SD", names(res))[2]] = c("SD(NLM)")
     }
 
     res = res[c(1,which(res$is.terminal.node == TRUE)), -(ncol(res))]
@@ -129,9 +129,9 @@ print.Partitioning = function(partitioning) {
   } else {
     # non-empty object
     res = do.call(rbind.data.frame, partitioning$results)
-    names(res)[grep("CoV", names(res))[1]] = c("CoV(fME)")
-    if (length(grep("CoV", names(res))) == 2) {
-      names(res)[grep("CoV", names(res))[2]] = c("CoV(NLM)")
+    names(res)[grep("SD", names(res))[1]] = c("SD(fME)")
+    if (length(grep("SD", names(res))) == 2) {
+      names(res)[grep("SD", names(res))[2]] = c("SD(NLM)")
     }
     print(res[which(res$is.terminal.node == TRUE), -(ncol(res))], row.names = FALSE)
     cat("\n")

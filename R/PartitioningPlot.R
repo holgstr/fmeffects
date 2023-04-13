@@ -35,15 +35,15 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                   function(data, node) {
                                     list(round(mean(node$data$fme), 2))
                                   },
-                                cAME_cov =
+                                cAME_sd =
                                   function(data, node) {
-                                    list(round(sd(node$data$fme) / (abs(mean(node$data$fme))), 2))
+                                    list(round(sd(node$data$fme), 2))
                                   }
                    )) +
           geom_edge() +
           geom_edge_label() +
           geom_node_splitvar() +
-          geom_node_label(aes(label = paste0("n = ", nodesize, "\ncAME = ", cAME, "\nCoV(fME) = ", cAME_cov)),
+          geom_node_label(aes(label = paste0("n = ", nodesize, "\ncAME = ", cAME, "\nSD(fME) = ", cAME_sd)),
                           fontface = "bold",
                           ids = "terminal",
                           size = 2.5,
@@ -87,23 +87,23 @@ PartitioningPlot = R6Class("PartitioningPlot",
                                       function(data, node) {
                                         list(round(mean(node$data$fme), 2))
                                       },
-                                    cAME_cov =
+                                    cAME_sd =
                                       function(data, node) {
-                                        list(round(sd(node$data$fme) / (abs(mean(node$data$fme))), 2))
+                                        list(round(sd(node$data$fme), 2))
                                       },
                                     cANLM =
                                       function(data, node) {
                                         list(round(mean(node$data$nlm, na.rm = TRUE), 2))
                                       },
-                                    cANLM_cov =
+                                    cANLM_sd =
                                       function(data, node) {
-                                        list(round(sd(node$data$nlm, na.rm = TRUE) / (abs(mean(node$data$nlm, na.rm = TRUE))), 2))
+                                        list(round(sd(node$data$nlm, na.rm = TRUE), 2))
                                       }
                     )) +
           geom_edge() +
           geom_edge_label() +
           geom_node_splitvar() +
-          geom_node_label(aes(label = paste0("n = ", nodesize, "\ncAME = ", cAME, "\nCoV(fME) = ", cAME_cov, "\ncANLM = ", cANLM, "\nCoV(NLM) = ", cANLM_cov)),
+          geom_node_label(aes(label = paste0("n = ", nodesize, "\ncAME = ", cAME, "\nSD(fME) = ", cAME_sd, "\ncANLM = ", cANLM, "\nSD(NLM) = ", cANLM_sd)),
                           fontface = "bold",
                           ids = "terminal",
                           size = 2.5,

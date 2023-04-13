@@ -7,7 +7,7 @@
 came(
   effects,
   number.partitions = NULL,
-  max.cov = Inf,
+  max.sd = Inf,
   rp.method = "ctree",
   tree.control = NULL
 )
@@ -16,11 +16,11 @@ came(
 \item{effects}{An \code{FME} object with FMEs computed.}
 
 \item{number.partitions}{The exact number of partitions required.
-Either \code{number.partitions} or \code{max.cov} can be specified.}
+Either \code{number.partitions} or \code{max.sd} can be specified.}
 
-\item{max.cov}{The maximum coefficient of variation required in each partition.
+\item{max.sd}{The maximum standard deviation required in each partition.
 Among multiple partitionings with this criterion identified, the one with lowest number of partitions is selected.
-Either \code{number.partitions} or \code{max.cov} can be specified.}
+Either \code{number.partitions} or \code{max.sd} can be specified.}
 
 \item{rp.method}{One of \code{"ctree"} or \code{"rpart"}. The RP algorithm used for growing the decision tree. Defaults to \code{"ctree"}.}
 
@@ -42,8 +42,8 @@ effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
 # Find a partitioning with exactly 3 subspaces:
 subspaces = came(effects, number.partitions = 3)
 
-# Find a partitioning with a maximum coefficient of variation of 4, use `rpart`:
-subspaces = came(effects, max.cov = 4, rp.method = "rpart")
+# Find a partitioning with a maximum standard deviation of 4, use `rpart`:
+subspaces = came(effects, max.sd = 4, rp.method = "rpart")
 
 # Analyze results:
 summary(subspaces)

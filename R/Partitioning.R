@@ -31,7 +31,7 @@ Partitioning = R6Class("Partitioning",
       if (self$method == "partitions") {
         self$tree = private$partConstant(data, self$value, tree)
       } else {
-        self$tree = private$partMaxCov(data, self$value, tree)
+        self$tree = private$partMaxSD(data, self$value, tree)
       }
       self$results = private$getResults(self$tree, self$object)
       self$computed = TRUE
@@ -78,7 +78,7 @@ Partitioning = R6Class("Partitioning",
       assertTRUE(object$computed)
 
       # Check if method is sensible
-      assertChoice(method, choices = c("partitions", "max.cov"))
+      assertChoice(method, choices = c("partitions", "max.sd"))
 
       # Check if value is sensible and within range
       if (method == "partitions") {
@@ -107,43 +107,43 @@ Partitioning = R6Class("Partitioning",
 
     },
 
-    partMaxCov = function(data, value, tree) {
+    partMaxSD = function(data, value, tree) {
 
-      # Function for the max.cov of all terminal nodes in a party tree
-      covTree = function(tree) {
+      # Function for the max.sd of all terminal nodes in a party tree
+      sdTree = function(tree) {
         df = as.data.table(data_party(tree))
         terminal.nodes = nodeids(tree, terminal = TRUE)
-        covMax = function(data, id) {
+        sdMax = function(data, id) {
           setkey(data, "(fitted)")
           fme = unlist(data[.(id)][,1])
-          cov.max = sd(fme) / (abs(mean(fme)))
-          return(cov.max)
+          sd.max = sd(fme)
+          return(sd.max)
         }
-        max.cov = max(sapply(terminal.nodes, FUN = function(x) max(covMax(df, x))), na.rm = TRUE)
-        return(max.cov)
+        max.sd = max(sapply(terminal.nodes, FUN = function(x) max(sdMax(df, x))), na.rm = TRUE)
+        return(max.sd)
       }
 
       partitions = length(nodeids(tree, terminal = TRUE))
 
       # Find best tree among all trees created by iterative pruning
       best.tree = tree
-      best.cov = covTree(tree)
+      best.sd = sdTree(tree)
 
       while (partitions > 2) {
         tree = Pruner$new(tree)$prune()
-        cov.tree = covTree(tree)
-        if (cov.tree < value) {
+        sd.tree = sdTree(tree)
+        if (sd.tree < value) {
           best.tree = tree
-          best.cov = cov.tree
+          best.sd = sd.tree
         }
         partitions = length(nodeids(tree, terminal = TRUE))
       }
 
       # Check if best tree is admissible
-      if (length(nodeids(best.tree, terminal = TRUE)) > 1 & best.cov <= value) {
+      if (length(nodeids(best.tree, terminal = TRUE)) > 1 & best.sd <= value) {
         return(best.tree)
       } else {
-        stop(paste(class(self)[1], "was unable to find a tree with a max.cov of", value))
+        stop(paste(class(self)[1], "was unable to find a tree with a maximum SD of", value))
       }
 
     },
@@ -159,7 +159,7 @@ Partitioning = R6Class("Partitioning",
           data = data[.(terminal.nodes),]
           res = list("n" = nrow(data),
                      "cAME" = mean(data$fme),
-                     "CoV(fME)" = sd(data$fme) / (abs(mean(data$fme))),
+                     "SD(fME)" = sd(data$fme),
                      "is.terminal.node" = is.terminal)
         } else {
           data.table::set(data, j = "nlm", value = object$results$nlm)
@@ -167,9 +167,9 @@ Partitioning = R6Class("Partitioning",
           data = data[.(terminal.nodes),]
           res = list("n" = nrow(data),
                      "cAME" = mean(data$fme),
-                     "CoV(fME)" = sd(data$fme) / (abs(mean(data$fme))),
+                     "SD(fME)" = sd(data$fme),
                      "cANLM" = mean(data$nlm),
-                     "CoV(NLM)" = sd(data$nlm) / (abs(mean(data$nlm))),
+                     "SD(NLM)" = sd(data$nlm),
                      "is.terminal.node" = is.terminal)
         }
         res
@@ -189,10 +189,10 @@ Partitioning = R6Class("Partitioning",
 #' It computes feature subspaces for semi-global interpretations of FMEs via recursive partitioning (RP).
 #' @param effects An `FME` object with FMEs computed.
 #' @param number.partitions The exact number of partitions required.
-#' Either `number.partitions` or `max.cov` can be specified.
-#' @param max.cov The maximum coefficient of variation required in each partition.
+#' Either `number.partitions` or `max.sd` can be specified.
+#' @param max.sd The maximum standard deviation required in each partition.
 #' Among multiple partitionings with this criterion identified, the one with lowest number of partitions is selected.
-#' Either `number.partitions` or `max.cov` can be specified.
+#' Either `number.partitions` or `max.sd` can be specified.
 #' @param rp.method One of `"ctree"` or `"rpart"`. The RP algorithm used for growing the decision tree. Defaults to `"ctree"`.
 #' @param tree.control Control parameters for the RP algorithm. One of `"ctree.control(...)"` or `"rpart.control(...)"`.
 #' #' @return `Partitioning` Object with identified feature subspaces.
@@ -209,8 +209,8 @@ Partitioning = R6Class("Partitioning",
 #' # Find a partitioning with exactly 3 subspaces:
 #' subspaces = came(effects, number.partitions = 3)
 #'
-#' # Find a partitioning with a maximum coefficient of variation of 4, use `rpart`:
-#' subspaces = came(effects, max.cov = 4, rp.method = "rpart")
+#' # Find a partitioning with a maximum standard deviation of 4, use `rpart`:
+#' subspaces = came(effects, max.sd = 4, rp.method = "rpart")
 #'
 #' # Analyze results:
 #' summary(subspaces)
@@ -221,7 +221,7 @@ Partitioning = R6Class("Partitioning",
 #' subspaces$tree
 #'
 #' @export
-came = function(effects, number.partitions = NULL, max.cov = Inf, rp.method = "ctree", tree.control = NULL) {
+came = function(effects, number.partitions = NULL, max.sd = Inf, rp.method = "ctree", tree.control = NULL) {
   assertChoice(rp.method, choices = c("ctree", "rpart"))
   makePartitioner = function(rp.method, ...) {
     if (rp.method == "ctree") {
@@ -230,12 +230,12 @@ came = function(effects, number.partitions = NULL, max.cov = Inf, rp.method = "c
       part = PartitioningRpart$new(...)
     }
   }
-  if (is.infinite(max.cov) & !is.null(number.partitions)) {
+  if (is.infinite(max.sd) & !is.null(number.partitions)) {
     part = makePartitioner(rp.method, effects, "partitions", number.partitions, tree.control)$compute()
-  } else if (!is.infinite(max.cov) & is.null(number.partitions)){
-    part = makePartitioner(rp.method, effects, "max.cov", max.cov, tree.control)$compute()
+  } else if (!is.infinite(max.sd) & is.null(number.partitions)){
+    part = makePartitioner(rp.method, effects, "max.sd", max.sd, tree.control)$compute()
   } else {
-    stop(paste("Must supply either 'number.partitions' or 'max.cov'."))
+    stop(paste("Must supply either 'number.partitions' or 'max.sd'."))
   }
   return(part)
 }
