@@ -139,8 +139,10 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
     plot = function(with.nlm = FALSE, jitter) {
       assertNumeric(jitter, len = 2)
       df = as.data.frame(self$df)
-      x1 = df[,which(self$feature == names(df))]
-      range.x1 = diff(range(x1))
+      names(df)[which(names(df) == feature)] = "x1"
+      range.x1 = diff(range(df$x1))
+      min.x1 = min(df$x1)
+      max.x1 = max(df$x1)
       range.fme = diff(range(df$fme))
 
       pfme = ggplot(df) +
@@ -152,15 +154,16 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
                    alpha = 0.5,
                    width = jitter[1],
                    height = jitter[2]) +
-        geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
-                         xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
+        geom_smooth(aes(x = x1, y = fme), se = TRUE, method = "gam", fullrange = TRUE, linetype = "solid", linewidth = 0.7, color = "black") +
+        geom_segment(aes(x = (0.5 * min.x1 + 0.5 * max.x1 - 0.5 * self$step.size[1]),
+                         xend = (0.5 * min.x1 + 0.5 * max.x1 + 0.5 * self$step.size[1]),
                          y = min(fme)-0.03*range.fme,
                          yend = min(fme)-0.03*range.fme),
                      colour = 'black', size = 1,
                      arrow = arrow(length = unit(0.5, "cm")),
                      lineend = "round", linejoin = "mitre") +
         geom_hline(lwd = 1.2, mapping = aes(yintercept = mean(fme))) +
-        geom_label(x = max(x1) - 0.2 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
+        geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
         xlab(self$feature[1]) +
         ylab("FME") +
         theme_bw() +
@@ -187,8 +190,8 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
                      height = jitter[2],
                      show.legend = FALSE,
                      na.rm = FALSE) +
-          geom_segment(aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
-                           xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
+          geom_segment(aes(x = (0.5 * min.x1 + 0.5 * max.x1 - 0.5 * self$step.size[1]),
+                           xend = (0.5 * min.x1 + 0.5 * max.x1 + 0.5 * self$step.size[1]),
                            y = min(nlm, na.rm = FALSE)-0.03*range.nlm,
                            yend = min(nlm, na.rm = FALSE)-0.03*range.nlm),
                        colour = 'black', size = 1,
@@ -196,7 +199,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
                        lineend = "round", linejoin = "mitre",
                        na.rm = FALSE) +
           geom_hline(lwd = 1.2, mapping = aes(yintercept = meannlm)) +
-          geom_label(x = max(x1) - 0.2 * range.x1, y = meannlm, label = paste0('ANLM: ', round(meannlm, 2)), fill = 'white') +
+          geom_label(x = max.x1 - 0.2 * range.x1, y = meannlm, label = paste0('ANLM: ', round(meannlm, 2)), fill = 'white') +
           xlab(self$feature) +
           ylab("NLM") +
           theme_bw() +
