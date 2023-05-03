@@ -17,7 +17,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #' # Train a model:
     #'
     #' library(mlr3verse)
-    #' library(ranger, lib.loc = "/home/christian/R/x86_64-pc-linux-gnu-library/4.1")
+    #' library(ranger)
     #' data(bikes, package = "fme")
     #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
     #'
