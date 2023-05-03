@@ -2,7 +2,7 @@
 % Please edit documentation in R/Partitioning.R
 \name{came}
 \alias{came}
-\title{Computes a partitioning for an \code{FME}}
+\title{Computes a partitioning for a \code{ForwardMarginalEffect}}
 \usage{
 came(
   effects,
@@ -13,7 +13,7 @@ came(
 )
 }
 \arguments{
-\item{effects}{An \code{FME} object with FMEs computed.}
+\item{effects}{A \code{ForwardMarginalEffect} object with FMEs computed.}
 
 \item{number.partitions}{The exact number of partitions required.
 Either \code{number.partitions} or \code{max.sd} can be specified.}
@@ -32,6 +32,7 @@ This is a wrapper function that creates the correct subclass of \code{Partitioni
 It computes feature subspaces for semi-global interpretations of FMEs via recursive partitioning (RP).
 }
 \examples{
+\dontrun{
 # Train a model and compute FMEs:
 library(mlr3verse)
 data(bikes, package = "fme")
@@ -53,6 +54,7 @@ plot(subspaces)
 subspaces$results
 subspaces$tree
 
+}
 }
 \references{
 Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.

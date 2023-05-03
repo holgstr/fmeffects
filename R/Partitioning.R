@@ -1,7 +1,7 @@
 #' @title R6 Class representing a partitioning
 #'
 #' @description This is the abstract superclass for partitioning objects like [PartitioningCtree] and [PartitioningRpart].
-#' A Partitioning contains information about feature subspaces with conditional average marginal effects (cAME) computed for `FME` objects.
+#' A Partitioning contains information about feature subspaces with conditional average marginal effects (cAME) computed for `ForwardMarginalEffect` objects.
 #' @export
 Partitioning = R6Class("Partitioning",
   public = list(
@@ -14,11 +14,11 @@ Partitioning = R6Class("Partitioning",
     },
 
     #' @description
-    #' Computes the partitioning, i.e., feature subspaces with more homogeneous FMEs, for an `FME` object.
+    #' Computes the partitioning, i.e., feature subspaces with more homogeneous FMEs, for a `ForwardMarginalEffect` object.
     #' @return An `Partitioning` object with results.
     #' @examples
     #' # Compute results for an arbitrary partitioning:
-    #' subspaces$compute()
+    #' # subspaces$compute()
     compute = function() {
       # Create data for partitioning algorithm
       data = data.table::copy(self$object$predictor$X[self$object$results$obs.id,])
@@ -42,7 +42,7 @@ Partitioning = R6Class("Partitioning",
     #' Plots results, i.e., a decision tree and summary statistics of the feature subspaces, for an `Partitioning` object after `$compute()` has been run.
     #' @examples
     #' # Plot an arbitrary partitioning:
-    #' subspaces$plot()
+    #' # subspaces$plot()
     plot = function() {
       if ("nlm" %in% names(self$object$results)) {
         PartitioningPlot$new(self$tree, self$object)$plot
@@ -51,7 +51,7 @@ Partitioning = R6Class("Partitioning",
       }
     },
 
-    #' @field object an `FME` object with results computed
+    #' @field object a `ForwardMarginalEffect` object with results computed
     object = NULL,
     #' @field method the method for finding feature subspaces
     method = NULL,
@@ -71,8 +71,8 @@ Partitioning = R6Class("Partitioning",
 
     initializeSubclass = function(object, method, value, tree.control) {
 
-      # Check if object is of class 'FME'
-      assertClass(object, classes = "FME")
+      # Check if object is of class 'ForwardMarginalEffect'
+      assertClass(object, classes = "ForwardMarginalEffect")
 
       # Check if object has FMEs computed
       assertTRUE(object$computed)
@@ -183,11 +183,11 @@ Partitioning = R6Class("Partitioning",
 
 # User-friendly function
 
-#' @title Computes a partitioning for an `FME`
+#' @title Computes a partitioning for a `ForwardMarginalEffect`
 #'
 #' @description This is a wrapper function that creates the correct subclass of `Partitioning`.
 #' It computes feature subspaces for semi-global interpretations of FMEs via recursive partitioning (RP).
-#' @param effects An `FME` object with FMEs computed.
+#' @param effects A `ForwardMarginalEffect` object with FMEs computed.
 #' @param number.partitions The exact number of partitions required.
 #' Either `number.partitions` or `max.sd` can be specified.
 #' @param max.sd The maximum standard deviation required in each partition.
@@ -199,6 +199,7 @@ Partitioning = R6Class("Partitioning",
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
+#' \dontrun{
 #' # Train a model and compute FMEs:
 #' library(mlr3verse)
 #' data(bikes, package = "fme")
@@ -220,6 +221,7 @@ Partitioning = R6Class("Partitioning",
 #' subspaces$results
 #' subspaces$tree
 #'
+#'}
 #' @export
 came = function(effects, number.partitions = NULL, max.sd = Inf, rp.method = "ctree", tree.control = NULL) {
   assertChoice(rp.method, choices = c("ctree", "rpart"))

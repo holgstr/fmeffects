@@ -139,7 +139,7 @@ FMEPlotUnivariate = R6Class("FMEPlotUnivariate",
     plot = function(with.nlm = FALSE, jitter) {
       assertNumeric(jitter, len = 2)
       df = as.data.frame(self$df)
-      names(df)[which(names(df) == feature)] = "x1"
+      names(df)[which(names(df) == self$feature)] = "x1"
       range.x1 = diff(range(df$x1))
       min.x1 = min(df$x1)
       max.x1 = max(df$x1)

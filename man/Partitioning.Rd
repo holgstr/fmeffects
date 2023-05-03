@@ -5,7 +5,7 @@
 \title{R6 Class representing a partitioning}
 \description{
 This is the abstract superclass for partitioning objects like \link{PartitioningCtree} and \link{PartitioningRpart}.
-A Partitioning contains information about feature subspaces with conditional average marginal effects (cAME) computed for \code{FME} objects.
+A Partitioning contains information about feature subspaces with conditional average marginal effects (cAME) computed for \code{ForwardMarginalEffect} objects.
 }
 \examples{
 
@@ -14,19 +14,19 @@ A Partitioning contains information about feature subspaces with conditional ave
 ## ------------------------------------------------
 
 # Compute results for an arbitrary partitioning:
-subspaces$compute()
+# subspaces$compute()
 
 ## ------------------------------------------------
 ## Method `Partitioning$plot`
 ## ------------------------------------------------
 
 # Plot an arbitrary partitioning:
-subspaces$plot()
+# subspaces$plot()
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{object}}{an \code{FME} object with results computed}
+\item{\code{object}}{a \code{ForwardMarginalEffect} object with results computed}
 
 \item{\code{method}}{the method for finding feature subspaces}
 
@@ -72,7 +72,7 @@ Create a Partitioning object
 \if{html}{\out{<a id="method-Partitioning-compute"></a>}}
 \if{latex}{\out{\hypertarget{method-Partitioning-compute}{}}}
 \subsection{Method \code{compute()}}{
-Computes the partitioning, i.e., feature subspaces with more homogeneous FMEs, for an \code{FME} object.
+Computes the partitioning, i.e., feature subspaces with more homogeneous FMEs, for a \code{ForwardMarginalEffect} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Partitioning$compute()}\if{html}{\out{</div>}}
 }
@@ -83,7 +83,7 @@ An \code{Partitioning} object with results.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{# Compute results for an arbitrary partitioning:
-subspaces$compute()
+# subspaces$compute()
 }
 \if{html}{\out{</div>}}
 
@@ -102,7 +102,7 @@ Plots results, i.e., a decision tree and summary statistics of the feature subsp
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{# Plot an arbitrary partitioning:
-subspaces$plot()
+# subspaces$plot()
 }
 \if{html}{\out{</div>}}
 

@@ -2,26 +2,27 @@
 #'
 #' @description The FME is a forward difference in prediction due to a specified change in feature values.
 #' @export
-FME = R6Class("FME",
+ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
   public = list(
     #' @description
-    #' Create a new FME object.
+    #' Create a new ForwardMarginalEffect object.
     #' @param predictor `Predictor` object.
     #' @param feature Feature vector.
     #' @param step.size Vector of step sizes.
     #' @param ep.method String specifying extrapolation detection method.
     #' @param compute.nlm Compute NLM with FMEs? Defaults to `FALSE`.
     #' @param nlm.intervals How many intervals for NLM computation. Defaults to `1`.
-    #' @return A new `FME` object.
+    #' @return A new `ForwardMarginalEffect` object.
     #' @examples
     #' # Train a model:
     #'
     #' library(mlr3verse)
+    #' library(ranger, lib.loc = "/home/christian/R/x86_64-pc-linux-gnu-library/4.1")
     #' data(bikes, package = "fme")
     #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
     #'
-    #' # Create an `FME` object:
-    #' effects = FME$new(makePredictor(forest, bikes, "count"),
+    #' # Create an `ForwardMarginalEffect` object:
+    #' effects = ForwardMarginalEffect$new(makePredictor(forest, bikes, "count"),
     #'                   feature = c("temp", "humidity"),
     #'                   step.size = c(1, 0.01),
     #'                   ep.method = "envelope")
@@ -75,8 +76,8 @@ FME = R6Class("FME",
     },
 
     #' @description
-    #' Computes results, i.e., FME (and NLMs) for non-extrapolation points, for an `FME` object.
-    #' @return An `FME` object with results.
+    #' Computes results, i.e., FME (and NLMs) for non-extrapolation points, for a `ForwardMarginalEffect` object.
+    #' @return A `ForwardMarginalEffect` object with results.
     #' @examples
     #' # Compute results:
     #' effects$compute()
@@ -258,6 +259,7 @@ FME = R6Class("FME",
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
+#' \dontrun{
 #' # Train a model:
 #'
 #' library(mlr3verse)
@@ -274,10 +276,10 @@ FME = R6Class("FME",
 #'
 #' # Extract results:
 #' effects$results
-#'
+#' }
 #' @export
 fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
-  return(FME$new(makePredictor(model, data, target),
+  return(ForwardMarginalEffect$new(makePredictor(model, data, target),
           feature = feature,
           step.size = step.size,
           ep.method = ep.method,

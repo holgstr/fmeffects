@@ -8,7 +8,7 @@ Description: Computes Forward Marginal Effects (FME) for arbitrary supervised ma
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Suggests:
     caret,
     mlr3verse,
@@ -22,7 +22,6 @@ Depends:
     cowplot,
     R6
 Collate: 
-    'AME.R'
     'ExtrapolationDetector.R'
     'FME.R'
     'FMEPlot.R'

@@ -1,5 +1,4 @@
 test_that("FME computation correct", {
-  library(fme)
   library(mlr3verse)
   library(rpart)
 
