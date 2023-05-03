@@ -15,7 +15,7 @@ The FME is a forward difference in prediction due to a specified change in featu
 # Train a model:
 
 library(mlr3verse)
-library(ranger, lib.loc = "/home/christian/R/x86_64-pc-linux-gnu-library/4.1")
+library(ranger)
 data(bikes, package = "fme")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
@@ -120,7 +120,7 @@ A new \code{ForwardMarginalEffect} object.
 \preformatted{# Train a model:
 
 library(mlr3verse)
-library(ranger, lib.loc = "/home/christian/R/x86_64-pc-linux-gnu-library/4.1")
+library(ranger)
 data(bikes, package = "fme")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
