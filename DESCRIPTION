@@ -20,7 +20,8 @@ Depends:
     ggparty,
     ggplot2,
     cowplot,
-    R6
+    R6,
+    testthat
 Collate: 
     'ExtrapolationDetector.R'
     'FME.R'

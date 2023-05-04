@@ -14,8 +14,9 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #' @param nlm.intervals How many intervals for NLM computation. Defaults to `1`.
     #' @return A new `ForwardMarginalEffect` object.
     #' @examples
-    #' # Train a model:
     #'
+    #' # Train a model:
+    #' \dontrun{
     #' library(mlr3verse)
     #' library(ranger)
     #' data(bikes, package = "fme")
@@ -26,6 +27,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #'                   feature = c("temp", "humidity"),
     #'                   step.size = c(1, 0.01),
     #'                   ep.method = "envelope")
+    #' }
     initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
