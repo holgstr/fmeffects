@@ -12,8 +12,9 @@ The FME is a forward difference in prediction due to a specified change in featu
 ## Method `ForwardMarginalEffect$new`
 ## ------------------------------------------------
 
-# Train a model:
 
+# Train a model:
+\dontrun{
 library(mlr3verse)
 library(ranger)
 data(bikes, package = "fme")
@@ -24,20 +25,25 @@ effects = ForwardMarginalEffect$new(makePredictor(forest, bikes, "count"),
                   feature = c("temp", "humidity"),
                   step.size = c(1, 0.01),
                   ep.method = "envelope")
+}
 
 ## ------------------------------------------------
 ## Method `ForwardMarginalEffect$compute`
 ## ------------------------------------------------
 
+\dontrun{
 # Compute results:
 effects$compute()
+}
 
 ## ------------------------------------------------
 ## Method `ForwardMarginalEffect$plot`
 ## ------------------------------------------------
 
+\dontrun{
 # Compute results:
 effects$plot()
+}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -117,8 +123,9 @@ A new \code{ForwardMarginalEffect} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{# Train a model:
-
+\preformatted{
+# Train a model:
+\dontrun{
 library(mlr3verse)
 library(ranger)
 data(bikes, package = "fme")
@@ -129,6 +136,7 @@ effects = ForwardMarginalEffect$new(makePredictor(forest, bikes, "count"),
                   feature = c("temp", "humidity"),
                   step.size = c(1, 0.01),
                   ep.method = "envelope")
+}
 }
 \if{html}{\out{</div>}}
 
@@ -149,8 +157,10 @@ A \code{ForwardMarginalEffect} object with results.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{# Compute results:
+\preformatted{\dontrun{
+# Compute results:
 effects$compute()
+}
 }
 \if{html}{\out{</div>}}
 
@@ -179,8 +189,10 @@ Defaults to no jittering, i.e., c(0, 0).}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{# Compute results:
+\preformatted{\dontrun{
+# Compute results:
 effects$plot()
+}
 }
 \if{html}{\out{</div>}}
 

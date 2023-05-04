@@ -74,6 +74,7 @@ Predictor = R6Class("Predictor",
 #' @param data the data used for computing FMEs, must be data.frame or data.table.
 #' @param target a string specifying the target variable.
 #' @examples
+#' \dontrun{
 #' # Train a model:
 #'
 #' library(mlr3verse)
@@ -85,6 +86,7 @@ Predictor = R6Class("Predictor",
 #'
 #' # This instantiated an object of the correct subclass of `Predictor`:
 #' class(predictor)
+#' }
 #' @export
 makePredictor = function(model, data, target) {
   if ("Learner" %in% class(model)) {

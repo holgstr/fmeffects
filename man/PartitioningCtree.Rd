@@ -9,7 +9,7 @@ This task specializes \link{Partitioning} for the \code{ctree} algorithm for rec
 It is recommended to use \code{\link[=came]{came()}} for construction of Partitioning objects.
 }
 \section{Super class}{
-\code{fme::Partitioning} -> \code{PartitioningCtree}
+\code{\link[fme:Partitioning]{fme::Partitioning}} -> \code{PartitioningCtree}
 }
 \section{Methods}{
 \subsection{Public methods}{

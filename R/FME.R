@@ -81,8 +81,10 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #' Computes results, i.e., FME (and NLMs) for non-extrapolation points, for a `ForwardMarginalEffect` object.
     #' @return A `ForwardMarginalEffect` object with results.
     #' @examples
+    #' \dontrun{
     #' # Compute results:
     #' effects$compute()
+    #' }
     compute = function() {
       self$data.step = private$makeStep(self$feature, self$predictor, self$step.size, self$step.type)
       self$extrapolation.ids = ExtrapolationDetector$new(data = self$predictor$X,
@@ -110,7 +112,6 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
       invisible(self)
 
     },
-
     #' @description
     #' Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an `FME` object.
     #' @param with.nlm Plots NLMs if computed, defaults to `FALSE`.
@@ -118,8 +119,10 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #' Not available if `step.type` is categorical.
     #' Defaults to no jittering, i.e., c(0, 0).
     #' @examples
+    #' \dontrun{
     #' # Compute results:
     #' effects$plot()
+    #' }
     plot = function(with.nlm = FALSE, jitter = c(0, 0)) {
       if (self$step.type == "categorical") {
         FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, jitter)
