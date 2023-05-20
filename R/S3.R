@@ -28,7 +28,7 @@ summary.FME = function(fme) {
     cat(paste0("Average Marginal Effect (AME):\n  ", round(fme$ame, 4)))
     if ("nlm" %in% names(fme$results)) {
       cat(paste0("\n\nAverage Non-Linearity Measure (ANLM):\n  ", round(fme$anlm, 2),
-                 "  (≤0 implies non-linearity, 1 implies linearity)"))
+                 "  (\u2264 0 implies non-linearity, 1 implies linearity)"))
     }
   }
 }
@@ -51,7 +51,7 @@ print.FME = function(fme) {
     cat(paste0("\nAverage Marginal Effect (AME):\n  ", round(fme$ame, 4)))
     if ("nlm" %in% names(fme$results)) {
       cat(paste0("\n\nAverage Non-Linearity Measure (ANLM):\n  ", round(fme$anlm, 2),
-                 "  (≤0 implies non-linearity, 1 implies linearity)"))
+                 "  (\u2264 0 implies non-linearity, 1 implies linearity)"))
     }
   }
 }
@@ -101,7 +101,7 @@ summary.Partitioning = function(partitioning) {
     cat("---\n")
     cat("* root node (non-partitioned)")
     if ("nlm" %in% names(partitioning$object$results)) {
-      cat("\ncANLM:  ≤0 implies non-linearity, 1 implies linearity")
+      cat("\ncANLM: \u2264 0 implies non-linearity, 1 implies linearity")
     }
     cat(paste0("\n\nAME (Global): ", round(partitioning$object$ame, 4)))
     if ("nlm" %in% names(partitioning$object$results)) {
