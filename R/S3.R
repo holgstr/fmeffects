@@ -1,10 +1,10 @@
 ### FME
 
 
-#' Prints summary of an FME object.
-#' @param fme object of class `FME`.
+#' Prints summary of an ForwardMarginalEffect object.
+#' @param fme object of class `ForwardMarginalEffect`.
 #' @export
-summary.FME = function(fme) {
+summary.ForwardMarginalEffect = function(fme) {
   cat("\n")
   cat("Forward Marginal Effects Object\n\n")
   cat(paste0("Step type:\n", "  ", fme$step.type, "\n\n"))
@@ -19,7 +19,7 @@ summary.FME = function(fme) {
   cat(paste0("\nExtrapolation point detection:\n", "  ", fme$ep.method))
   # empty object
   if (fme$computed == FALSE) {
-    cat("\n\n<<<This is an FME object without results>>>\n")
+    cat("\n\n<<<This is an ForwardMarginalEffect object without results>>>\n")
     cat("<<<Call $compute() to compute FMEs>>>\n\n")
   } else {
     cat(paste0(", EPs: ", length(fme$extrapolation.ids), " of ",
@@ -33,10 +33,10 @@ summary.FME = function(fme) {
   }
 }
 
-#' Prints an FME object.
-#' @param fme object of class `FME`.
+#' Prints an ForwardMarginalEffect object.
+#' @param fme object of class `ForwardMarginalEffect`.
 #' @export
-print.FME = function(fme) {
+print.ForwardMarginalEffect = function(fme) {
   cat("\n")
   cat("Forward Marginal Effects Object\n\n")
   cat(paste0("Features & step lengths:\n"))
@@ -45,7 +45,7 @@ print.FME = function(fme) {
   }
   # empty object
   if (fme$computed == FALSE) {
-    cat("\n<This is an FME object without results>\n\n")
+    cat("\n<This is an ForwardMarginalEffect object without results>\n\n")
   } else {
     # non-empty object
     cat(paste0("\nAverage Marginal Effect (AME):\n  ", round(fme$ame, 4)))
@@ -56,14 +56,14 @@ print.FME = function(fme) {
   }
 }
 
-#' Plots an FME object.
-#' @param fme object of class `FME`.
+#' Plots an ForwardMarginalEffect object.
+#' @param fme object of class `ForwardMarginalEffect`.
 #' @param with.nlm plots NLMs alongside FMEs, defaults to `FALSE`.
 #' @param jitter Jitters data. A two-dimensional numeric vector, corresponds to `"width"` and `"height"`. See `?ggplot2::geom_jitter` for details.
 #' Not available if `step.type` is categorical.
 #' Defaults to no jittering, i.e., c(0, 0).
 #' @export
-plot.FME = function(fme, with.nlm = FALSE, jitter = c(0,0)) {
+plot.ForwardMarginalEffect = function(fme, with.nlm = FALSE, jitter = c(0,0)) {
   fme$plot(with.nlm, jitter)
 }
 
