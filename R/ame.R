@@ -85,12 +85,10 @@ AverageMarginalEffects = R6Class("AME",
               if (!(range(predictor$X[,..feature])[2] - range(predictor$X[,..feature])[1] >= step.size)) {
                 stop(paste("The step size for", feature, "is larger than the range in the data. Please choose smaller step size"))
               }
-              fme = fme(model = model,
-                        data = data,
-                        target = target,
-                        feature = feature,
-                        step.size = step.size,
-                        ep.method = ep.method)
+              fme = ForwardMarginalEffect$new(predictor = predictor,
+                                              feature = feature,
+                                              step.size = step.size,
+                                              ep.method = ep.method)$compute()
               res = rbind(res, c(feature,
                                  step.size,
                                  round(fme$ame, 4),
@@ -108,11 +106,9 @@ AverageMarginalEffects = R6Class("AME",
               }
               for (j in seq_len(length(categories))) {
                 #catname = paste0(feature, ".", categories[j])
-                fme = fme(model = model,
-                          data = data,
-                          target = target,
-                          feature = feature,
-                          step.size = as.character(categories[j]))
+                fme = ForwardMarginalEffect$new(predictor = predictor,
+                                                feature = feature,
+                                                step.size = as.character(categories[j]))$compute()
                 featurename = feature
 
                 res = rbind(res, c(featurename,
@@ -137,12 +133,10 @@ AverageMarginalEffects = R6Class("AME",
             } else {
               step.size = 1
             }
-            fme = fme(model = model,
-                      data = data,
-                      target = target,
-                      feature = feature,
-                      step.size = step.size,
-                      ep.method = ep.method)
+            fme = ForwardMarginalEffect$new(predictor = predictor,
+                                            feature = feature,
+                                            step.size = step.size,
+                                            ep.method = ep.method)$compute()
             res = rbind(res, c(feature,
                                step.size,
                                round(fme$ame, 4),
@@ -155,11 +149,9 @@ AverageMarginalEffects = R6Class("AME",
             categories = unique(as.vector(predictor$X[,..feature])[[1]])
             for (j in seq_len(length(categories))) {
               #catname = paste0(feature, ".", categories[j])
-              fme = fme(model = model,
-                        data = data,
-                        target = target,
-                        feature = feature,
-                        step.size = as.character(categories[j]))
+              fme = ForwardMarginalEffect$new(predictor = predictor,
+                                              feature = feature,
+                                              step.size = as.character(categories[j]))$compute()
               featurename = feature
 
               res = rbind(res, c(featurename,

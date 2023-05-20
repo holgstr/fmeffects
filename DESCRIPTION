@@ -11,7 +11,9 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests:
     caret,
+    knitr,
     mlr3verse,
+    rmarkdown,
     rpart
 Depends: 
     checkmate,
@@ -40,3 +42,4 @@ Collate:
     'bikes.R'
 URL: https://github.com/holgstr/fme
 BugReports: https://github.com/holgstr/fme/issues
+VignetteBuilder: knitr
