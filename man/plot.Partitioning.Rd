@@ -4,10 +4,12 @@
 \alias{plot.Partitioning}
 \title{Plots an FME Partitioning.}
 \usage{
-\method{plot}{Partitioning}(partitioning)
+\method{plot}{Partitioning}(x, ...)
 }
 \arguments{
-\item{partitioning}{object of class \code{Partitioning}.}
+\item{x}{object of class \code{Partitioning}.}
+
+\item{...}{additional arguments affecting the summary produced.}
 }
 \description{
 Plots an FME Partitioning.

@@ -4,10 +4,12 @@
 \alias{summary.Partitioning}
 \title{Prints summary of an FME Partitioning.}
 \usage{
-\method{summary}{Partitioning}(partitioning)
+\method{summary}{Partitioning}(object, ...)
 }
 \arguments{
-\item{partitioning}{object of class \code{Partitioning}.}
+\item{object}{object of class \code{Partitioning}.}
+
+\item{...}{additional arguments affecting the summary produced.}
 }
 \description{
 Prints summary of an FME Partitioning.

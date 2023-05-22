@@ -17,14 +17,18 @@ The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
 
 library(mlr3verse)
 data(bikes, package = "fme")
-forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+task = as_task_regr(x = bikes, id = "bikes", target = "count")
+forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
 overview = AME$new(model = forest, data = bikes, target = "count")$compute()
 summary(overview)
 
 # Compute AMEs for a subset of features with non-default step.sizes:
-overview = AME$new(model = forest, data = bikes, target = "count", features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
+overview = AME$new(model = forest,
+                   data = bikes,
+                   target = "count",
+                   features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
 summary(overview)
 }
 
@@ -100,14 +104,18 @@ A new \code{AME} object.
 
 library(mlr3verse)
 data(bikes, package = "fme")
-forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+task = as_task_regr(x = bikes, id = "bikes", target = "count")
+forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
 overview = AME$new(model = forest, data = bikes, target = "count")$compute()
 summary(overview)
 
 # Compute AMEs for a subset of features with non-default step.sizes:
-overview = AME$new(model = forest, data = bikes, target = "count", features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
+overview = AME$new(model = forest,
+                   data = bikes,
+                   target = "count",
+                   features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
 summary(overview)
 }
 }

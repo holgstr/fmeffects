@@ -4,10 +4,12 @@
 \alias{print.ForwardMarginalEffect}
 \title{Prints an ForwardMarginalEffect object.}
 \usage{
-\method{print}{ForwardMarginalEffect}(fme)
+\method{print}{ForwardMarginalEffect}(x, ...)
 }
 \arguments{
-\item{fme}{object of class \code{ForwardMarginalEffect}.}
+\item{x}{object of class \code{ForwardMarginalEffect}.}
+
+\item{...}{additional arguments affecting the summary produced.}
 }
 \description{
 Prints an ForwardMarginalEffect object.

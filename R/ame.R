@@ -18,14 +18,18 @@ AverageMarginalEffects = R6Class("AME",
     #'
     #' library(mlr3verse)
     #' data(bikes, package = "fme")
-    #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+    #' task = as_task_regr(x = bikes, id = "bikes", target = "count")
+    #' forest = lrn("regr.ranger")$train(task)
     #'
     #' # Compute AMEs for all features:
     #' overview = AME$new(model = forest, data = bikes, target = "count")$compute()
     #' summary(overview)
     #'
     #' # Compute AMEs for a subset of features with non-default step.sizes:
-    #' overview = AME$new(model = forest, data = bikes, target = "count", features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
+    #' overview = AME$new(model = forest,
+    #'                    data = bikes,
+    #'                    target = "count",
+    #'                    features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
     #' summary(overview)
     #' }
     initialize = function(model, data, target, features = NULL, ep.method = "none") {
@@ -218,14 +222,18 @@ AverageMarginalEffects = R6Class("AME",
 #'
 #' library(mlr3verse)
 #' data(bikes, package = "fme")
-#' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+#' task = as_task_regr(x = bikes, id = "bikes", target = "count")
+#' forest = lrn("regr.ranger")$train(task)
 #'
 #' # Compute AMEs for all features:
 #' overview = ame(model = forest, data = bikes, target = "count")
 #' summary(overview)
 #'
 #' # Compute AMEs for a subset of features with non-default step.sizes:
-#' overview = ame(model = forest, data = bikes, target = "count", features = c(humidity = 0.1, weather = c("clear", "rain")))
+#' overview = ame(model = forest,
+#'                data = bikes,
+#'                target = "count",
+#'                features = c(humidity = 0.1, weather = c("clear", "rain")))
 #' summary(overview)
 #'
 #' # Extract results:

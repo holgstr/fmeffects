@@ -2,9 +2,11 @@
 
 
 #' Prints summary of an ForwardMarginalEffect object.
-#' @param fme object of class `ForwardMarginalEffect`.
+#' @param object object of class `ForwardMarginalEffect`.
+#' @param ... additional arguments affecting the summary produced.
 #' @export
-summary.ForwardMarginalEffect = function(fme) {
+summary.ForwardMarginalEffect = function(object, ...) {
+  fme = object
   cat("\n")
   cat("Forward Marginal Effects Object\n\n")
   cat(paste0("Step type:\n", "  ", fme$step.type, "\n\n"))
@@ -34,9 +36,11 @@ summary.ForwardMarginalEffect = function(fme) {
 }
 
 #' Prints an ForwardMarginalEffect object.
-#' @param fme object of class `ForwardMarginalEffect`.
+#' @param x object of class `ForwardMarginalEffect`.
+#' @param ... additional arguments affecting the summary produced.
 #' @export
-print.ForwardMarginalEffect = function(fme) {
+print.ForwardMarginalEffect = function(x, ...) {
+  fme = x
   cat("\n")
   cat("Forward Marginal Effects Object\n\n")
   cat(paste0("Features & step lengths:\n"))
@@ -57,14 +61,11 @@ print.ForwardMarginalEffect = function(fme) {
 }
 
 #' Plots an ForwardMarginalEffect object.
-#' @param fme object of class `ForwardMarginalEffect`.
-#' @param with.nlm plots NLMs alongside FMEs, defaults to `FALSE`.
-#' @param jitter Jitters data. A two-dimensional numeric vector, corresponds to `"width"` and `"height"`. See `?ggplot2::geom_jitter` for details.
-#' Not available if `step.type` is categorical.
-#' Defaults to no jittering, i.e., c(0, 0).
+#' @param x object of class `ForwardMarginalEffect`.
+#' @param ... additional arguments affecting the summary produced.
 #' @export
-plot.ForwardMarginalEffect = function(fme, with.nlm = FALSE, jitter = c(0,0)) {
-  fme$plot(with.nlm, jitter)
+plot.ForwardMarginalEffect = function(x, ...) {
+  x$plot(...)
 }
 
 
@@ -72,9 +73,11 @@ plot.ForwardMarginalEffect = function(fme, with.nlm = FALSE, jitter = c(0,0)) {
 
 
 #' Prints summary of an FME Partitioning.
-#' @param partitioning object of class `Partitioning`.
+#' @param object object of class `Partitioning`.
+#' @param ... additional arguments affecting the summary produced.
 #' @export
-summary.Partitioning = function(partitioning) {
+summary.Partitioning = function(object, ...) {
+  partitioning = object
   cat("\n")
   cat(class(partitioning)[1])
   cat(" of an FME object\n\n")
@@ -112,9 +115,11 @@ summary.Partitioning = function(partitioning) {
 }
 
 #' Prints an FME Partitioning.
-#' @param partitioning object of class `Partitioning`.
+#' @param x object of class `Partitioning`.
+#' @param ... additional arguments affecting the summary produced.
 #' @export
-print.Partitioning = function(partitioning) {
+print.Partitioning = function(x, ...) {
+  x = partitioning
   cat("\n")
   cat(class(partitioning)[1])
   cat(" of an FME object\n\n")
@@ -139,8 +144,9 @@ print.Partitioning = function(partitioning) {
 }
 
 #' Plots an FME Partitioning.
-#' @param partitioning object of class `Partitioning`.
+#' @param x object of class `Partitioning`.
+#' @param ... additional arguments affecting the summary produced.
 #' @export
-plot.Partitioning = function(partitioning) {
-  partitioning$plot()
+plot.Partitioning = function(x, ...) {
+  x$plot()
 }
