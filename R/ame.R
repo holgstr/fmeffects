@@ -2,7 +2,7 @@
 #'
 #' @description The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
 #' @export
-AverageMarginalEffects = R6Class("AME",
+AverageMarginalEffects = R6Class("AverageMarginalEffects",
   public = list(
     #' @description
     #' Create a new AME object.
@@ -13,25 +13,25 @@ AverageMarginalEffects = R6Class("AME",
     #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
     #' @return A new `AME` object.
     #' @examples
-    #' \dontrun{
     #' # Train a model:
     #'
     #' library(mlr3verse)
+    #' library(ranger)
     #' data(bikes, package = "fme")
     #' task = as_task_regr(x = bikes, id = "bikes", target = "count")
     #' forest = lrn("regr.ranger")$train(task)
     #'
     #' # Compute AMEs for all features:
-    #' overview = AME$new(model = forest, data = bikes, target = "count")$compute()
+    #' overview = AverageMarginalEffects$new(model = forest, data = bikes, target = "count")$compute()
     #' summary(overview)
     #'
     #' # Compute AMEs for a subset of features with non-default step.sizes:
-    #' overview = AME$new(model = forest,
-    #'                    data = bikes,
-    #'                    target = "count",
-    #'                    features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
+    #' overview = AverageMarginalEffects$new(model = forest,
+    #'                                       data = bikes,
+    #'                                       target = "count",
+    #'                                       features = c(humidity = 0.1,
+    #'                                                    weather = c("clear", "rain")))$compute()
     #' summary(overview)
-    #' }
     initialize = function(model, data, target, features = NULL, ep.method = "none") {
 
       # Initialize predictor (this includes the relevant assertions)
@@ -61,10 +61,8 @@ AverageMarginalEffects = R6Class("AME",
     #' Computes results, i.e., AMEs with their SDs, for an `AME` object.
     #' @return An `AME` object with results.
     #' @examples
-    #' \dontrun{
     #' # Compute results:
     #' overview$compute()
-    #' }
     compute = function() {
 
       predictor = self$predictor
@@ -217,10 +215,10 @@ AverageMarginalEffects = R6Class("AME",
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
-#' \dontrun{
 #' # Train a model:
 #'
 #' library(mlr3verse)
+#' library(ranger)
 #' data(bikes, package = "fme")
 #' task = as_task_regr(x = bikes, id = "bikes", target = "count")
 #' forest = lrn("regr.ranger")$train(task)
@@ -238,7 +236,6 @@ AverageMarginalEffects = R6Class("AME",
 #'
 #' # Extract results:
 #' overview$results
-#'}
 #' @export
 ame = function(model, data, target, features = NULL, ep.method = "none") {
   return(AverageMarginalEffects$new(model, data, target, features = NULL, ep.method = "none")$compute())

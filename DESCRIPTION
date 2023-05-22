@@ -13,6 +13,7 @@ Suggests:
     caret,
     knitr,
     mlr3verse,
+    ranger,
     rmarkdown,
     rpart
 Depends: 

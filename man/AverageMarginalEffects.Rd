@@ -12,34 +12,32 @@ The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
 ## Method `AverageMarginalEffects$new`
 ## ------------------------------------------------
 
-\dontrun{
 # Train a model:
 
 library(mlr3verse)
+library(ranger)
 data(bikes, package = "fme")
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
-overview = AME$new(model = forest, data = bikes, target = "count")$compute()
+overview = AverageMarginalEffects$new(model = forest, data = bikes, target = "count")$compute()
 summary(overview)
 
 # Compute AMEs for a subset of features with non-default step.sizes:
-overview = AME$new(model = forest,
-                   data = bikes,
-                   target = "count",
-                   features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
+overview = AverageMarginalEffects$new(model = forest,
+                                      data = bikes,
+                                      target = "count",
+                                      features = c(humidity = 0.1,
+                                                   weather = c("clear", "rain")))$compute()
 summary(overview)
-}
 
 ## ------------------------------------------------
 ## Method `AverageMarginalEffects$compute`
 ## ------------------------------------------------
 
-\dontrun{
 # Compute results:
 overview$compute()
-}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -59,14 +57,14 @@ overview$compute()
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-AME-new}{\code{AverageMarginalEffects$new()}}
-\item \href{#method-AME-compute}{\code{AverageMarginalEffects$compute()}}
-\item \href{#method-AME-clone}{\code{AverageMarginalEffects$clone()}}
+\item \href{#method-AverageMarginalEffects-new}{\code{AverageMarginalEffects$new()}}
+\item \href{#method-AverageMarginalEffects-compute}{\code{AverageMarginalEffects$compute()}}
+\item \href{#method-AverageMarginalEffects-clone}{\code{AverageMarginalEffects$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AME-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AME-new}{}}}
+\if{html}{\out{<a id="method-AverageMarginalEffects-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AverageMarginalEffects-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new AME object.
 \subsection{Usage}{
@@ -99,25 +97,25 @@ A new \code{AME} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{
-# Train a model:
+\preformatted{# Train a model:
 
 library(mlr3verse)
+library(ranger)
 data(bikes, package = "fme")
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
-overview = AME$new(model = forest, data = bikes, target = "count")$compute()
+overview = AverageMarginalEffects$new(model = forest, data = bikes, target = "count")$compute()
 summary(overview)
 
 # Compute AMEs for a subset of features with non-default step.sizes:
-overview = AME$new(model = forest,
-                   data = bikes,
-                   target = "count",
-                   features = c(humidity = 0.1, weather = c("clear", "rain")))$compute()
+overview = AverageMarginalEffects$new(model = forest,
+                                      data = bikes,
+                                      target = "count",
+                                      features = c(humidity = 0.1,
+                                                   weather = c("clear", "rain")))$compute()
 summary(overview)
-}
 }
 \if{html}{\out{</div>}}
 
@@ -125,8 +123,8 @@ summary(overview)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AME-compute"></a>}}
-\if{latex}{\out{\hypertarget{method-AME-compute}{}}}
+\if{html}{\out{<a id="method-AverageMarginalEffects-compute"></a>}}
+\if{latex}{\out{\hypertarget{method-AverageMarginalEffects-compute}{}}}
 \subsection{Method \code{compute()}}{
 Computes results, i.e., AMEs with their SDs, for an \code{AME} object.
 \subsection{Usage}{
@@ -138,10 +136,8 @@ An \code{AME} object with results.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{
-# Compute results:
+\preformatted{# Compute results:
 overview$compute()
-}
 }
 \if{html}{\out{</div>}}
 
@@ -149,8 +145,8 @@ overview$compute()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AME-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-AME-clone}{}}}
+\if{html}{\out{<a id="method-AverageMarginalEffects-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-AverageMarginalEffects-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

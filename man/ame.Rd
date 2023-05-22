@@ -36,10 +36,10 @@ This is a wrapper function for \code{AverageMarginalEffects$new(...)$compute()}.
 It computes Average Marginal Effects (AME) based on Forward Marginal Effects (FME) for a model. The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
 }
 \examples{
-\dontrun{
 # Train a model:
 
 library(mlr3verse)
+library(ranger)
 data(bikes, package = "fme")
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
@@ -57,7 +57,6 @@ summary(overview)
 
 # Extract results:
 overview$results
-}
 }
 \references{
 Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.

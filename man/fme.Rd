@@ -44,10 +44,10 @@ This is a wrapper function for \code{FME$new(...)$compute()}.
 It computes forward marginal effects (FMEs) for a specified change in feature values.
 }
 \examples{
-\dontrun{
 # Train a model:
 
 library(mlr3verse)
+library(ranger)
 data(bikes, package = "fme")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
@@ -61,7 +61,6 @@ plot(effects)
 
 # Extract results:
 effects$results
-}
 }
 \references{
 Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.

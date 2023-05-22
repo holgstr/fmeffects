@@ -17,17 +17,16 @@ makePredictor(model, data, target)
 A wrapper function that creates the correct subclass of \code{Predictor} by automatically from \code{model}. Can be passed to the constructor of \code{FME}.
 }
 \examples{
-\dontrun{
 # Train a model:
 
 library(mlr3verse)
 data(bikes, package = "fme")
-forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+task = as_task_regr(x = bikes, id = "bikes", target = "count")
+forest = lrn("regr.ranger")$train(task)
 
 # Create the predictor:
 predictor = makePredictor(forest, bikes, "count")
 
 # This instantiated an object of the correct subclass of `Predictor`:
 class(predictor)
-}
 }

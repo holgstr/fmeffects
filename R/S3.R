@@ -150,3 +150,17 @@ print.Partitioning = function(x, ...) {
 plot.Partitioning = function(x, ...) {
   x$plot()
 }
+
+
+### AME
+
+
+#' Prints summary of an AverageMarginalEffects object.
+#' @param object object of class `AverageMarginalEffects`.
+#' @param ... additional arguments affecting the summary produced.
+#' @export
+summary.AverageMarginalEffects = function(object, ...) {
+  cat("\n")
+  cat("Model Summary Using Average Marginal Effects:\n\n")
+  print(object$results)
+}

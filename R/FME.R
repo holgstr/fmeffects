@@ -16,7 +16,7 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #' @examples
     #'
     #' # Train a model:
-    #' \dontrun{
+    #'
     #' library(mlr3verse)
     #' library(ranger)
     #' data(bikes, package = "fme")
@@ -27,7 +27,6 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #'                   feature = c("temp", "humidity"),
     #'                   step.size = c(1, 0.01),
     #'                   ep.method = "envelope")
-    #' }
     initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
@@ -81,10 +80,8 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #' Computes results, i.e., FME (and NLMs) for non-extrapolation points, for a `ForwardMarginalEffect` object.
     #' @return A `ForwardMarginalEffect` object with results.
     #' @examples
-    #' \dontrun{
     #' # Compute results:
     #' effects$compute()
-    #' }
     compute = function() {
       self$data.step = private$makeStep(self$feature, self$predictor, self$step.size, self$step.type)
       self$extrapolation.ids = ExtrapolationDetector$new(data = self$predictor$X,
@@ -119,10 +116,8 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
     #' Not available if `step.type` is categorical.
     #' Defaults to no jittering, i.e., c(0, 0).
     #' @examples
-    #' \dontrun{
     #' # Compute results:
     #' effects$plot()
-    #' }
     plot = function(with.nlm = FALSE, jitter = c(0, 0)) {
       if (self$step.type == "categorical") {
         FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, jitter)
@@ -264,10 +259,10 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
-#' \dontrun{
 #' # Train a model:
 #'
 #' library(mlr3verse)
+#' library(ranger)
 #' data(bikes, package = "fme")
 #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 #'
@@ -281,7 +276,6 @@ ForwardMarginalEffect = R6Class("ForwardMarginalEffect",
 #'
 #' # Extract results:
 #' effects$results
-#' }
 #' @export
 fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
   return(ForwardMarginalEffect$new(makePredictor(model, data, target),

@@ -199,19 +199,22 @@ Partitioning = R6Class("Partitioning",
 #' @references
 #' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
 #' @examples
-#' \dontrun{
 #' # Train a model and compute FMEs:
+#'
 #' library(mlr3verse)
+#' library(ranger)
 #' data(bikes, package = "fme")
-#' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+#' task = as_task_regr(x = bikes, id = "bikes", target = "count")
+#' forest = lrn("regr.ranger")$train(task)
 #' effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
 #'               step.size = 1, ep.method = "envelope")
 #'
 #' # Find a partitioning with exactly 3 subspaces:
 #' subspaces = came(effects, number.partitions = 3)
 #'
-#' # Find a partitioning with a maximum standard deviation of 4, use `rpart`:
-#' subspaces = came(effects, max.sd = 4, rp.method = "rpart")
+#' # Find a partitioning with a maximum standard deviation of 8, use `rpart`:
+#' library(rpart)
+#' subspaces = came(effects, max.sd = 8, rp.method = "rpart")
 #'
 #' # Analyze results:
 #' summary(subspaces)
@@ -220,8 +223,6 @@ Partitioning = R6Class("Partitioning",
 #' # Extract results:
 #' subspaces$results
 #' subspaces$tree
-#'
-#'}
 #' @export
 came = function(effects, number.partitions = NULL, max.sd = Inf, rp.method = "ctree", tree.control = NULL) {
   assertChoice(rp.method, choices = c("ctree", "rpart"))

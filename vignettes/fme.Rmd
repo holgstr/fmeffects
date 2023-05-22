@@ -49,7 +49,9 @@ FMEs are a model-agnostic interpretation method, i.e., they can be applied to an
 
 ```{r, message=FALSE}
 library(mlr3verse)
-forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+library(ranger)
+task = as_task_regr(x = bikes, id = "bikes", target = "count")
+forest = lrn("regr.ranger")$train(task)
 ```
 
 ---
@@ -160,11 +162,11 @@ This computes the AME for each feature included in the model, with a default ste
 We can specify a custom subset of features and step sizes using the `features` argument:
 
 ```{r, warning=FALSE}
-overview =ame(model = forest,
-    data = bikes,
-    target = "count",
-    features = c(weather = c("rain", "clear"), temp = -1, humidity = 0.1),
-    ep.method = "envelope")
+overview = ame(model = forest,
+               data = bikes,
+               target = "count",
+               features = c(weather = c("rain", "clear"), temp = -1, humidity = 0.1),
+               ep.method = "envelope")
 overview$results
 ```
 
