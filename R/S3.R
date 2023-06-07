@@ -99,7 +99,7 @@ summary.Partitioning = function(object, ...) {
     }
 
     res = res[c(1,which(res$is.terminal.node == TRUE)), -(ncol(res))]
-    res$"" = c("*", rep("", nrow(res) - 1))
+    res$" " = c("*", rep("", nrow(res) - 1))
     print(res, row.names = FALSE)
     cat("---\n")
     cat("* root node (non-partitioned)")
