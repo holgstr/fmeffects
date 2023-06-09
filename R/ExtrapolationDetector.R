@@ -1,4 +1,4 @@
-ExtrapolationDetector = R6Class("ExtrapolationDetector",
+ExtrapolationDetector = R6::R6Class("ExtrapolationDetector",
   public = list(
     initialize = function(data, data.step, feature.types, method, step.type) {
 

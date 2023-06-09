@@ -3,7 +3,7 @@
 #' @description This is the abstract superclass for partitioning objects like [PartitioningCtree] and [PartitioningRpart].
 #' A Partitioning contains information about feature subspaces with conditional average marginal effects (cAME) computed for `ForwardMarginalEffect` objects.
 #' @export
-Partitioning = R6Class("Partitioning",
+Partitioning = R6::R6Class("Partitioning",
   public = list(
 
     #' @description Create a Partitioning object
@@ -72,19 +72,19 @@ Partitioning = R6Class("Partitioning",
     initializeSubclass = function(object, method, value, tree.control) {
 
       # Check if object is of class 'ForwardMarginalEffect'
-      assertClass(object, classes = "ForwardMarginalEffect")
+      checkmate::assertClass(object, classes = "ForwardMarginalEffect")
 
       # Check if object has FMEs computed
-      assertTRUE(object$computed)
+      checkmate::assertTRUE(object$computed)
 
       # Check if method is sensible
-      assertChoice(method, choices = c("partitions", "max.sd"))
+      checkmate::assertChoice(method, choices = c("partitions", "max.sd"))
 
       # Check if value is sensible and within range
       if (method == "partitions") {
-        assertIntegerish(value, lower = 2, upper = 8, len = 1)
+        checkmate::assertIntegerish(value, lower = 2, upper = 8, len = 1)
       } else {
-        assertNumeric(value, lower = sqrt(.Machine$double.eps))
+        checkmate::assertNumeric(value, lower = sqrt(.Machine$double.eps))
       }
 
       self$object = object
@@ -96,7 +96,7 @@ Partitioning = R6Class("Partitioning",
 
     partConstant = function(data, value, tree) {
 
-      partitions = length(nodeids(tree, terminal = TRUE))
+      partitions = length(partykit::nodeids(tree, terminal = TRUE))
       if (partitions < value) {
         stop(paste(class(self)[1], "was unable to find a tree with at least", value, "terminal nodes"))
       }
@@ -111,10 +111,10 @@ Partitioning = R6Class("Partitioning",
 
       # Function for the max.sd of all terminal nodes in a party tree
       sdTree = function(tree) {
-        df = as.data.table(data_party(tree))
-        terminal.nodes = nodeids(tree, terminal = TRUE)
+        df = as.data.table(partykit::data_party(tree))
+        terminal.nodes = partykit::nodeids(tree, terminal = TRUE)
         sdMax = function(data, id) {
-          setkey(data, "(fitted)")
+          data.table::setkey(data, "(fitted)")
           fme = unlist(data[.(id)][,1])
           sd.max = sd(fme)
           return(sd.max)
@@ -123,7 +123,7 @@ Partitioning = R6Class("Partitioning",
         return(max.sd)
       }
 
-      partitions = length(nodeids(tree, terminal = TRUE))
+      partitions = length(partykit::nodeids(tree, terminal = TRUE))
 
       # Find best tree among all trees created by iterative pruning
       best.tree = tree
@@ -136,11 +136,11 @@ Partitioning = R6Class("Partitioning",
           best.tree = tree
           best.sd = sd.tree
         }
-        partitions = length(nodeids(tree, terminal = TRUE))
+        partitions = length(partykit::nodeids(tree, terminal = TRUE))
       }
 
       # Check if best tree is admissible
-      if (length(nodeids(best.tree, terminal = TRUE)) > 1 & best.sd <= value) {
+      if (length(partykit::nodeids(best.tree, terminal = TRUE)) > 1 & best.sd <= value) {
         return(best.tree)
       } else {
         stop(paste(class(self)[1], "was unable to find a tree with a maximum SD of", value))
@@ -149,13 +149,13 @@ Partitioning = R6Class("Partitioning",
     },
 
     getResults = function(tree, object) {
-      nodes = nodeids(tree)
+      nodes = partykit::nodeids(tree)
       nodeResults = function(tree, object, node.id) {
-        terminal.nodes = nodeids(tree, from = node.id, terminal = TRUE)
+        terminal.nodes = partykit::nodeids(tree, from = node.id, terminal = TRUE)
         is.terminal = node.id %in% terminal.nodes
-        data = as.data.table(data_party(tree))
+        data = as.data.table(partykit::data_party(tree))
         if (!("nlm" %in% names(object$results))) {
-          setkey(data, "(fitted)")
+          data.table::setkey(data, "(fitted)")
           data = data[.(terminal.nodes),]
           res = list("n" = nrow(data),
                      "cAME" = mean(data$fme),
@@ -163,7 +163,7 @@ Partitioning = R6Class("Partitioning",
                      "is.terminal.node" = is.terminal)
         } else {
           data.table::set(data, j = "nlm", value = object$results$nlm)
-          setkey(data, "(fitted)")
+          data.table::setkey(data, "(fitted)")
           data = data[.(terminal.nodes),]
           res = list("n" = nrow(data),
                      "cAME" = mean(data$fme),
@@ -212,9 +212,9 @@ Partitioning = R6Class("Partitioning",
 #' # Find a partitioning with exactly 3 subspaces:
 #' subspaces = came(effects, number.partitions = 3)
 #'
-#' # Find a partitioning with a maximum standard deviation of 8, use `rpart`:
+#' # Find a partitioning with a maximum standard deviation of 20, use `rpart`:
 #' library(rpart)
-#' subspaces = came(effects, max.sd = 8, rp.method = "rpart")
+#' subspaces = came(effects, max.sd = 20, rp.method = "rpart")
 #'
 #' # Analyze results:
 #' summary(subspaces)
@@ -225,7 +225,7 @@ Partitioning = R6Class("Partitioning",
 #' subspaces$tree
 #' @export
 came = function(effects, number.partitions = NULL, max.sd = Inf, rp.method = "ctree", tree.control = NULL) {
-  assertChoice(rp.method, choices = c("ctree", "rpart"))
+  checkmate::assertChoice(rp.method, choices = c("ctree", "rpart"))
   makePartitioner = function(rp.method, ...) {
     if (rp.method == "ctree") {
       part = PartitioningCtree$new(...)

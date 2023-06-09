@@ -45,9 +45,9 @@ effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
 # Find a partitioning with exactly 3 subspaces:
 subspaces = came(effects, number.partitions = 3)
 
-# Find a partitioning with a maximum standard deviation of 8, use `rpart`:
+# Find a partitioning with a maximum standard deviation of 20, use `rpart`:
 library(rpart)
-subspaces = came(effects, max.sd = 8, rp.method = "rpart")
+subspaces = came(effects, max.sd = 20, rp.method = "rpart")
 
 # Analyze results:
 summary(subspaces)

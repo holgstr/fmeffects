@@ -7,7 +7,7 @@
 #'
 #' It is recommended to use [came()] for construction of Partitioning objects.
 #' @export
-PartitioningCtree = R6Class("PartitioningCtree",
+PartitioningCtree = R6::R6Class("PartitioningCtree",
 
   inherit = Partitioning,
 
@@ -26,9 +26,9 @@ PartitioningCtree = R6Class("PartitioningCtree",
   ),
   private = list(
 
-    growTree = function(data, tree.control = ctree_control(alpha = 0.35,
+    growTree = function(data, tree.control = partykit::ctree_control(alpha = 0.35,
                                                            minbucket = nrow(data)*0.02)) {
-      tree = ctree(fme ~ .,
+      tree = partykit::ctree(fme ~ .,
                    data = data,
                    control = tree.control)
       return(tree)

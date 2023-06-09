@@ -1,4 +1,4 @@
-NonLinearityMeasure <- R6Class("NonLinearityMeasure",
+NonLinearityMeasure <- R6::R6Class("NonLinearityMeasure",
   public = list(
     initialize = function(predictor, observation, feature, step.size, nlm.intervals) {
 

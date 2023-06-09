@@ -3,7 +3,7 @@
 #' @description This is the abstract superclass for predictor objects like [PredictorMLR3] and [PredictorCaret].
 #' A Predictor contains information about an ML model's prediction function and training data.
 #' @export
-Predictor = R6Class("Predictor",
+Predictor = R6::R6Class("Predictor",
 
   public = list(
 
@@ -29,10 +29,10 @@ Predictor = R6Class("Predictor",
     initializeSubclass = function(model, data, target) {
 
       # Check if data is data.frame
-      assertDataFrame(data, all.missing = FALSE)
+      checkmate::assertDataFrame(data, all.missing = FALSE)
 
       # Transform data into data.table if necessary
-      if (!testDataTable(data)) {
+      if (!checkmate::testDataTable(data)) {
         data = as.data.table(data)
       }
 

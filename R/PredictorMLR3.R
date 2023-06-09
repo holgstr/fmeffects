@@ -8,7 +8,7 @@
 #'
 #' It is recommended to use [makePredictor()] for construction of Predictor objects.
 #' @export
-PredictorMLR3 = R6Class("PredictorMLR3",
+PredictorMLR3 = R6::R6Class("PredictorMLR3",
 
   inherit = Predictor,
 

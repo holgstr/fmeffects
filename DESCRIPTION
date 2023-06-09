@@ -16,7 +16,7 @@ Suggests:
     ranger,
     rmarkdown,
     rpart
-Depends: 
+Imports: 
     checkmate,
     data.table,
     partykit,
@@ -41,6 +41,7 @@ Collate:
     'S3.R'
     'ame.R'
     'bikes.R'
+    'misc.R'
 URL: https://github.com/holgstr/fme
 BugReports: https://github.com/holgstr/fme/issues
 VignetteBuilder: knitr

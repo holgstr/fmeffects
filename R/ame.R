@@ -2,7 +2,7 @@
 #'
 #' @description The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
 #' @export
-AverageMarginalEffects = R6Class("AverageMarginalEffects",
+AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
   public = list(
     #' @description
     #' Create a new AME object.
