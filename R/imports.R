@@ -4,4 +4,5 @@
 #' @import ggparty
 #' @import partykit
 #' @import testthat
+NULL
 
