@@ -119,7 +119,7 @@ summary.Partitioning = function(object, ...) {
 #' @param ... additional arguments affecting the summary produced.
 #' @export
 print.Partitioning = function(x, ...) {
-  x = partitioning
+  partitioning = x
   cat("\n")
   cat(class(partitioning)[1])
   cat(" of an FME object\n\n")
