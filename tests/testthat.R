@@ -7,6 +7,5 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(fme)
 
-test_check("fme")
+test_check("fmeffects")

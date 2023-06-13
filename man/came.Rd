@@ -36,7 +36,7 @@ It computes feature subspaces for semi-global interpretations of FMEs via recurs
 
 library(mlr3verse)
 library(ranger)
-data(bikes, package = "fme")
+data(bikes, package = "fmeffects")
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 effects = fme(model = forest, data = bikes, target = "count", feature = "temp",

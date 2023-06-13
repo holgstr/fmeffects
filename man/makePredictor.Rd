@@ -20,7 +20,7 @@ A wrapper function that creates the correct subclass of \code{Predictor} by auto
 # Train a model:
 
 library(mlr3verse)
-data(bikes, package = "fme")
+data(bikes, package = "fmeffects")
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 

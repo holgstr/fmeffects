@@ -77,7 +77,7 @@ Predictor = R6::R6Class("Predictor",
 #' # Train a model:
 #'
 #' library(mlr3verse)
-#' data(bikes, package = "fme")
+#' data(bikes, package = "fmeffects")
 #' task = as_task_regr(x = bikes, id = "bikes", target = "count")
 #' forest = lrn("regr.ranger")$train(task)
 #'

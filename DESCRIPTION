@@ -1,9 +1,24 @@
-Package: fme
-Title: Forward Marginal Effects
-Version: 0.1.9
+Package: fmeffects
+Title: Model-Agnostic Interpretations with Forward Marginal Effects (FMEs)
+Version: 0.1.0
 Authors@R: 
-    person("Holger", "Löwe", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    c(
+      person(
+        given = "Holger", family = "Löwe", email = "hbj.loewe@gmail.com",
+        role = c("cre", "aut")),
+      person(
+        given  = "Christian A.", family = "Scholbeck",
+        email = "christian.scholbeck@stat.uni-muenchen.de",
+        role = c("aut"), comment = c(ORCID = "0000-0001-6607-4895")),
+      person(
+        given  = "Christian", family = "Heumann",
+        email = "christian.heumann@stat.uni-muenchen.de", role = c("rev")),
+      person(
+        given  = "Bernd", family = "Bischl",
+        email = "bernd.bischl@stat.uni-muenchen.de", role = c("rev")),
+      person(
+        given  = "Giuseppe", family = "Casalicchio",
+        email = "giuseppe.casalicchio@stat.uni-muenchen.de", role = c("rev")))
 Description: Computes Forward Marginal Effects (FME) for arbitrary supervised machine learning models.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -41,8 +56,8 @@ Collate:
     'S3.R'
     'ame.R'
     'bikes.R'
-    'imports.R'
     'misc.R'
+    'zzz.R'
 URL: https://github.com/holgstr/fme
 BugReports: https://github.com/holgstr/fme/issues
 VignetteBuilder: knitr

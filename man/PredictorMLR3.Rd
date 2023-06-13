@@ -10,7 +10,7 @@ The \code{model} is assumed to be a \code{LearnerRegr} or \code{LearnerClassif}.
 It is recommended to use \code{\link[=makePredictor]{makePredictor()}} for construction of Predictor objects.
 }
 \section{Super class}{
-\code{\link[fme:Predictor]{fme::Predictor}} -> \code{PredictorMLR3}
+\code{\link[fmeffects:Predictor]{fmeffects::Predictor}} -> \code{PredictorMLR3}
 }
 \section{Methods}{
 \subsection{Public methods}{

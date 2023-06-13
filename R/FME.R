@@ -19,7 +19,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
     #'
     #' library(mlr3verse)
     #' library(ranger)
-    #' data(bikes, package = "fme")
+    #' data(bikes, package = "fmeffects")
     #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
     #'
     #' # Create an `ForwardMarginalEffect` object:
@@ -263,7 +263,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #'
 #' library(mlr3verse)
 #' library(ranger)
-#' data(bikes, package = "fme")
+#' data(bikes, package = "fmeffects")
 #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 #'
 #' # Compute FMEs:

@@ -17,7 +17,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
     #'
     #' library(mlr3verse)
     #' library(ranger)
-    #' data(bikes, package = "fme")
+    #' data(bikes, package = "fmeffects")
     #' task = as_task_regr(x = bikes, id = "bikes", target = "count")
     #' forest = lrn("regr.ranger")$train(task)
     #'
@@ -219,7 +219,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 #'
 #' library(mlr3verse)
 #' library(ranger)
-#' data(bikes, package = "fme")
+#' data(bikes, package = "fmeffects")
 #' task = as_task_regr(x = bikes, id = "bikes", target = "count")
 #' forest = lrn("regr.ranger")$train(task)
 #'

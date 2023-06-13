@@ -48,7 +48,7 @@ It computes forward marginal effects (FMEs) for a specified change in feature va
 
 library(mlr3verse)
 library(ranger)
-data(bikes, package = "fme")
+data(bikes, package = "fmeffects")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
 # Compute FMEs:

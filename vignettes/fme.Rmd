@@ -27,12 +27,12 @@ The latest version of `fme` can be installed directly from GitHub:
 ```{r, eval=FALSE}
 library(devtools)
 install_github("holgstr/fme")
-library(fme)   
+library(fmeffects)   
 ```
 
 ```{r, echo=FALSE, message=FALSE}
 set.seed(123)
-library(fme) 
+library(fmeffects) 
 ```
 
 ### Example
@@ -40,7 +40,7 @@ library(fme)
 For demonstration purposes, we consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It contains information about bike sharing usage in Washington, D.C. for the years 2011-2012 during the period from 7 to 8 a.m. We are interested in predicting `count` (the total number of bikes lent out to users).
 
 ```{r}
-data(bikes, package = "fme")
+data(bikes, package = "fmeffects")
 str(bikes)
 ```
 

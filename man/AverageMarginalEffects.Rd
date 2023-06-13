@@ -16,7 +16,7 @@ The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
 
 library(mlr3verse)
 library(ranger)
-data(bikes, package = "fme")
+data(bikes, package = "fmeffects")
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
@@ -101,7 +101,7 @@ A new \code{AME} object.
 
 library(mlr3verse)
 library(ranger)
-data(bikes, package = "fme")
+data(bikes, package = "fmeffects")
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 

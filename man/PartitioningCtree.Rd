@@ -9,7 +9,7 @@ This task specializes \link{Partitioning} for the \code{ctree} algorithm for rec
 It is recommended to use \code{\link[=came]{came()}} for construction of Partitioning objects.
 }
 \section{Super class}{
-\code{\link[fme:Partitioning]{fme::Partitioning}} -> \code{PartitioningCtree}
+\code{\link[fmeffects:Partitioning]{fmeffects::Partitioning}} -> \code{PartitioningCtree}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -21,8 +21,8 @@ It is recommended to use \code{\link[=came]{came()}} for construction of Partiti
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="fme" data-topic="Partitioning" data-id="compute"><a href='../../fme/html/Partitioning.html#method-Partitioning-compute'><code>fme::Partitioning$compute()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="fme" data-topic="Partitioning" data-id="plot"><a href='../../fme/html/Partitioning.html#method-Partitioning-plot'><code>fme::Partitioning$plot()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="fmeffects" data-topic="Partitioning" data-id="compute"><a href='../../fmeffects/html/Partitioning.html#method-Partitioning-compute'><code>fmeffects::Partitioning$compute()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="fmeffects" data-topic="Partitioning" data-id="plot"><a href='../../fmeffects/html/Partitioning.html#method-Partitioning-plot'><code>fmeffects::Partitioning$plot()</code></a></span></li>
 </ul>
 </details>
 }}

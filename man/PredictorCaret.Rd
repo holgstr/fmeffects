@@ -10,7 +10,7 @@ The \code{model} is assumed to be a \code{c("train", "train.formula")}.
 It is recommended to use \code{\link[=makePredictor]{makePredictor()}} for construction of Predictor objects.
 }
 \section{Super class}{
-\code{\link[fme:Predictor]{fme::Predictor}} -> \code{PredictorCaret}
+\code{\link[fmeffects:Predictor]{fmeffects::Predictor}} -> \code{PredictorCaret}
 }
 \section{Methods}{
 \subsection{Public methods}{
