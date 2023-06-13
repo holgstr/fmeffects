@@ -1,6 +1,6 @@
 #' fmeffects
 #'
-#' Computes Forward Marginal Effects (FME) for arbitrary supervised machine learning models. You provide a model and data, and fmeffects gives you feature effects.
+#' Computes forward marginal effects (FME) for arbitrary supervised machine learning models. You provide a model and data, and 'fmeffects' gives you feature effects.
 "_PACKAGE"
 
 #' @import R6

@@ -19,7 +19,7 @@ Authors@R:
       person(
         given  = "Giuseppe", family = "Casalicchio",
         email = "giuseppe.casalicchio@stat.uni-muenchen.de", role = c("rev")))
-Description: Computes Forward Marginal Effects (FME) for arbitrary supervised machine learning models.
+Description: Computes forward marginal effects (FMEs) for arbitrary supervised machine learning models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

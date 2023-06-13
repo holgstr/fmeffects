@@ -6,7 +6,7 @@
 \alias{fmeffects-package}
 \title{fmeffects}
 \description{
-Computes Forward Marginal Effects (FME) for arbitrary supervised machine learning models. You provide a model and data, and fmeffects gives you feature effects.
+Computes forward marginal effects (FME) for arbitrary supervised machine learning models. You provide a model and data, and 'fmeffects' gives you feature effects.
 }
 \seealso{
 Useful links:
