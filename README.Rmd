@@ -32,7 +32,7 @@ See [here][5] for an in-depth tutorial. The big advantage of FMEs is that they a
 
 ```{r, echo = FALSE, message = FALSE}
 set.seed(123)
-library(fme)
+library(fmeffects)
 library(mlr3verse)
 data(bikes)
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
