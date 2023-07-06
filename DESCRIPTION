@@ -7,7 +7,7 @@ Authors@R:
         given = "Holger", family = "Löwe", email = "hbj.loewe@gmail.com",
         role = c("cre", "aut")),
       person(
-        given  = "Christian A.", family = "Scholbeck",
+        given  = "Christian", family = "Scholbeck",
         email = "christian.scholbeck@stat.uni-muenchen.de",
         role = c("aut"), comment = c(ORCID = "0000-0001-6607-4895")),
       person(

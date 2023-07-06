@@ -23,7 +23,7 @@ An \code{AME} object, with a field \code{results} containing a list of summary s
 \item \code{Feature}: The name of the feature.
 \item \code{step.size}: The step.size w.r.t. the specified feature.
 \item \code{AME}: The Average Marginal Effect for a step of length step.size w.r.t. the specified feature.
-\item \code{SD(AME)}: The standard deviation of FMEs for the specified feature and step.size.
+\item \code{SD(FME)}: The standard deviation of FMEs for the specified feature and step.size.
 \item \code{0.25}: The 0.25-quantile of FMEs for the specified feature and step.size.
 \item \code{0.75}: The 0.75-quantile of FMEs for the specified feature and step.size.
 \item \code{n}: The number of observations included for the computation of the AME. This can vary for the following reasons:

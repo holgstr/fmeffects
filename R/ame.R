@@ -58,7 +58,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
     },
 
     #' @description
-    #' Computes results, i.e., AMEs with their SDs, for an `AME` object.
+    #' Computes results, i.e., AMEs including the SD of FMEs, for an `AME` object.
     #' @return An `AME` object with results.
     #' @examples
     #' # Compute results:
@@ -95,6 +95,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
                                  step.size,
                                  round(fme$ame, 4),
                                  round(sd(fme$results$fme), 4),
+                                 round((sd(fme$results$fme) / fme$ame), 1),
                                  round(quantile(x = fme$results$fme, probs = c(0.25)), 4),
                                  round(quantile(x = fme$results$fme, probs = c(0.75)), 4),
                                  nrow(fme$results)))
@@ -117,6 +118,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
                                    as.character(categories[j]),
                                    round(fme$ame, 4),
                                    round(sd(fme$results$fme), 4),
+                                   round((sd(fme$results$fme) / fme$ame), 1),
                                    round(quantile(x = fme$results$fme, probs = c(0.25)), 4),
                                    round(quantile(x = fme$results$fme, probs = c(0.75)), 4),
                                    nrow(fme$results)))
@@ -143,6 +145,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
                                step.size,
                                round(fme$ame, 4),
                                round(sd(fme$results$fme), 4),
+                               round((sd(fme$results$fme) / fme$ame), 1),
                                round(quantile(x = fme$results$fme, probs = c(0.25)), 4),
                                round(quantile(x = fme$results$fme, probs = c(0.75)), 4),
                                nrow(fme$results)))
@@ -160,6 +163,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
                                  as.character(categories[j]),
                                  round(fme$ame, 4),
                                  round(sd(fme$results$fme), 4),
+                                 round((sd(fme$results$fme) / fme$ame), 1),
                                  round(quantile(x = fme$results$fme, probs = c(0.25)), 4),
                                  round(quantile(x = fme$results$fme, probs = c(0.75)), 4),
                                  nrow(fme$results)))
@@ -167,7 +171,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
           }
         }
       }
-      names(res) = c("Feature",  "step.size", "AME", "SD(AME)","0.25", "0.75", "n")
+      names(res) = c("Feature",  "step.size", "AME", "SD", "SD/AME", "0.25", "0.75", "n")
 
       self$results = res
       self$computed = TRUE
@@ -202,11 +206,12 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 #' @param target A string specifying the model's target variable.
 #' @param features A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
 #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
-#' @return An `AME` object, with a field `results` containing a list of summary statistics, including
+#' @return An `AverageMarginalEffects` object, with a field `results` containing a list of summary statistics, including
 #' * `Feature`: The name of the feature.
 #' * `step.size`: The step.size w.r.t. the specified feature.
 #' * `AME`: The Average Marginal Effect for a step of length step.size w.r.t. the specified feature.
-#' * `SD(AME)`: The standard deviation of FMEs for the specified feature and step.size.
+#' * `SD`: The standard deviation of FMEs for the specified feature and step.size.
+#' * `SD/AME`: The coefficient of variation for the specified feature and step.size.
 #' * `0.25`: The 0.25-quantile of FMEs for the specified feature and step.size.
 #' * `0.75`: The 0.75-quantile of FMEs for the specified feature and step.size.
 #' * `n`: The number of observations included for the computation of the AME. This can vary for the following reasons:

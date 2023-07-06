@@ -126,7 +126,7 @@ summary(overview)
 \if{html}{\out{<a id="method-AverageMarginalEffects-compute"></a>}}
 \if{latex}{\out{\hypertarget{method-AverageMarginalEffects-compute}{}}}
 \subsection{Method \code{compute()}}{
-Computes results, i.e., AMEs with their SDs, for an \code{AME} object.
+Computes results, i.e., AMEs including the SD of FMEs, for an \code{AME} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AverageMarginalEffects$compute()}\if{html}{\out{</div>}}
 }
