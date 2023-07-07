@@ -21,7 +21,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Christian Scholbeck \email{christian.scholbeck@stat.uni-muenchen.de} (\href{https://orcid.org/0000-0001-6607-4895}{ORCID})
+  \item Christian Scholbeck \email{christian.scholbeck@stat.uni-muenchen.de}
 }
 
 Other contributors:
