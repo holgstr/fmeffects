@@ -8,7 +8,8 @@ Authors@R: c(
     person("Bernd", "Bischl", , "bernd.bischl@stat.uni-muenchen.de", role = "rev"),
     person("Giuseppe", "Casalicchio", , "giuseppe.casalicchio@stat.uni-muenchen.de", role = "rev")
   )
-Description: Computes forward marginal effects (FMEs) for arbitrary supervised machine learning models.
+Description: Create local, regional, and global explanations for any machine learning model with forward marginal effects (FMEs).
+  You provide a model and data, and 'fmeffects' computes feature effects.
 License: LGPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
