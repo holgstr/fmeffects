@@ -1,4 +1,4 @@
-^fme\.Rproj$
+^fmeffects.Rproj
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
 ^docs$
@@ -7,3 +7,5 @@
 ^doc$
 ^Meta$
 ^cran-comments\.md$
+^README.Rmd
+^.github
