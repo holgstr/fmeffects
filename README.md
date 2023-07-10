@@ -18,14 +18,6 @@ classification models from the
 [caret](https://topepo.github.io/caret/available-models.html) and
 [mlr3](https://mlr3learners.mlr-org.com/) libraries.
 
-## Installation of development version
-
-``` r
-# Install directly from GitHub:
-library(devtools)
-install_github("holgstr/fme")
-```
-
 ## Quickstart
 
 See [here](https://holgstr.github.io/fme/articles/fme.html) for an
@@ -44,7 +36,7 @@ effects = fme(model = forest,
 plot(effects, jitter = c(0.2, 0))
 ```
 
-![](man/figures/unnamed-chunk-4-1.png)<!-- -->
+![](man/figures/unnamed-chunk-3-1.png)<!-- -->
 
 On average, an increase in temperature by 1°C results in an increase in
 the predicted number of bike rentals by more than 2. This is called the
