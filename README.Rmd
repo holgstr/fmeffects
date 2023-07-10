@@ -18,14 +18,6 @@ knitr::opts_chunk$set(
 
 This package implements [forward marginal effects (FMEs)][1], a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why they should be preferred to existing methods. Currently, `fme` supports regression and (binary) classification models from the [caret][4] and [mlr3][2] libraries. 
 
-## Installation of development version
-
-```{r, eval = FALSE}
-# Install directly from GitHub:
-library(devtools)
-install_github("holgstr/fme")
-```
-
 ## Quickstart
 
 See [here][5] for an in-depth tutorial. The big advantage of FMEs is that they are interpreted similar to beta coefficients in linear regression models. Consider the following example: how does an increase in temperature (`temp`) by 1°C affect bike rentals (`count`)?
