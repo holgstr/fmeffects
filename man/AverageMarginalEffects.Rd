@@ -16,17 +16,22 @@ The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
 
 library(mlr3verse)
 library(ranger)
+set.seed(123)
 data(bikes, package = "fmeffects")
+row.id = sample(1:nrow(bikes), 100)
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
-overview = AverageMarginalEffects$new(model = forest, data = bikes, target = "count")$compute()
+overview = AverageMarginalEffects$new(
+  model = forest,
+  data = bikes[row.id, ],
+  target = "count")$compute()
 summary(overview)
 
 # Compute AMEs for a subset of features with non-default step.sizes:
 overview = AverageMarginalEffects$new(model = forest,
-                                      data = bikes,
+                                      data = bikes[row.id, ],
                                       target = "count",
                                       features = c(humidity = 0.1,
                                                    weather = c("clear", "rain")))$compute()
@@ -101,17 +106,22 @@ A new \code{AME} object.
 
 library(mlr3verse)
 library(ranger)
+set.seed(123)
 data(bikes, package = "fmeffects")
+row.id = sample(1:nrow(bikes), 100)
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
-overview = AverageMarginalEffects$new(model = forest, data = bikes, target = "count")$compute()
+overview = AverageMarginalEffects$new(
+  model = forest,
+  data = bikes[row.id, ],
+  target = "count")$compute()
 summary(overview)
 
 # Compute AMEs for a subset of features with non-default step.sizes:
 overview = AverageMarginalEffects$new(model = forest,
-                                      data = bikes,
+                                      data = bikes[row.id, ],
                                       target = "count",
                                       features = c(humidity = 0.1,
                                                    weather = c("clear", "rain")))$compute()

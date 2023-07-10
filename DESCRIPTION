@@ -1,5 +1,5 @@
 Package: fmeffects
-Title: Model-Agnostic Interpretations with Forward Marginal Effects (FMEs)
+Title: Model-Agnostic Interpretations with Forward Marginal Effects
 Version: 0.1.0
 Authors@R: c(
     person("Holger", "Löwe", , "hbj.loewe@gmail.com", role = c("cre", "aut")),
@@ -8,7 +8,7 @@ Authors@R: c(
     person("Bernd", "Bischl", , "bernd.bischl@stat.uni-muenchen.de", role = "rev"),
     person("Giuseppe", "Casalicchio", , "giuseppe.casalicchio@stat.uni-muenchen.de", role = "rev")
   )
-Description: Create local, regional, and global explanations for any machine learning model with forward marginal effects (FMEs).
+Description: Create local, regional, and global explanations for any machine learning model with forward marginal effects.
   You provide a model and data, and 'fmeffects' computes feature effects.
 License: LGPL-3
 Encoding: UTF-8
