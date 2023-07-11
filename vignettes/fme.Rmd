@@ -14,32 +14,18 @@ vignette: >
 
 ## Introduction
 
-The `fme` package computes, aggregates and visualizes forward marginal effects (FMEs) for any supervised machine learning model. Read [here][4] how they are computed, or the [research paper][1] for a more in-depth understanding. There are three main functions: 
+The `fmeffects` package computes, aggregates, and visualizes forward marginal effects (FMEs) for any supervised machine learning model. Read [here][4] how they are computed or the [research paper][1] for a more in-depth understanding. There are three main functions: 
 
-- `fme()` computes FMEs for a given model, data, feature of interest and step size
+- `fme()` computes FMEs for a given model, data, feature of interest, and step size
 - `came()` can be applied subsequently to find subspaces of the feature space where FMEs are more homogeneous
 - `ame()` provides an overview of the prediction function w.r.t. each feature by using average marginal effects (AMEs) based on FMEs.
-
-### Installation
-
-The latest version of `fme` can be installed directly from GitHub:
-
-```{r, eval=FALSE}
-library(devtools)
-install_github("holgstr/fme")
-library(fmeffects)   
-```
-
-```{r, echo=FALSE, message=FALSE}
-set.seed(123)
-library(fmeffects) 
-```
 
 ### Example
 
 For demonstration purposes, we consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It contains information about bike sharing usage in Washington, D.C. for the years 2011-2012 during the period from 7 to 8 a.m. We are interested in predicting `count` (the total number of bikes lent out to users).
 
 ```{r}
+library(fmeffects)
 data(bikes, package = "fmeffects")
 str(bikes)
 ```
@@ -194,11 +180,9 @@ In this case, we get a decision tree that assigns observations to a feature subs
 
 ## References
 
-Fanaee-T, H. and Gama, J. (2014). Event labeling combining ensemble detectors and background knowledge,
-Progress in Artificial Intelligence 2(2): 113–127.
+Fanaee-T, H. and Gama, J. (2014). Event labeling combining ensemble detectors and background knowledge. Progress in Artificial Intelligence 2(2): 113–127
 
-Vanschoren, J., van Rijn, J. N., Bischl, B. and Torgo, L. (2013). Openml: networked science in machine
-learning, SIGKDD Explorations 15(2): 49–60. URL: http://doi.acm.org/10.1145/2641190.264119
+Vanschoren, J., van Rijn, J. N., Bischl, B. and Torgo, L. (2013). Openml: networked science in machine learning. SIGKDD Explorations 15(2): 49–60
 
 [1]: https://arxiv.org/abs/2201.08837
 
