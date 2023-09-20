@@ -16,18 +16,20 @@ knitr::opts_chunk$set(
 
 # **`fmeffects`**: An R Package for Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-This package implements [forward marginal effects (FMEs)][1], a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why they should be preferred to existing methods. Currently, `fme` supports regression and (binary) classification models from the [caret][4] and [mlr3][2] libraries. 
+This package implements [forward marginal effects (FMEs)][1], a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why they should be preferred to existing methods. Currently, `fmeffects` supports regression and (binary) classification models from the [caret][4] and [mlr3][2] libraries. 
 
 ## Quickstart
 
 See [here][5] for an in-depth tutorial. The big advantage of FMEs is that they are interpreted similar to beta coefficients in linear regression models. Consider the following example: how does an increase in temperature (`temp`) by 1°C affect bike rentals (`count`)?
 
-```{r, echo = FALSE, message = FALSE}
+```{r, message = FALSE}
+# Train a random forest on "bike" data
 set.seed(123)
 library(fmeffects)
 library(mlr3verse)
 data(bikes)
-forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+task = as_task_regr(x = bikes, id = "bikes", target = "count")
+forest = lrn("regr.ranger")$train(task)
 ```
 
 ```{r, message = FALSE, warning = FALSE}
@@ -46,23 +48,24 @@ Let's compute the AME for every feature of the model:
 
 ```{r, eval = FALSE}
 # Compute AMEs with default step sizes:
-ame(model = forest,
-    data = bikes,
-    target = "count")
+overview = ame(model = forest,
+               data = bikes,
+               target = "count")
+summary(overview)
 ```
-
 ```{r, echo = FALSE}
-ame(model = forest,
-    data = bikes,
-    target = "count")
+# Compute AMEs with default step sizes:
+overview = ame(model = forest,
+               data = bikes,
+               target = "count")
+summary(overview)
 ```
-
 [1]: https://arxiv.org/abs/2201.08837
 
 [2]: https://mlr3learners.mlr-org.com/
 
-[3]: https://holgstr.github.io/fme/articles/fme_theory.html
+[3]: https://holgstr.github.io/fmeffects/articles/fme_theory.html
 
 [4]: https://topepo.github.io/caret/available-models.html
 
-[5]: https://holgstr.github.io/fme/articles/fme.html
+[5]: https://holgstr.github.io/fmeffects/articles/fmeffects.html

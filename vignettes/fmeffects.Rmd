@@ -33,6 +33,7 @@ str(bikes)
 FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before we can compute FMEs, we need a trained model. The `fme` package supports models from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
+set.seed(123)
 library(mlr3verse)
 library(ranger)
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
@@ -68,7 +69,7 @@ Note that we have specified `ep.method = "envelope"`. This means we exclude obse
 plot(effects, jitter = c(0.2, 0))
 ```
 
-The black arrow indicates direction and magnitude of `step.size`. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FME tends to be positive for lower temperature values (0-17°C), it turns negative for higher temperature values (>17°C). \
+The black arrow indicates direction and magnitude of `step.size`. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FME tends to be positive for lower temperature values (0-20°C), it turns negative for higher temperature values (>20°C). \
 
 Also, we can extract all relevant aggregate information from the `effects` object:
 
@@ -144,7 +145,7 @@ overview$results
 ```
 
 This computes the AME for each feature included in the model, with a default step size of 1 for numerical features (or, 0.01 if their range is smaller than 1). For categorical features, AMEs are computed for all available categories. \
-We can specify a custom subset of features and step sizes using the `features` argument:
+<!--We can specify a custom subset of features and step sizes using the `features` argument:
 
 ```{r, warning=FALSE}
 overview = ame(model = forest,
@@ -156,7 +157,7 @@ overview$results
 ```
 
 Again, note that often it is advisable to set `ep.method = "envelope"` so we avoid model extrapolation.
-
+-->
 ------
 
 ## Semi-global Interpretations
@@ -174,7 +175,7 @@ As can be seen, the CTREE algorithm was used to partition the feature space into
 plot(subspaces)
 ```
 
-In this case, we get a decision tree that assigns observations to a feature subspace according to the weather situation (`weather`) and season (`season`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. With cAMEs of 6.68, -9.39, and 16.71, respectively, the expected ME is estimated to vary substantially in direction and magnitude across the subspaces. For example, the cAME is highest on rainy days. It turns negative on non-rainy days in spring, summer and winter.
+In this case, we get a decision tree that assigns observations to a feature subspace according to the weather situation (`weather`) and the day of the week (`weekday`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. With cAMEs of -4.88, 4.16, and 25.68, respectively, the expected ME is estimated to vary substantially in direction and magnitude across the subspaces. For example, the cAME is highest on rainy days. It turns negative on non-rainy days in spring, summer and winter.
 
 ---
 
@@ -190,4 +191,4 @@ Vanschoren, J., van Rijn, J. N., Bischl, B. and Torgo, L. (2013). Openml: networ
 
 [3]: https://mlr3learners.mlr-org.com/
 
-[4]: https://holgstr.github.io/fme/articles/fme_theory.html
+[4]: https://holgstr.github.io/fmeffects/articles/fme_theory.html

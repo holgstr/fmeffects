@@ -11,20 +11,31 @@ This package implements [forward marginal effects
 (FMEs)](https://arxiv.org/abs/2201.08837), a model-agnostic framework
 for interpreting feature effects in machine learning models. FMEs are
 the simplest and most intuitive way to interpret feature effects - we
-explain [here](https://holgstr.github.io/fme/articles/fme_theory.html)
-how they are computed and why they should be preferred to existing
-methods. Currently, `fme` supports regression and (binary)
-classification models from the
+explain
+[here](https://holgstr.github.io/fmeffects/articles/fme_theory.html) how
+they are computed and why they should be preferred to existing methods.
+Currently, `fmeffects` supports regression and (binary) classification
+models from the
 [caret](https://topepo.github.io/caret/available-models.html) and
 [mlr3](https://mlr3learners.mlr-org.com/) libraries.
 
 ## Quickstart
 
-See [here](https://holgstr.github.io/fme/articles/fme.html) for an
-in-depth tutorial. The big advantage of FMEs is that they are
+See [here](https://holgstr.github.io/fmeffects/articles/fmeffects.html)
+for an in-depth tutorial. The big advantage of FMEs is that they are
 interpreted similar to beta coefficients in linear regression models.
 Consider the following example: how does an increase in temperature
 (`temp`) by 1°C affect bike rentals (`count`)?
+
+``` r
+# Train a random forest on "bike" data
+set.seed(123)
+library(fmeffects)
+library(mlr3verse)
+data(bikes)
+task = as_task_regr(x = bikes, id = "bikes", target = "count")
+forest = lrn("regr.ranger")$train(task)
+```
 
 ``` r
 # Compute effects for a trained model 'forest':
@@ -46,7 +57,37 @@ Let’s compute the AME for every feature of the model:
 
 ``` r
 # Compute AMEs with default step sizes:
-ame(model = forest,
-    data = bikes,
-    target = "count")
+overview = ame(model = forest,
+               data = bikes,
+               target = "count")
+summary(overview)
 ```
+
+    #> 
+    #> Model Summary Using Average Marginal Effects:
+    #> 
+    #>       Feature step.size       AME      SD SD/AME      0.25      0.75   n
+    #> 1      season    spring   -29.472 31.5101   -1.1   -39.955   -5.5139 548
+    #> 2      season    summer    0.4772 22.5212   47.2   -9.0235   11.6321 543
+    #> 3      season      fall   11.7452 28.5851    2.4   -2.4282   34.1763 539
+    #> 4      season    winter   15.5793 24.6394    1.6    1.6525   26.2254 551
+    #> 5        year         0   -99.038 67.1788   -0.7 -157.0608  -20.0628 364
+    #> 6        year         1   97.0566  60.521    0.6   21.9401  148.0847 363
+    #> 7       month         1    4.0814 13.3513    3.3   -1.2566     7.459 727
+    #> 8     holiday     False   -1.2178 21.6103  -17.7   -9.1095    9.8232  21
+    #> 9     holiday      True   -13.738 25.3496   -1.8  -32.6323    6.2019 706
+    #> 10    weekday       Sat  -55.0908 49.6534   -0.9  -87.6489  -15.8843 622
+    #> 11    weekday       Sun  -85.1527 57.7791   -0.7 -122.1504  -31.8105 622
+    #> 12    weekday       Mon   10.7224 29.2179    2.7   -8.4101   30.4207 623
+    #> 13    weekday       Tue   17.9396  25.728    1.4    1.1959   32.5073 625
+    #> 14    weekday       Wed   20.4025 23.1599    1.1    1.3386   32.8358 623
+    #> 15    weekday       Thu   19.4455 24.1105    1.2   -0.3097   33.4997 624
+    #> 16    weekday       Fri    1.7712 35.3088   19.9  -24.8956   29.5147 623
+    #> 17 workingday     False -204.1875 89.3882   -0.4  -257.144 -142.4332 496
+    #> 18 workingday      True  161.0619 62.5733    0.4  118.9398  209.6916 231
+    #> 19    weather     clear   26.1983 41.7886    1.6    3.5991   25.9257 284
+    #> 20    weather     misty     3.023 32.8661   10.9   -9.1498     0.973 513
+    #> 21    weather      rain  -55.3083 53.0127     -1  -94.4096    -5.481 657
+    #> 22       temp         1    2.3426  7.1269      3   -0.4294    4.5534 727
+    #> 23   humidity      0.01   -0.2749   2.626   -9.6   -0.3249    0.3504 727
+    #> 24  windspeed         1    0.0052  2.4318    470   -0.1823    0.2318 727

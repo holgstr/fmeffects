@@ -109,4 +109,4 @@ In a way, the FME is the much smarter, little brother of the dME:\
 
 Scholbeck, Christian A., et al. "Marginal Effects for Non-Linear Prediction Functions." arXiv preprint arXiv:2201.08837 (2022).
 
-[1]: https://holgstr.github.io/fme/articles/fme.html#categorical-features
+[1]: https://holgstr.github.io/fmeffects/articles/fmeffects.html#categorical-features
