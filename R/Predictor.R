@@ -91,7 +91,10 @@ makePredictor = function(model, data, target) {
   if ("Learner" %in% class(model)) {
     return(PredictorMLR3$new(model, data, target))
   }
-  if (all.equal(c("train", "train.formula"), class(model))) {
+  if ("train" %in% class(model) & "train.formula" %in% class(model)) {
     return(PredictorCaret$new(model, data, target))
+  }
+  if ("model_fit" %in% class(model)) {
+    return(PredictorParsnip$new(model, data, target))
   }
 }

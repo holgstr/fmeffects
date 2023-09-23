@@ -41,6 +41,7 @@ Collate:
     'Predictor.R'
     'PredictorCaret.R'
     'PredictorMLR3.R'
+    'PredictorParsnip.R'
     'Pruner.R'
     'S3.R'
     'ame.R'

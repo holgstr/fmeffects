@@ -4,7 +4,7 @@
 \alias{PredictorMLR3}
 \title{PredictorMLR3}
 \description{
-This task specializes \link{Predictor} for \code{mlr3} regression models.
+This task specializes \link{Predictor} for \code{mlr3} models.
 The \code{model} is assumed to be a \code{LearnerRegr} or \code{LearnerClassif}.
 
 It is recommended to use \code{\link[=makePredictor]{makePredictor()}} for construction of Predictor objects.

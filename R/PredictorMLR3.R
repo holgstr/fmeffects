@@ -3,7 +3,7 @@
 #' @include Predictor.R
 #'
 #' @description
-#' This task specializes [Predictor] for `mlr3` regression models.
+#' This task specializes [Predictor] for `mlr3` models.
 #' The `model` is assumed to be a `LearnerRegr` or `LearnerClassif`.
 #'
 #' It is recommended to use [makePredictor()] for construction of Predictor objects.
