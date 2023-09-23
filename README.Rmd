@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # **`fmeffects`**: An R Package for Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-This package implements [forward marginal effects (FMEs)][1], a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why they should be preferred to existing methods. Currently, `fmeffects` supports regression and (binary) classification models from the [caret][4] and [mlr3][2] libraries. 
+This package implements [forward marginal effects (FMEs)][1], a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why they should be preferred to existing methods. Currently, `fmeffects` supports regression and (binary) classification models from the [mlr3][2], [tidymodels][6] and [caret][4] and libraries. 
 
 ## Quickstart
 
@@ -69,3 +69,5 @@ summary(overview)
 [4]: https://topepo.github.io/caret/available-models.html
 
 [5]: https://holgstr.github.io/fmeffects/articles/fmeffects.html
+
+[6]: https://www.tidymodels.org/find/parsnip/

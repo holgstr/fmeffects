@@ -30,7 +30,7 @@ data(bikes, package = "fmeffects")
 str(bikes)
 ```
 
-FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before we can compute FMEs, we need a trained model. The `fme` package supports models from the `caret` and `mlr3` libraries. Let's try it with a random forest using the `ranger` algorithm:
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before we can compute FMEs, we need a trained model. The `fme` package supports models from the `mlr3`, `tidymodels` (parsnip) and `caret` libraries. Let's try it with a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
 set.seed(123)
