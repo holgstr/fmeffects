@@ -17,8 +17,7 @@ they are computed and why they should be preferred to existing methods.
 Currently, `fmeffects` supports regression and (binary) classification
 models from the [mlr3](https://mlr3learners.mlr-org.com/),
 [tidymodels](https://www.tidymodels.org/find/parsnip/) and
-[caret](https://topepo.github.io/caret/available-models.html) and
-libraries.
+[caret](https://topepo.github.io/caret/available-models.html) libraries.
 
 ## Quickstart
 
