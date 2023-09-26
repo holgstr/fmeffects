@@ -1,0 +1,11 @@
+pandoc: 3.1.1
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  fmeffects: fmeffects.html
+  fme_theory: fme_theory.html
+last_built: 2023-09-26T13:00Z
+urls:
+  reference: https://holgstr.github.io/fme/reference
+  article: https://holgstr.github.io/fme/articles
+
