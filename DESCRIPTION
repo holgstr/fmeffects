@@ -1,6 +1,6 @@
 Package: fmeffects
 Title: Model-Agnostic Interpretations with Forward Marginal Effects
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Holger", "Löwe", , "hbj.loewe@gmail.com", role = c("cre", "aut")),
     person("Christian", "Scholbeck", , "christian.scholbeck@stat.uni-muenchen.de", role = "aut"),
@@ -48,6 +48,6 @@ Collate:
     'bikes.R'
     'misc.R'
     'zzz.R'
-URL: https://github.com/holgstr/fme
-BugReports: https://github.com/holgstr/fme/issues
+URL: https://github.com/holgstr/fmeffects
+BugReports: https://github.com/holgstr/fmeffects/issues
 VignetteBuilder: knitr
