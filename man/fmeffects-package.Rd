@@ -11,8 +11,8 @@ Computes forward marginal effects (FME) for arbitrary supervised machine learnin
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/holgstr/fme}
-  \item Report bugs at \url{https://github.com/holgstr/fme/issues}
+  \item \url{https://github.com/holgstr/fmeffects}
+  \item Report bugs at \url{https://github.com/holgstr/fmeffects/issues}
 }
 
 }
