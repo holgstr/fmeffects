@@ -26,11 +26,22 @@ This package implements [forward marginal effects (FMEs)][1], a model-agnostic f
 
 See [here][5] for an in-depth tutorial. The big advantage of FMEs is that they are interpreted similar to beta coefficients in linear regression models. Consider the following example: how does an increase in temperature (`temp`) by 1°C affect bike rentals (`count`)?
 
-```{r, message = FALSE}
+```{r, message = FALSE, eval = FALSE}
 # Train a random forest on "bike" data
 set.seed(123)
 library(fmeffects)
 library(mlr3verse)
+data(bikes)
+task = as_task_regr(x = bikes, id = "bikes", target = "count")
+forest = lrn("regr.ranger")$train(task)
+```
+
+```{r, message = FALSE, echo = FALSE}
+# Train a random forest on "bike" data
+set.seed(123)
+library(mlr3verse)
+library(devtools)
+devtools::load_all()
 data(bikes)
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
