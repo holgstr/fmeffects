@@ -59,7 +59,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                    #position = "identity") +
                    width = jitter[1],
                    height = jitter[2]) +
-        ggplot2::scale_fill_viridis_c(ggplot2::guide_legend("FME")) +
+        ggplot2::scale_fill_viridis_c(guide = ggplot2::guide_legend("FME")) +
         ggplot2::geom_segment(ggplot2::aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
                          xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
                          y = min(x2)-0.03*range.x2,
@@ -95,7 +95,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                      alpha = 0.6,
                      width = jitter[1],
                      height = jitter[2]) +
-          ggplot2::scale_fill_viridis_c(ggplot2::guide_legend("NLM"),
+          ggplot2::scale_fill_viridis_c(guide = ggplot2::guide_legend("NLM"),
                                breaks=c(0.98, 0.5, 0.01),
                                labels = c("1.0", "0.5", "\u2264 0")) +
           ggplot2::geom_segment(ggplot2::aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
