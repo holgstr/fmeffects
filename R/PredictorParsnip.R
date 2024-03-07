@@ -31,8 +31,8 @@ PredictorParsnip = R6::R6Class("PredictorParsnip",
         prediction = as.data.table(predict(self$model, newdata))
       }
       if (self$model$spec$mode == "classification") {
-        # the target class for the probability is the .pred_Class1 in parsnip
-        prediction = as.data.table(predict(self$model, newdata, type = "prob")[1])
+        # the target class for the probability is the second category in parsnip
+        prediction = as.data.table(predict(self$model, newdata, type = "prob")[2])
       }
       names(prediction) = "prediction"
       return(prediction)

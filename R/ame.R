@@ -98,10 +98,10 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
                                               ep.method = ep.method)$compute()
               res = rbind(res, c(feature,
                                  step.size,
-                                 round(fme$ame, 4),
-                                 round(sd(fme$results$fme), 4),
-                                 round(quantile(x = fme$results$fme, probs = c(0.25)), 4),
-                                 round(quantile(x = fme$results$fme, probs = c(0.75)), 4),
+                                 round(fme$ame, 5),
+                                 round(sd(fme$results$fme), 5),
+                                 round(quantile(x = fme$results$fme, probs = c(0.25)), 5),
+                                 round(quantile(x = fme$results$fme, probs = c(0.75)), 5),
                                  nrow(fme$results)))
             }
             # Categorical Features
@@ -120,10 +120,10 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 
                 res = rbind(res, c(featurename,
                                    as.character(categories[j]),
-                                   round(fme$ame, 4),
-                                   round(sd(fme$results$fme), 4),
-                                   round(quantile(x = fme$results$fme, probs = c(0.25)), 4),
-                                   round(quantile(x = fme$results$fme, probs = c(0.75)), 4),
+                                   round(fme$ame, 5),
+                                   round(sd(fme$results$fme), 5),
+                                   round(quantile(x = fme$results$fme, probs = c(0.25)), 5),
+                                   round(quantile(x = fme$results$fme, probs = c(0.75)), 5),
                                    nrow(fme$results)))
               }
             }

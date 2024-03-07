@@ -48,6 +48,6 @@ Collate:
     'bikes.R'
     'misc.R'
     'zzz.R'
-URL: https://github.com/holgstr/fmeffects
+URL: https://holgstr.github.io/fmeffects/, https://github.com/holgstr/fmeffects
 BugReports: https://github.com/holgstr/fmeffects/issues
 VignetteBuilder: knitr
