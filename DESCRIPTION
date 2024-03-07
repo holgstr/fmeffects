@@ -1,6 +1,6 @@
 Package: fmeffects
 Title: Model-Agnostic Interpretations with Forward Marginal Effects
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person("Holger", "Löwe", , "hbj.loewe@gmail.com", role = c("cre", "aut")),
     person("Christian", "Scholbeck", , "christian.scholbeck@stat.uni-muenchen.de", role = "aut"),
