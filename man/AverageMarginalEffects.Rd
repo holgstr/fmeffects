@@ -18,21 +18,18 @@ library(mlr3verse)
 library(ranger)
 set.seed(123)
 data(bikes, package = "fmeffects")
-row.id = sample(1:nrow(bikes), 100)
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
 overview = AverageMarginalEffects$new(
   model = forest,
-  data = bikes[row.id, ],
-  target = "count")$compute()
+  data = bikes)$compute()
 summary(overview)
 
 # Compute AMEs for a subset of features with non-default step.sizes:
 overview = AverageMarginalEffects$new(model = forest,
-                                      data = bikes[row.id, ],
-                                      target = "count",
+                                      data = bikes,
                                       features = c(humidity = 0.1,
                                                    weather = c("clear", "rain")))$compute()
 summary(overview)
@@ -73,23 +70,15 @@ overview$compute()
 \subsection{Method \code{new()}}{
 Create a new AME object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AverageMarginalEffects$new(
-  model,
-  data,
-  target,
-  features = NULL,
-  ep.method = "none"
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AverageMarginalEffects$new(model, data, features = NULL, ep.method = "none")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{model}}{The (trained) model, with the ability to predict on new data. This must be an \code{Learner} (\code{mlr3}) or \code{train} (\code{caret}) object.}
+\item{\code{model}}{The (trained) model, with the ability to predict on new data. This must be a \code{train.formula} (\code{tidymodels}), \code{Learner} (\code{mlr3}), \code{train} (\code{caret}), \code{lm} or \code{glm} object.}
 
 \item{\code{data}}{The data used for computing AMEs, must be data.frame or data.table.}
-
-\item{\code{target}}{A string specifying the model's target variable.}
 
 \item{\code{features}}{A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.}
 
@@ -108,21 +97,18 @@ library(mlr3verse)
 library(ranger)
 set.seed(123)
 data(bikes, package = "fmeffects")
-row.id = sample(1:nrow(bikes), 100)
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
 overview = AverageMarginalEffects$new(
   model = forest,
-  data = bikes[row.id, ],
-  target = "count")$compute()
+  data = bikes)$compute()
 summary(overview)
 
 # Compute AMEs for a subset of features with non-default step.sizes:
 overview = AverageMarginalEffects$new(model = forest,
-                                      data = bikes[row.id, ],
-                                      target = "count",
+                                      data = bikes,
                                       features = c(humidity = 0.1,
                                                    weather = c("clear", "rain")))$compute()
 summary(overview)

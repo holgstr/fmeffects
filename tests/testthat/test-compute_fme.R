@@ -17,7 +17,6 @@ test_that("FME computation correct", {
 
   fme.results = fme(model = tree,
                     data = df,
-                    target = "y",
                     feature = "x",
                     step.size = 2,
                     ep.method = "none")

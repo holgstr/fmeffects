@@ -21,7 +21,7 @@ data(bikes, package = "fmeffects")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
 # Create an `ForwardMarginalEffect` object:
-effects = ForwardMarginalEffect$new(makePredictor(forest, bikes, "count"),
+effects = ForwardMarginalEffect$new(makePredictor(forest, bikes),
                   feature = c("temp", "humidity"),
                   step.size = c(1, 0.01),
                   ep.method = "envelope")
@@ -127,7 +127,7 @@ data(bikes, package = "fmeffects")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
 # Create an `ForwardMarginalEffect` object:
-effects = ForwardMarginalEffect$new(makePredictor(forest, bikes, "count"),
+effects = ForwardMarginalEffect$new(makePredictor(forest, bikes),
                   feature = c("temp", "humidity"),
                   step.size = c(1, 0.01),
                   ep.method = "envelope")

@@ -7,7 +7,6 @@
 fme(
   model,
   data,
-  target,
   feature,
   step.size,
   ep.method = "none",
@@ -19,8 +18,6 @@ fme(
 \item{model}{The (trained) model, with the ability to predict on new data. This must be a \code{train.formula} (\code{tidymodels}), \code{Learner} (\code{mlr3}), \code{train} (\code{caret}), \code{lm} or \code{glm} object.}
 
 \item{data}{The data used for computing FMEs, must be data.frame or data.table.}
-
-\item{target}{A string specifying the model's target variable.}
 
 \item{feature}{A character vector of the names of the feature variables affected by the step.
 For numerical steps, this must have length 1 or 2.
@@ -52,7 +49,7 @@ data(bikes, package = "fmeffects")
 forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 
 # Compute FMEs:
-effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
+effects = fme(model = forest, data = bikes, feature = "temp",
               step.size = 1, ep.method = "envelope")
 
 # Analyze results:
