@@ -66,7 +66,6 @@ It computes forward marginal effects (FMEs) for a specified change in feature va
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fme</span><span class="op">(</span></span>
 <span>  <span class="va">model</span>,</span>
 <span>  <span class="va">data</span>,</span>
-<span>  <span class="va">target</span>,</span>
 <span>  <span class="va">feature</span>,</span>
 <span>  <span class="va">step.size</span>,</span>
 <span>  ep.method <span class="op">=</span> <span class="st">"none"</span>,</span>
@@ -78,15 +77,11 @@ It computes forward marginal effects (FMEs) for a specified change in feature va
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>model</dt>
-<dd><p>The (trained) model, with the ability to predict on new data. This must be an <code>Learner</code> (<code>mlr3</code>) or <code>train</code> (<code>caret</code>) object.</p></dd>
+<dd><p>The (trained) model, with the ability to predict on new data. This must be a <code>train.formula</code> (<code>tidymodels</code>), <code>Learner</code> (<code>mlr3</code>), <code>train</code> (<code>caret</code>), <code>lm</code> or <code>glm</code> object.</p></dd>
 
 
 <dt>data</dt>
 <dd><p>The data used for computing FMEs, must be data.frame or data.table.</p></dd>
-
-
-<dt>target</dt>
-<dd><p>A string specifying the model's target variable.</p></dd>
 
 
 <dt>feature</dt>
@@ -134,7 +129,7 @@ For categorical steps, this is the name of the reference category.</p></dd>
 <span class="r-in"><span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute FMEs:</span></span></span>
-<span class="r-in"><span><span class="va">effects</span> <span class="op">=</span> <span class="fu">fme</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, target <span class="op">=</span> <span class="st">"count"</span>, feature <span class="op">=</span> <span class="st">"temp"</span>,</span></span>
+<span class="r-in"><span><span class="va">effects</span> <span class="op">=</span> <span class="fu">fme</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, feature <span class="op">=</span> <span class="st">"temp"</span>,</span></span>
 <span class="r-in"><span>              step.size <span class="op">=</span> <span class="fl">1</span>, ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Analyze results:</span></span></span>
@@ -152,7 +147,7 @@ For categorical steps, this is the name of the reference category.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   envelope, EPs: 6 of 727 obs. (1 %)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Average Marginal Effect (AME):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2.5253</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2.3553</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>All aesthetics have length 1, but the data has 721 rows.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Did you mean to use `annotate()`?</span>
@@ -164,17 +159,17 @@ For categorical steps, this is the name of the reference category.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Key: &lt;obs.id&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      obs.id        fme</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:      1  2.1959873</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:      2  2.8988843</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:      3  6.6032995</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:      4 -0.1839119</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:      5  2.2101671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:      1  2.1940035</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:      2  2.0701913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:      3  6.0628141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:      4 -0.5544905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:      5  2.0181465</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 717:    723 33.6326482</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 718:    724  7.7137210</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 719:    725  5.2503895</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 720:    726  3.0247538</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 721:    727  9.8360103</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 717:    723 31.4576514</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 718:    724 11.3777905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 719:    725  5.0419762</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 720:    726  2.1508544</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 721:    727  8.8983844</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

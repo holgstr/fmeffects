@@ -96,27 +96,17 @@
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Create a new AME object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AverageMarginalEffects.html">AverageMarginalEffects</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>  <span class="va">model</span>,</span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">target</span>,</span>
-<span>  features <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ep.method <span class="op">=</span> <span class="st">"none"</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AverageMarginalEffects.html">AverageMarginalEffects</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">model</span>, <span class="va">data</span>, features <span class="op">=</span> <span class="cn">NULL</span>, ep.method <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>model</code></dt>
-<dd><p>The (trained) model, with the ability to predict on new data. This must be an <code>Learner</code> (<code>mlr3</code>) or <code>train</code> (<code>caret</code>) object.</p></dd>
+<dd><p>The (trained) model, with the ability to predict on new data. This must be a <code>train.formula</code> (<code>tidymodels</code>), <code>Learner</code> (<code>mlr3</code>), <code>train</code> (<code>caret</code>), <code>lm</code> or <code>glm</code> object.</p></dd>
 
 
 <dt><code>data</code></dt>
 <dd><p>The data used for computing AMEs, must be data.frame or data.table.</p></dd>
-
-
-<dt><code>target</code></dt>
-<dd><p>A string specifying the model's target variable.</p></dd>
 
 
 <dt><code>features</code></dt>
@@ -141,21 +131,18 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://imbs-hl.github.io/ranger/" class="external-link">ranger</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span>, package <span class="op">=</span> <span class="st">"fmeffects"</span><span class="op">)</span></span>
-<span><span class="va">row.id</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bikes</span><span class="op">)</span>, <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span>
 <span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Compute AMEs for all features:</span></span>
 <span><span class="va">overview</span> <span class="op">=</span> <span class="va"><a href="../reference/AverageMarginalEffects.html">AverageMarginalEffects</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="va">forest</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">bikes</span><span class="op">[</span><span class="va">row.id</span>, <span class="op">]</span>,</span>
-<span>  target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span>
+<span>  data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Compute AMEs for a subset of features with non-default step.sizes:</span></span>
 <span><span class="va">overview</span> <span class="op">=</span> <span class="va"><a href="../reference/AverageMarginalEffects.html">AverageMarginalEffects</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
-<span>                                      data <span class="op">=</span> <span class="va">bikes</span><span class="op">[</span><span class="va">row.id</span>, <span class="op">]</span>,</span>
-<span>                                      target <span class="op">=</span> <span class="st">"count"</span>,</span>
+<span>                                      data <span class="op">=</span> <span class="va">bikes</span>,</span>
 <span>                                      features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>humidity <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>                                                   weather <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clear"</span>, <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -214,59 +201,56 @@
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://imbs-hl.github.io/ranger/" class="external-link">ranger</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span>, package <span class="op">=</span> <span class="st">"fmeffects"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">row.id</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">bikes</span><span class="op">)</span>, <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute AMEs for all features:</span></span></span>
 <span class="r-in"><span><span class="va">overview</span> <span class="op">=</span> <span class="va">AverageMarginalEffects</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">forest</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">bikes</span><span class="op">[</span><span class="va">row.id</span>, <span class="op">]</span>,</span></span>
-<span class="r-in"><span>  target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model Summary Using Average Marginal Effects:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Feature step.size       AME      SD      0.25      0.75   n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      season    spring  -29.9823 31.5238  -40.6739    -6.296  76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      season    summer    2.4663 23.3013   -8.8629   17.0032  71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      season      fall   18.8817 29.3886   -0.3961   43.4839  71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      season    winter   16.2238 23.8332    0.7489   30.5906  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        year         1  102.2216 59.1929    33.603  152.2666  60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        year         0 -112.5327 64.6523 -163.6236  -59.4847  40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7       month         1    4.7514 11.6546   -0.6424    8.5068 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     holiday     False    17.258    &lt;NA&gt;    17.258    17.258   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     holiday      True  -14.1095  23.564  -29.6562   -0.3751  99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    weekday       Tue   17.8598 24.2032    1.1305   32.6675  90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    weekday       Mon   12.2788 27.6869   -7.6076   29.4393  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12    weekday       Thu    21.316 24.7356    2.6975   35.4235  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    weekday       Sat  -53.8665 46.8255  -79.2617  -19.0744  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    weekday       Fri    0.5268 36.0332  -23.9033   29.4362  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    weekday       Wed   20.4337 23.6061    1.4878   33.0241  92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16    weekday       Sun  -77.5942 52.8845 -108.7508  -31.8886  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 workingday      True  161.1299 62.3498  122.5041  187.4092  25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 workingday     False -197.8071 91.2885 -239.6928 -136.0076  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19    weather     clear   24.4313 39.5111    3.1349   19.8358  34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20    weather     misty    0.5222 28.0608   -9.6246    0.9772  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21    weather      rain  -59.0183 52.8197  -91.6814   -9.0111  92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22       temp         1     2.508  8.5787   -1.1179    4.5872 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   humidity      0.01    0.0116  2.2407   -0.3649    0.6915 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24  windspeed         1    -0.072  2.1247   -0.2297      0.29 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      season    spring   -29.472 31.5101   -39.955   -5.5139 548</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      season    summer    0.4772 22.5212   -9.0235   11.6321 543</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      season      fall   11.7452 28.5851   -2.4282   34.1763 539</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      season    winter   15.5793 24.6394    1.6525   26.2254 551</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        year         0   -99.038 67.1788 -157.0608  -20.0628 364</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        year         1   97.0566  60.521   21.9401  148.0847 363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       month         1    4.0814 13.3513   -1.2566     7.459 727</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     holiday     False   -1.2178 21.6103   -9.1095    9.8232  21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     holiday      True   -13.738 25.3496  -32.6323    6.2019 706</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10    weekday       Sat  -55.0908 49.6534  -87.6489  -15.8843 622</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    weekday       Sun  -85.1527 57.7791 -122.1504  -31.8105 622</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12    weekday       Mon   10.7224 29.2179   -8.4101   30.4207 623</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13    weekday       Tue   17.9396  25.728    1.1959   32.5073 625</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    weekday       Wed   20.4025 23.1599    1.3386   32.8358 623</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    weekday       Thu   19.4455 24.1105   -0.3097   33.4997 624</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16    weekday       Fri    1.7712 35.3088  -24.8956   29.5147 623</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 workingday     False -204.1875 89.3882  -257.144 -142.4332 496</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 workingday      True  161.0619 62.5733  118.9398  209.6916 231</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19    weather     clear   26.1983 41.7886    3.5991   25.9257 284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    weather     misty     3.023 32.8661   -9.1498     0.973 513</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21    weather      rain  -55.3083 53.0127  -94.4096    -5.481 657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22       temp         1    2.3426  7.1269   -0.4294    4.5534 727</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   humidity      0.01   -0.2749   2.626   -0.3249    0.3504 727</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24  windspeed         1    0.0052  2.4318   -0.1823    0.2318 727</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute AMEs for a subset of features with non-default step.sizes:</span></span></span>
 <span class="r-in"><span><span class="va">overview</span> <span class="op">=</span> <span class="va">AverageMarginalEffects</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span></span>
-<span class="r-in"><span>                                      data <span class="op">=</span> <span class="va">bikes</span><span class="op">[</span><span class="va">row.id</span>, <span class="op">]</span>,</span></span>
-<span class="r-in"><span>                                      target <span class="op">=</span> <span class="st">"count"</span>,</span></span>
+<span class="r-in"><span>                                      data <span class="op">=</span> <span class="va">bikes</span>,</span></span>
 <span class="r-in"><span>                                      features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>humidity <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
 <span class="r-in"><span>                                                   weather <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clear"</span>, <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model Summary Using Average Marginal Effects:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Feature step.size       AME       SD      0.25     0.75   n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  weather     clear  24.43131 39.51109   3.13489 19.83584  34</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  weather      rain -59.01832 52.81968 -91.68138 -9.01106  92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 humidity       0.1  -7.32638 15.84281   -9.9923    1.505 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Feature step.size      AME       SD      0.25     0.75   n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  weather     clear 26.19828 41.78861   3.59911 25.92567 284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  weather      rain -55.3083 53.01272 -94.40958 -5.48097 657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 humidity       0.1 -7.38328 16.35698   -8.5513  1.07549 727</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `AverageMarginalEffects$compute`</span></span></span>

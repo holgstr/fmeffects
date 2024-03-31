@@ -112,7 +112,7 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span>, package <span class="op">=</span> <span class="st">"fmeffects"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">effects</span> <span class="op">=</span> <span class="fu"><a href="fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, target <span class="op">=</span> <span class="st">"count"</span>, feature <span class="op">=</span> <span class="st">"temp"</span>,</span></span>
+<span class="r-in"><span><span class="va">effects</span> <span class="op">=</span> <span class="fu"><a href="fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, feature <span class="op">=</span> <span class="st">"temp"</span>,</span></span>
 <span class="r-in"><span>              step.size <span class="op">=</span> <span class="fl">1</span>, ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Find a partitioning with exactly 3 subspaces:</span></span></span>
@@ -130,13 +130,13 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> Method:  max.sd = 20</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    n      cAME  SD(fME)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  721 2.4361270 7.182502 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  361 0.3592281 7.269394  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  360 4.5187951 6.464183  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  721  2.306456 6.980657 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   65 -4.323121 7.174124  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  656  2.963350 6.613822  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * root node (non-partitioned)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AME (Global): 2.4361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AME (Global): 2.3065</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">subspaces</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="came-1.png" alt="" width="700" height="433"></span>
@@ -148,10 +148,10 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 721</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$cAME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.436127</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.306456</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$`SD(fME)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.182502</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.980657</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$is.terminal.node</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -159,13 +159,13 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 65</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$cAME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.3592281</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -4.323121</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$`SD(fME)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.269394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.174124</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$is.terminal.node</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
@@ -173,13 +173,13 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 656</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$cAME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.518795</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.96335</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$`SD(fME)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.464183</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.613822</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$is.terminal.node</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
@@ -193,8 +193,8 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Fitted party:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] root</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   [2] temp &gt;= 17.63: 0.359 (n = 361, err = 19023.9)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   [3] temp &lt; 17.63: 4.519 (n = 360, err = 15001.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |   [2] temp &gt;= 28.29: -4.323 (n = 65, err = 3294.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |   [3] temp &lt; 28.29: 2.963 (n = 656, err = 28651.4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of inner nodes:    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of terminal nodes: 2</span>

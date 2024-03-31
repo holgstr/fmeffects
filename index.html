@@ -83,7 +83,11 @@
 <strong><code>fmeffects</code></strong>: An R Package for Forward Marginal Effects <a class="anchor" aria-label="anchor" href="#fmeffects-an-r-package-for-forward-marginal-effects-"></a>
 </h1>
 </div>
-<p>This package implements <a href="https://arxiv.org/abs/2201.08837" class="external-link">forward marginal effects (FMEs)</a>, a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain <a href="https://holgstr.github.io/fmeffects/articles/fme_theory.html">here</a> how they are computed and why they should be preferred to existing methods. Currently, <code>fmeffects</code> supports regression and (binary) classification models from the <a href="https://mlr3learners.mlr-org.com/" class="external-link">mlr3</a>, <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">tidymodels</a> and <a href="https://topepo.github.io/caret/available-models.html" class="external-link">caret</a> libraries.</p>
+<p>This package implements <a href="https://arxiv.org/abs/2201.08837" class="external-link">forward marginal effects (FMEs)</a>, a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain <a href="https://holgstr.github.io/fmeffects/articles/fme_theory.html">here</a> how they are computed and why they should be preferred to existing methods. Currently, <code>fmeffects</code> supports 100+ regression and (binary) classification models:</p>
+<ul>
+<li>All models from the <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">tidymodels</a>, <a href="https://mlr3learners.mlr-org.com/" class="external-link">mlr3</a> and <a href="https://topepo.github.io/caret/available-models.html" class="external-link">caret</a> libraries.</li>
+<li>Additionally, native support for generalized linear models (<code>glm</code>) &amp; generalized additive models (<code><a href="https://rdrr.io/pkg/mgcv/man/gam.html" class="external-link">mgcv::gam</a></code>).</li>
+</ul>
 <div class="section level2">
 <h2 id="quickstart">Quickstart<a class="anchor" aria-label="anchor" href="#quickstart"></a>
 </h2>
@@ -100,47 +104,45 @@
 <code class="sourceCode R"><span><span class="co"># Compute effects for a trained model 'forest':</span></span>
 <span><span class="va">effects</span> <span class="op">=</span> <span class="fu"><a href="reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>              data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>              target <span class="op">=</span> <span class="st">"count"</span>,</span>
 <span>              feature <span class="op">=</span> <span class="st">"temp"</span>,</span>
 <span>              step.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects</span>, jitter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/unnamed-chunk-4-1.png"><!-- --></p>
+<p><img src="reference/figures/unnamed-chunk-3-1.png"><!-- --></p>
 <p>On average, an increase in temperature by 1°C results in an increase in the predicted number of bike rentals by more than 2. This is called the average marginal effect (AME).</p>
 <p>Let’s compute the AME for every feature of the model:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Compute AMEs with default step sizes:</span></span>
 <span><span class="va">overview</span> <span class="op">=</span> <span class="fu"><a href="reference/ame.html">ame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
-<span>               data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>               target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; Model Summary Using Average Marginal Effects:</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;       Feature step.size       AME      SD      0.25     0.75   n</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; 1      season    spring  -29.5627 30.3933  -38.9776    -6.47 548</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; 2      season    summer    0.3712 22.2538   -8.3257  11.5291 543</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; 3      season      fall   13.9269 28.0969   -0.2271  35.7786 539</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 4      season    winter   14.6231 24.5739    1.2331  25.8998 551</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; 5        year         0 -100.0511 67.9522 -158.5412  -20.643 364</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; 6        year         1   97.9793 61.0461   23.7845 149.0662 363</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; 7       month         1    4.1008 13.1329   -1.2309   7.4386 727</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; 8     holiday     False   -1.7886 21.8287   -9.6724   8.3443  21</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; 9     holiday      True  -13.4861 25.6105  -32.4273   6.4777 706</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; 10    weekday       Sat  -54.0185 48.8713  -85.2344 -16.5142 622</span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 11    weekday       Sun  -82.8857 55.7827 -119.0325 -32.2624 622</span></span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 12    weekday       Mon   10.1004 27.9977   -8.8229  30.4342 623</span></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; 13    weekday       Tue   17.1576 24.7033    0.5063  32.5038 625</span></span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; 14    weekday       Wed   20.3346  22.484    1.3541  34.6645 623</span></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; 15    weekday       Thu   19.5628 23.6865   -0.4163  35.5117 624</span></span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; 16    weekday       Fri    1.3505 35.6711  -25.4026  29.6176 623</span></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; 17 workingday     False -204.8757 89.7998 -259.5304  -143.91 496</span></span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; 18 workingday      True  162.7476  63.766  121.3106 210.1368 231</span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; 19    weather     clear   26.0338 41.5209    3.8218  24.2506 284</span></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; 20    weather     misty    3.0396 32.1851   -8.7945   1.1693 513</span></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; 21    weather      rain  -55.5029 52.9214   -93.484  -3.5707 657</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; 22       temp         1     2.341  7.1894   -0.5878   4.3155 727</span></span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 23   humidity      0.01   -0.2617  2.7596   -0.3505    0.434 727</span></span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; 24  windspeed         1    0.0207  2.1497   -0.1694   0.2686 727</span></span></code></pre></div>
+<span>               data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Model Summary Using Average Marginal Effects:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;       Feature step.size       AME      SD      0.25     0.75   n</span></span>
+<span><span class="co">#&gt; 1      season    spring  -29.5627 30.3933  -38.9776    -6.47 548</span></span>
+<span><span class="co">#&gt; 2      season    summer    0.3712 22.2538   -8.3257  11.5291 543</span></span>
+<span><span class="co">#&gt; 3      season      fall   13.9269 28.0969   -0.2271  35.7786 539</span></span>
+<span><span class="co">#&gt; 4      season    winter   14.6231 24.5739    1.2331  25.8998 551</span></span>
+<span><span class="co">#&gt; 5        year         0 -100.0511 67.9522 -158.5412  -20.643 364</span></span>
+<span><span class="co">#&gt; 6        year         1   97.9793 61.0461   23.7845 149.0662 363</span></span>
+<span><span class="co">#&gt; 7       month         1    4.1008 13.1329   -1.2309   7.4386 727</span></span>
+<span><span class="co">#&gt; 8     holiday     False   -1.7886 21.8287   -9.6724   8.3443  21</span></span>
+<span><span class="co">#&gt; 9     holiday      True  -13.4861 25.6105  -32.4273   6.4777 706</span></span>
+<span><span class="co">#&gt; 10    weekday       Sat  -54.0185 48.8713  -85.2344 -16.5142 622</span></span>
+<span><span class="co">#&gt; 11    weekday       Sun  -82.8857 55.7827 -119.0325 -32.2624 622</span></span>
+<span><span class="co">#&gt; 12    weekday       Mon   10.1004 27.9977   -8.8229  30.4342 623</span></span>
+<span><span class="co">#&gt; 13    weekday       Tue   17.1576 24.7033    0.5063  32.5038 625</span></span>
+<span><span class="co">#&gt; 14    weekday       Wed   20.3346  22.484    1.3541  34.6645 623</span></span>
+<span><span class="co">#&gt; 15    weekday       Thu   19.5628 23.6865   -0.4163  35.5117 624</span></span>
+<span><span class="co">#&gt; 16    weekday       Fri    1.3505 35.6711  -25.4026  29.6176 623</span></span>
+<span><span class="co">#&gt; 17 workingday     False -204.8757 89.7998 -259.5304  -143.91 496</span></span>
+<span><span class="co">#&gt; 18 workingday      True  162.7476  63.766  121.3106 210.1368 231</span></span>
+<span><span class="co">#&gt; 19    weather     clear   26.0338 41.5209    3.8218  24.2506 284</span></span>
+<span><span class="co">#&gt; 20    weather     misty    3.0396 32.1851   -8.7945   1.1693 513</span></span>
+<span><span class="co">#&gt; 21    weather      rain  -55.5029 52.9214   -93.484  -3.5707 657</span></span>
+<span><span class="co">#&gt; 22       temp         1     2.341  7.1894   -0.5878   4.3155 727</span></span>
+<span><span class="co">#&gt; 23   humidity      0.01   -0.2617  2.7596   -0.3505    0.434 727</span></span>
+<span><span class="co">#&gt; 24  windspeed         1    0.0207  2.1497   -0.1694   0.2686 727</span></span></code></pre></div>
 </div>
 </div>
 
