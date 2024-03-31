@@ -18,9 +18,8 @@ PredictorMLR3 = R6::R6Class("PredictorMLR3",
     #' Create a new PredictorMLR3 object.
     #' @param model `LearnerRegr` or `LearnerClassif` object.
     #' @param data The data used for computing FMEs, must be data.frame or data.table.
-    #' @param target A string specifying the target variable.
-    initialize = function(model, data, target) {
-      private$initializeSubclass(model, data, target)
+    initialize = function(model, data) {
+      private$initializeSubclass(model, data)
     },
 
     #' @description
@@ -40,6 +39,13 @@ PredictorMLR3 = R6::R6Class("PredictorMLR3",
       names(prediction) = "prediction"
       return(prediction)
    }
+
+  ),
+  private = list(
+
+    getTarget = function(model) {
+      return(model$state$train_task$target_names)
+    }
 
   )
 )
