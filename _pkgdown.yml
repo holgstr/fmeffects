@@ -1,17 +1,4 @@
-url: https://holgstr.github.io/fme
+url: https://holgstr.github.io/fmeffects/
 template:
   bootstrap: 5
-navbar:
-  bg: dark
-  type: dark
-  structure:
-    left: [intro, theory, reference]
-    right: github
-  components:
-    theory:
-      text: Why FMEs?
-      href: articles/fme_theory.html
-    github:
-      icon: fa-github
-      href: http://github.com/holgstr/fme
-      aria-label: Github
+
