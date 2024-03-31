@@ -1,4 +1,4 @@
-test_that("FME computation correct", {
+testthat::test_that("FME computation correct", {
 
   library(mlr3verse)
   library(rpart)
@@ -21,5 +21,5 @@ test_that("FME computation correct", {
                     step.size = 2,
                     ep.method = "none")
 
-  expect_equal(fme.results$results$fme, fme.manual)
+  testthat::expect_equal(fme.results$results$fme, fme.manual)
 })

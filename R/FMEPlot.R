@@ -118,7 +118,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                 axis.text.y   = ggplot2::element_text(colour = "black", size = 10),
                 legend.title = ggplot2::element_text(color = "black", size = 12),
                 legend.text = ggplot2::element_text(color = "black", size = 10))
-        suppressWarnings(plot_grid(pfme, pnlm, ncol = 2, rel_widths = c(0.5, 0.5)))
+        suppressWarnings(cowplot::plot_grid(pfme, pnlm, ncol = 2, rel_widths = c(0.5, 0.5)))
       } else {
         stop("Only possible to plot NLM for FME objects with NLM computed.")
       }
@@ -211,7 +211,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                 axis.title = ggplot2::element_text(size = 12),
                 axis.text.x   = ggplot2::element_text(colour = "black", size = 10),
                 axis.text.y   = ggplot2::element_text(colour = "black", size = 10))
-        plot_grid(pfme, pnlm, ncol = 2, rel_widths = c(0.5, 0.5))
+        cowplot::plot_grid(pfme, pnlm, ncol = 2, rel_widths = c(0.5, 0.5))
       } else {
         stop("Only possible to plot NLM for FME objects with NLM computed.")
       }

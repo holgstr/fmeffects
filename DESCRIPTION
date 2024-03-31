@@ -19,7 +19,8 @@ Suggests:
     mlr3verse,
     ranger,
     rmarkdown,
-    rpart
+    rpart,
+    tidymodels
 Imports: 
     checkmate,
     data.table,

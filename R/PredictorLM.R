@@ -28,10 +28,10 @@ PredictorLM = R6::R6Class("PredictorLM",
     predict = function(newdata) {
       # Classification
       if (!is.null(self$model$family) & model$family$family %in% c("binomial", "quasibinomial")) {
-        prediction = as.data.table(predict(self$model, newdata = newdata, type = "response"))
+        prediction = data.table(predict(self$model, newdata = newdata, type = "response"))
       # Regression
       } else {
-        prediction = as.data.table(predict(self$model, newdata = newdata))
+        prediction = data.table(predict(self$model, newdata = newdata))
       }
       names(prediction) = "prediction"
       return(prediction)
