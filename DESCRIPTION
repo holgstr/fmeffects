@@ -19,7 +19,8 @@ Suggests:
     mlr3verse,
     ranger,
     rmarkdown,
-    rpart
+    rpart,
+    tidymodels
 Imports: 
     checkmate,
     data.table,
@@ -40,6 +41,7 @@ Collate:
     'PartitioningRpart.R'
     'Predictor.R'
     'PredictorCaret.R'
+    'PredictorLM.R'
     'PredictorMLR3.R'
     'PredictorParsnip.R'
     'Pruner.R'

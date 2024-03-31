@@ -12,6 +12,8 @@ A Predictor contains information about an ML model's prediction function and tra
 \describe{
 \item{\code{model}}{The (trained) model, with the ability to predict on new data.}
 
+\item{\code{target}}{A character vector with the name of the target variable.}
+
 \item{\code{X}}{A data.table with feature and target variables.}
 
 \item{\code{feature.names}}{A character vector with the names of the features in X.}

@@ -23,7 +23,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
     #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
     #'
     #' # Create an `ForwardMarginalEffect` object:
-    #' effects = ForwardMarginalEffect$new(makePredictor(forest, bikes, "count"),
+    #' effects = ForwardMarginalEffect$new(makePredictor(forest, bikes),
     #'                   feature = c("temp", "humidity"),
     #'                   step.size = c(1, 0.01),
     #'                   ep.method = "envelope")
@@ -243,9 +243,8 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #'
 #' @description This is a wrapper function for `FME$new(...)$compute()`.
 #' It computes forward marginal effects (FMEs) for a specified change in feature values.
-#' @param model The (trained) model, with the ability to predict on new data. This must be an `Learner` (`mlr3`) or `train` (`caret`) object.
+#' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
 #' @param data The data used for computing FMEs, must be data.frame or data.table.
-#' @param target A string specifying the model's target variable.
 #' @param feature A character vector of the names of the feature variables affected by the step.
 #' For numerical steps, this must have length 1 or 2.
 #' For categorical steps, this must have length 1.
@@ -267,7 +266,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
 #'
 #' # Compute FMEs:
-#' effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
+#' effects = fme(model = forest, data = bikes, feature = "temp",
 #'               step.size = 1, ep.method = "envelope")
 #'
 #' # Analyze results:
@@ -277,8 +276,8 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' # Extract results:
 #' effects$results
 #' @export
-fme = function(model, data, target, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
-  return(ForwardMarginalEffect$new(makePredictor(model, data, target),
+fme = function(model, data, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
+  return(ForwardMarginalEffect$new(makePredictor(model, data),
           feature = feature,
           step.size = step.size,
           ep.method = ep.method,

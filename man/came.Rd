@@ -39,7 +39,7 @@ library(ranger)
 data(bikes, package = "fmeffects")
 task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
-effects = fme(model = forest, data = bikes, target = "count", feature = "temp",
+effects = fme(model = forest, data = bikes, feature = "temp",
               step.size = 1, ep.method = "envelope")
 
 # Find a partitioning with exactly 3 subspaces:

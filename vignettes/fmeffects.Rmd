@@ -30,7 +30,7 @@ data(bikes, package = "fmeffects")
 str(bikes)
 ```
 
-FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before we can compute FMEs, we need a trained model. The `fme` package supports models from the `mlr3`, `tidymodels` (parsnip) and `caret` libraries. Let's try it with a random forest using the `ranger` algorithm:
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before we can compute FMEs, we need a trained model. In addition to generic `glm` models, the `fme` package supports 100+ models from the `mlr3`, `tidymodels` (parsnip) and `caret` libraries. Let's try it with a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
 set.seed(123)
@@ -57,7 +57,6 @@ Assume we are interested in the effect of temperature on bike sharing usage. Spe
 ```{r}
 effects = fme(model = forest,
                data = bikes,
-               target = "count",
                feature = "temp",
                step.size = 1,
                ep.method = "envelope")
@@ -91,7 +90,6 @@ Bivariate feature effects can be considered when one is interested in the combin
 ```{r}
 effects2 = fme(model = forest,
                data = bikes,
-               target = "count",
                feature = c("temp", "humidity"),
                step.size = c(-3, -0.1),
                ep.method = "envelope")
@@ -120,7 +118,6 @@ For a categorical feature, the FME of an observation is simply the difference in
 ```{r}
 effects3 = fme(model = forest,
               data = bikes,
-              target = "count",
               feature = "weather",
               step.size = "rain")
 summary(effects3)
@@ -139,8 +136,7 @@ For an informative overview of all feature effects in a model, we can use the `a
 
 ```{r, warning=FALSE}
 overview = ame(model = forest,
-           data = bikes,
-           target = "count")
+           data = bikes)
 overview$results
 ```
 
@@ -150,7 +146,6 @@ This computes the AME for each feature included in the model, with a default ste
 ```{r, warning=FALSE}
 overview = ame(model = forest,
                data = bikes,
-               target = "count",
                features = c(weather = c("rain", "clear"), temp = -1, humidity = 0.1),
                ep.method = "envelope")
 overview$results

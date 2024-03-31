@@ -4,14 +4,12 @@
 \alias{makePredictor}
 \title{User-friendly function to create a \link{Predictor}.}
 \usage{
-makePredictor(model, data, target)
+makePredictor(model, data)
 }
 \arguments{
 \item{model}{the (trained) model, with the ability to predict on new data.}
 
 \item{data}{the data used for computing FMEs, must be data.frame or data.table.}
-
-\item{target}{a string specifying the target variable.}
 }
 \description{
 A wrapper function that creates the correct subclass of \code{Predictor} by automatically from \code{model}. Can be passed to the constructor of \code{FME}.
@@ -25,7 +23,7 @@ task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Create the predictor:
-predictor = makePredictor(forest, bikes, "count")
+predictor = makePredictor(forest, bikes)
 
 # This instantiated an object of the correct subclass of `Predictor`:
 class(predictor)

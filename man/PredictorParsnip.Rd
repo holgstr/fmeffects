@@ -26,7 +26,7 @@ It is recommended to use \code{\link[=makePredictor]{makePredictor()}} for const
 \subsection{Method \code{new()}}{
 Create a new PredictorParsnip object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{PredictorParsnip$new(model, data, target)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{PredictorParsnip$new(model, data)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -35,8 +35,6 @@ Create a new PredictorParsnip object.
 \item{\code{model}}{\code{model_fit} object.}
 
 \item{\code{data}}{The data used for computing FMEs, must be data.frame or data.table.}
-
-\item{\code{target}}{A string specifying the target variable.}
 }
 \if{html}{\out{</div>}}
 }

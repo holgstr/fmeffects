@@ -16,6 +16,8 @@ Predictor = R6::R6Class("Predictor",
 
     #' @field model The (trained) model, with the ability to predict on new data.
     model = NULL,
+    #' @field target A character vector with the name of the target variable.
+    target = NULL,
     #' @field X A data.table with feature and target variables.
     X = NULL,
     #' @field feature.names A character vector with the names of the features in X.
@@ -26,7 +28,7 @@ Predictor = R6::R6Class("Predictor",
   ),
   private = list(
 
-    initializeSubclass = function(model, data, target) {
+    initializeSubclass = function(model, data) {
 
       # Check if data is data.frame
       checkmate::assertDataFrame(data, all.missing = FALSE)
@@ -37,15 +39,15 @@ Predictor = R6::R6Class("Predictor",
       }
 
       self$model = model
-      self$feature.names = private$getFeatureNames(data, target)
+      self$target = private$getTarget(self$model)
+      self$feature.names = private$getFeatureNames(data, self$target)
       self$X = private$getX(data, self$feature.names)
       self$feature.types = private$getFeatureTypes(self$X, self$feature.names)
 
     },
 
     getX = function(data, feature.names) {
-      #data[, ..feature.names]
-      data[, feature.names, with=FALSE]
+      data[, feature.names, with = FALSE]
     },
 
     getFeatureNames = function(data, target) {
@@ -72,7 +74,6 @@ Predictor = R6::R6Class("Predictor",
 #' @description A wrapper function that creates the correct subclass of `Predictor` by automatically from `model`. Can be passed to the constructor of `FME`.
 #' @param model the (trained) model, with the ability to predict on new data.
 #' @param data the data used for computing FMEs, must be data.frame or data.table.
-#' @param target a string specifying the target variable.
 #' @examples
 #' # Train a model:
 #'
@@ -82,19 +83,22 @@ Predictor = R6::R6Class("Predictor",
 #' forest = lrn("regr.ranger")$train(task)
 #'
 #' # Create the predictor:
-#' predictor = makePredictor(forest, bikes, "count")
+#' predictor = makePredictor(forest, bikes)
 #'
 #' # This instantiated an object of the correct subclass of `Predictor`:
 #' class(predictor)
 #' @export
-makePredictor = function(model, data, target) {
+makePredictor = function(model, data) {
   if ("Learner" %in% class(model)) {
-    return(PredictorMLR3$new(model, data, target))
+    return(PredictorMLR3$new(model, data))
   }
   if ("train" %in% class(model) & "train.formula" %in% class(model)) {
-    return(PredictorCaret$new(model, data, target))
+    return(PredictorCaret$new(model, data))
   }
   if ("model_fit" %in% class(model)) {
-    return(PredictorParsnip$new(model, data, target))
+    return(PredictorParsnip$new(model, data))
+  }
+  if ("lm" %in% class(model)) {
+    return(PredictorLM$new(model, data))
   }
 }

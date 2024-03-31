@@ -6,9 +6,8 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
   public = list(
     #' @description
     #' Create a new AME object.
-    #' @param model The (trained) model, with the ability to predict on new data. This must be an `Learner` (`mlr3`) or `train` (`caret`) object.
+    #' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
     #' @param data The data used for computing AMEs, must be data.frame or data.table.
-    #' @param target A string specifying the model's target variable.
     #' @param features A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
     #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
     #' @return A new `AME` object.
@@ -19,28 +18,25 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
     #' library(ranger)
     #' set.seed(123)
     #' data(bikes, package = "fmeffects")
-    #' row.id = sample(1:nrow(bikes), 100)
     #' task = as_task_regr(x = bikes, id = "bikes", target = "count")
     #' forest = lrn("regr.ranger")$train(task)
     #'
     #' # Compute AMEs for all features:
     #' overview = AverageMarginalEffects$new(
     #'   model = forest,
-    #'   data = bikes[row.id, ],
-    #'   target = "count")$compute()
+    #'   data = bikes)$compute()
     #' summary(overview)
     #'
     #' # Compute AMEs for a subset of features with non-default step.sizes:
     #' overview = AverageMarginalEffects$new(model = forest,
-    #'                                       data = bikes[row.id, ],
-    #'                                       target = "count",
+    #'                                       data = bikes,
     #'                                       features = c(humidity = 0.1,
     #'                                                    weather = c("clear", "rain")))$compute()
     #' summary(overview)
-    initialize = function(model, data, target, features = NULL, ep.method = "none") {
+    initialize = function(model, data, features = NULL, ep.method = "none") {
 
       # Initialize predictor (this includes the relevant assertions)
-      predictor = makePredictor(model = model, data = data, target = target)
+      predictor = makePredictor(model = model, data = data)
 
       # Check whether feature names in 'features' argument match predictor
       is_feature_allowed = function(feature, allowed_base_features) {
@@ -202,9 +198,8 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 #'
 #' @description This is a wrapper function for `AverageMarginalEffects$new(...)$compute()`.
 #' It computes Average Marginal Effects (AME) based on Forward Marginal Effects (FME) for a model. The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
-#' @param model The (trained) model, with the ability to predict on new data. This must be an `Learner` (`mlr3`) or `train` (`caret`) object.
+#' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
 #' @param data The data used for computing AMEs, must be data.frame or data.table.
-#' @param target A string specifying the model's target variable.
 #' @param features A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
 #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
 #' @return An `AverageMarginalEffects` object, with a field `results` containing a list of summary statistics, including
@@ -226,24 +221,22 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 #' library(ranger)
 #' data(bikes, package = "fmeffects")
 #' set.seed(123)
-#' row.id = sample(1:nrow(bikes), 100)
 #' task = as_task_regr(x = bikes, id = "bikes", target = "count")
 #' forest = lrn("regr.ranger")$train(task)
 #'
 #' # Compute AMEs for all features:
-#' overview = ame(model = forest, data = bikes[row.id, ], target = "count")
+#' overview = ame(model = forest, data = bikes)
 #' summary(overview)
 #'
 #' # Compute AMEs for a subset of features with non-default step.sizes:
 #' overview = ame(model = forest,
-#'                data = bikes[row.id, ],
-#'                target = "count",
+#'                data = bikes,
 #'                features = c(humidity = 0.1, weather = c("clear", "rain")))
 #' summary(overview)
 #'
 #' # Extract results:
 #' overview$results
 #' @export
-ame = function(model, data, target, features = NULL, ep.method = "none") {
-  return(AverageMarginalEffects$new(model, data, target, features = NULL, ep.method = "none")$compute())
+ame = function(model, data, features = NULL, ep.method = "none") {
+  return(AverageMarginalEffects$new(model, data, features = NULL, ep.method = "none")$compute())
 }

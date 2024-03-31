@@ -4,11 +4,11 @@
 "_PACKAGE"
 
 #' @import R6
-#' @import cowplot
 #' @import data.table
-#' @import ggplot2
-#' @import ggparty
-#' @import partykit
-#' @import testthat
+#' @importFrom partykit ctree
+#' @importFrom cowplot plot_grid
+#' @importFrom ggparty ggparty
+#' @importFrom ggplot2 ggplot
+#' @importFrom testthat test_that
 NULL
 

@@ -18,9 +18,8 @@ PredictorCaret = R6::R6Class("PredictorCaret",
     #' Create a new PredictorCaret object.
     #' @param model `train, train.formula` object.
     #' @param data The data used for computing FMEs, must be data.frame or data.table.
-    #' @param target A string specifying the target variable.
-    initialize = function(model, data, target) {
-      private$initializeSubclass(model, data, target)
+    initialize = function(model, data) {
+      private$initializeSubclass(model, data)
     },
 
     #' @description
@@ -36,6 +35,13 @@ PredictorCaret = R6::R6Class("PredictorCaret",
       names(prediction) = "prediction"
       return(prediction)
    }
+
+  ),
+  private = list(
+
+    getTarget = function(model) {
+      return(as.list(model$call$form)[[2]])
+    }
 
   )
 )
