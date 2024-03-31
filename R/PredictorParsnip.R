@@ -18,9 +18,8 @@ PredictorParsnip = R6::R6Class("PredictorParsnip",
     #' Create a new PredictorParsnip object.
     #' @param model `model_fit` object.
     #' @param data The data used for computing FMEs, must be data.frame or data.table.
-    #' @param target A string specifying the target variable.
-    initialize = function(model, data, target) {
-      private$initializeSubclass(model, data, target)
+    initialize = function(model, data) {
+      private$initializeSubclass(model, data)
     },
 
     #' @description
@@ -37,6 +36,13 @@ PredictorParsnip = R6::R6Class("PredictorParsnip",
       names(prediction) = "prediction"
       return(prediction)
    }
+
+  ),
+  private = list(
+
+    getTarget = function(model) {
+      return(model$preproc$y_var)
+    }
 
   )
 )
