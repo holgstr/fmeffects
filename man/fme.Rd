@@ -16,7 +16,7 @@ fme(
 )
 }
 \arguments{
-\item{model}{The (trained) model, with the ability to predict on new data. This must be an \code{Learner} (\code{mlr3}) or \code{train} (\code{caret}) object.}
+\item{model}{The (trained) model, with the ability to predict on new data. This must be a \code{train.formula} (\code{tidymodels}), \code{Learner} (\code{mlr3}), \code{train} (\code{caret}), \code{lm} or \code{glm} object.}
 
 \item{data}{The data used for computing FMEs, must be data.frame or data.table.}
 

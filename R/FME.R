@@ -243,7 +243,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #'
 #' @description This is a wrapper function for `FME$new(...)$compute()`.
 #' It computes forward marginal effects (FMEs) for a specified change in feature values.
-#' @param model The (trained) model, with the ability to predict on new data. This must be an `Learner` (`mlr3`) or `train` (`caret`) object.
+#' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
 #' @param data The data used for computing FMEs, must be data.frame or data.table.
 #' @param target A string specifying the model's target variable.
 #' @param feature A character vector of the names of the feature variables affected by the step.
