@@ -40,6 +40,7 @@ Collate:
     'PartitioningRpart.R'
     'Predictor.R'
     'PredictorCaret.R'
+    'PredictorLM.R'
     'PredictorMLR3.R'
     'PredictorParsnip.R'
     'Pruner.R'

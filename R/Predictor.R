@@ -98,4 +98,7 @@ makePredictor = function(model, data) {
   if ("model_fit" %in% class(model)) {
     return(PredictorParsnip$new(model, data))
   }
+  if ("lm" %in% class(model)) {
+    return(PredictorLM$new(model, data))
+  }
 }
