@@ -7,9 +7,9 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN
 status](https://www.r-pkg.org/badges/version-last-release/fmeffects)](https://www.r-pkg.org/badges/version-last-release/fmeffects)
+[![R-CMD-check](https://github.com/holgstr/fme/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/fme/actions/workflows/R-CMD-check.yaml)
 [![CRAN total
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/fmeffects)](https://cranlogs.r-pkg.org/badges/grand-total/fmeffects)
-[![R-CMD-check](https://github.com/holgstr/fme/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/fme/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 # **`fmeffects`**: An R Package for Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
@@ -32,6 +32,27 @@ classification models:
 - Additionally, native support for generalized linear models (`glm`) &
   generalized additive models (`mgcv::gam`).
 
+## Installation
+
+### Release
+
+You can install the current release version from *CRAN* with:
+
+``` r
+install.packages("fmeffects")
+```
+
+### Development
+
+You can install the current development version from *Github* with:
+
+``` r
+if (!require("remotes")) {
+  install.packages("remotes")
+}
+remotes::install_github("holgstr/fmeffects")
+```
+
 ## Quickstart
 
 See [here](https://holgstr.github.io/fmeffects/articles/fmeffects.html)
@@ -41,7 +62,7 @@ Consider the following example: how does an increase in temperature
 (`temp`) by 1°C affect bike rentals (`count`)?
 
 ``` r
-# Train a random forest on "bike" data
+# Train a random forest on the 'bikes' data using mlr3:
 set.seed(123)
 library(fmeffects)
 library(mlr3verse)
