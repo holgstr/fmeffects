@@ -156,13 +156,14 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                    width = jitter[1],
                    height = jitter[2]) +
         ggplot2::geom_smooth(ggplot2::aes(x = x1, y = fme), se = TRUE, method = "gam", fullrange = TRUE, linetype = "solid", linewidth = 0.7, color = "black") +
-        ggplot2::geom_segment(ggplot2::aes(x = (0.5 * min.x1 + 0.5 * max.x1 - 0.5 * self$step.size[1]),
-                         xend = (0.5 * min.x1 + 0.5 * max.x1 + 0.5 * self$step.size[1]),
-                         y = min(fme)-0.03*range.fme,
-                         yend = min(fme)-0.03*range.fme),
-                     colour = 'black', size = 1,
-                     arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
-                     lineend = "round", linejoin = "mitre") +
+        ggplot2::annotate("segment",
+                 x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
+                 xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
+                 y = min(df$fme)-0.03*diff(range(df$fme)),
+                 yend = min(df$fme)-0.03*diff(range(df$fme)),
+                 colour = 'black', size = 1,
+                 arrow = arrow(length = unit(0.5, "cm")),
+                 lineend = "round", linejoin = "mitre") +
         ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme))) +
         ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
         ggplot2::xlab(self$feature[1]) +
@@ -191,14 +192,14 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                      height = jitter[2],
                      show.legend = FALSE,
                      na.rm = FALSE) +
-          ggplot2::geom_segment(ggplot2::aes(x = (0.5 * min.x1 + 0.5 * max.x1 - 0.5 * self$step.size[1]),
-                           xend = (0.5 * min.x1 + 0.5 * max.x1 + 0.5 * self$step.size[1]),
-                           y = min(nlm, na.rm = FALSE)-0.03*range.nlm,
-                           yend = min(nlm, na.rm = FALSE)-0.03*range.nlm),
-                       colour = 'black', size = 1,
-                       arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
-                       lineend = "round", linejoin = "mitre",
-                       na.rm = FALSE) +
+          ggplot2::annotate("segment",
+                            x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
+                            xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
+                            y = min(df$fme)-0.03*diff(range(df$fme)),
+                            yend = min(df$fme)-0.03*diff(range(df$fme)),
+                            colour = 'black', size = 1,
+                            arrow = arrow(length = unit(0.5, "cm")),
+                            lineend = "round", linejoin = "mitre") +
           ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = meannlm)) +
           ggplot2::geom_label(x = max.x1 - 0.2 * range.x1, y = meannlm, label = paste0('ANLM: ', round(meannlm, 2)), fill = 'white') +
           ggplot2::xlab(self$feature) +
