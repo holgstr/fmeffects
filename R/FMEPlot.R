@@ -162,7 +162,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                  y = min(df$fme)-0.03*diff(range(df$fme)),
                  yend = min(df$fme)-0.03*diff(range(df$fme)),
                  colour = 'black', size = 1,
-                 arrow = arrow(length = unit(0.5, "cm")),
+                 arrow = grid::arrow(length = grid::unit(0.5, "cm")),
                  lineend = "round", linejoin = "mitre") +
         ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme))) +
         ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
@@ -198,7 +198,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                             y = min(df$fme)-0.03*diff(range(df$fme)),
                             yend = min(df$fme)-0.03*diff(range(df$fme)),
                             colour = 'black', size = 1,
-                            arrow = arrow(length = unit(0.5, "cm")),
+                            arrow = grid::arrow(length = grid::unit(0.5, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = meannlm)) +
           ggplot2::geom_label(x = max.x1 - 0.2 * range.x1, y = meannlm, label = paste0('ANLM: ', round(meannlm, 2)), fill = 'white') +
