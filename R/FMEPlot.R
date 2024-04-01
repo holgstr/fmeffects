@@ -60,20 +60,20 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                    width = jitter[1],
                    height = jitter[2]) +
         ggplot2::scale_fill_viridis_c(guide = ggplot2::guide_legend("FME")) +
-        ggplot2::geom_segment(ggplot2::aes(x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
-                         xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
-                         y = min(x2)-0.03*range.x2,
-                         yend = min(x2)-0.03*range.x2),
-                     colour = 'black', size = 1,
-                     arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
-                     lineend = "round", linejoin = "mitre") +
-        ggplot2::geom_segment(ggplot2::aes(y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
-                         yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
-                         x = min(x1)-0.03*range.x1,
-                         xend = min(x1)-0.03*range.x1),
-                     colour = 'black', size = 1,
-                     arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
-                     lineend = "round", linejoin = "mitre") +
+        ggplot2::annotate("segment", x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
+                          xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
+                          y = min(x2)-0.03*range.x2,
+                          yend = min(x2)-0.03*range.x2,
+                          colour = 'black', size = 1,
+                          arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
+                          lineend = "round", linejoin = "mitre") +
+        ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
+                          yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
+                          x = min(x1)-0.03*range.x1,
+                          xend = min(x1)-0.03*range.x1,
+                          colour = 'black', size = 1,
+                          arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
+                          lineend = "round", linejoin = "mitre") +
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab(self$feature[2]) +
         ggplot2::theme_bw() +
