@@ -205,7 +205,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
           ggplot2::ylab("NLM") +
           ggplot2::theme_bw() +
           ggplot2::scale_fill_manual(values = c("aliceblue", "#1E9B8AFF")) +
-          scale_y_continuous(breaks=seq(0, 1.0, 0.25),
+          ggplot2::scale_y_continuous(breaks=seq(0, 1.0, 0.25),
                              labels=c("\u2264 0", as.character(seq(0.25, 1, 0.25)))) +
           ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
                 axis.title = ggplot2::element_text(size = 12),

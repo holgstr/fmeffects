@@ -218,16 +218,11 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       if (step.type == "numerical" & compute.nlm == TRUE) {
         # Exclude observations with fME = 0 from loop:
         ids = setdiff(1:nrow(data), which(data$fme == 0))
-        for (n_row in seq_len(length(ids))) {
-          data.table::set(data,
-                          i = ids[n_row],
-                          j = "nlm",
-                          value = NonLinearityMeasure$new(predictor,
-                                                          data[ids[n_row],],
-                                                          feature,
-                                                          step.size,
-                                                          nlm.intervals)$nlm)
+        nlm_id = function(row_id) {
+          NonLinearityMeasure$new(predictor, data[row_id, ], feature, step.size, nlm.intervals)$nlm
         }
+        nlm_values = sapply(ids, nlm_id)
+        data.table::set(data, i = ids, j = "nlm", value = nlm_values)
         return(data[, .(obs.id, fme, nlm)])
       } else {
         return(data[, .(obs.id, fme)])
