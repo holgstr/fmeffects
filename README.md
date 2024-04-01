@@ -34,17 +34,13 @@ classification models:
 
 ## Installation
 
-**Release:**
-
-You can install the current release version from *CRAN* with:
+**CRAN:**
 
 ``` r
 install.packages("fmeffects")
 ```
 
-**Development:**
-
-You can install the current development version from *Github* with:
+**GitHub:**
 
 ``` r
 if (!require("remotes")) {

@@ -28,17 +28,13 @@ This package implements [forward marginal effects (FMEs)][1], a model-agnostic f
 
 ## Installation
 
-**Release:** 
-
-You can install the current release version from *CRAN* with:
+**CRAN:** 
 
 ```{r cran-installation, eval = FALSE}
 install.packages("fmeffects")
 ```
 
-**Development:** 
-
-You can install the current development version from *Github* with:
+**GitHub:** 
 
 ```{r gh-installation, eval = FALSE}
 if (!require("remotes")) {
