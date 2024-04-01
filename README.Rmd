@@ -1,5 +1,5 @@
 ---
-output: html_document
+output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -59,7 +59,7 @@ data(bikes)
 
 ### Train a Model {.tabset}
 
-#### tidymodels
+#### `tidymodels`
 
 ```{r, message = FALSE}
 # Train a model with tidymodels:
@@ -70,7 +70,7 @@ forest <- rand_forest() %>%
 forest <- forest %>% fit(count ~ ., data = bikes)
 ```
 
-#### mlr3
+#### `mlr3`
 
 ```{r, message = FALSE}
 # Train a model with mlr3:
