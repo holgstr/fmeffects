@@ -216,18 +216,39 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 
       # For numerical features, compute NLMs:
       if (step.type == "numerical" & compute.nlm == TRUE) {
+
         # Exclude observations with fME = 0 from loop:
         ids = setdiff(1:nrow(data), which(data$fme == 0))
-        for (n_row in seq_len(length(ids))) {
-          data.table::set(data,
-                          i = ids[n_row],
-                          j = "nlm",
-                          value = NonLinearityMeasure$new(predictor,
-                                                          data[ids[n_row],],
-                                                          feature,
-                                                          step.size,
-                                                          nlm.intervals)$nlm)
+
+        nlm_id = function(row_id) {
+          NonLinearityMeasure$new(predictor, data[row_id, ], feature, step.size, nlm.intervals)$nlm
         }
+        #nlm_values = sapply(ids, nlm_id)
+
+        oplan <- future::plan(future::multisession,
+                              workers = parallelly::availableCores(omit = 2))
+        on.exit(future::plan(oplan), add = TRUE)
+
+        # Ensure parallel-safe RNG
+        options(future.rng.onMisuse = "ignore", future.seed = TRUE)
+
+        pb <- utils::txtProgressBar(min = 0, max = nrow(data), style = 3)
+
+        nlm_values <- furrr::future_map_dbl(ids, ~ {
+          furrr::furrr_options(
+            globals = list(predictor = predictor,
+                           data = data,
+                           feature = feature,
+                           step.size = step.size,
+                           nlm.intervals = nlm.intervals),
+            packages = c("fmeffects")
+          )
+          nlm_id(.x)
+          utils::setTxtProgressBar(pb, .x)
+        })
+        close(pb)
+
+        data.table::set(data, i = ids, j = "nlm", value = nlm_values)
         return(data[, .(obs.id, fme, nlm)])
       } else {
         return(data[, .(obs.id, fme)])
