@@ -1,5 +1,5 @@
 ---
-output: github_document
+output: html_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -24,11 +24,11 @@ knitr::opts_chunk$set(
 This package implements [forward marginal effects (FMEs)][1], a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why they should be preferred to existing methods. Currently, `fmeffects` supports 100+ regression and (binary) classification models:
 
 * All models from the [tidymodels][6], [mlr3][2] and [caret][4] libraries.
-* Additionally, native support for generalized linear models (`glm`) & generalized additive models (`mgcv::gam`).
+* Native support for `lm`-type models, e.g. generalized linear models (`glm`) or generalized additive models (`gam`).
 
 ## Installation
 
-### Release
+**Release:** 
 
 You can install the current release version from *CRAN* with:
 
@@ -36,7 +36,7 @@ You can install the current release version from *CRAN* with:
 install.packages("fmeffects")
 ```
 
-### Development
+**Development:** 
 
 You can install the current development version from *Github* with:
 
@@ -52,31 +52,59 @@ remotes::install_github("holgstr/fmeffects")
 See [here][5] for an in-depth tutorial. The big advantage of FMEs is that they are interpreted similar to beta coefficients in linear regression models. Consider the following example: how does an increase in temperature (`temp`) by 1°C affect bike rentals (`count`)?
 
 ```{r, message = FALSE}
-# Train a random forest on the 'bikes' data using mlr3:
 set.seed(123)
 library(fmeffects)
-library(mlr3verse)
 data(bikes)
-task = as_task_regr(x = bikes, id = "bikes", target = "count")
-forest = lrn("regr.ranger")$train(task)
 ```
 
+### Train a Model {.tabset}
+
+#### tidymodels
+
+```{r, message = FALSE}
+# Train a model with tidymodels:
+library(tidymodels)
+forest <- rand_forest() %>%
+  set_mode("regression") %>%
+  set_engine("ranger")
+forest <- forest %>% fit(count ~ ., data = bikes)
+```
+
+#### mlr3
+
+```{r, message = FALSE}
+# Train a model with mlr3:
+library(mlr3verse)
+task <- as_task_regr(x = bikes, id = "bikes", target = "count")
+forest <- lrn("regr.ranger")$train(task)
+```
+
+### {-}
+
+### Compute effects
+
 ```{r, message = FALSE, warning = FALSE}
-# Compute effects for a trained model 'forest':
-effects = fme(model = forest,
+effects <- fme(model = forest,
               data = bikes,
               feature = "temp",
               step.size = 1)
+summary(effects)
+```
+
+### Plot effects
+
+```{r, message = FALSE, warning = FALSE}
 plot(effects, jitter = c(0.2, 0))
 ```
 
 On average, an increase in temperature by 1°C results in an increase in the predicted number of bike rentals by more than 2. This is called the average marginal effect (AME).
 
+### Model Overview
+
 Let's compute the AME for every feature of the model:
 
 ```{r}
-# Compute AMEs with default step sizes:
-overview = ame(model = forest,
+overview <- ame(model = forest,
                data = bikes)
 summary(overview)
 ```
