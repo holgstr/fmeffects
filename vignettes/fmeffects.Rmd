@@ -64,7 +64,7 @@ effects = fme(model = forest,
 
 Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 1°C to the temperature results in the temperature value falling outside the range of `temp` in the overall data. Thereby, we reduce the risk of asking the model to extrapolate.
 
-```{r, warning=FALSE}
+```{r, message=FALSE}
 plot(effects)
 ```
 
@@ -87,7 +87,7 @@ head(effects$results)
 
 Bivariate feature effects can be considered when one is interested in the combined effect of two features on the target variable. Let's assume we want to estimate the effect of a decrease in temperature by 3°C, combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
 
-```{r}
+```{r, message=FALSE}
 effects2 = fme(model = forest,
                data = bikes,
                feature = c("temp", "humidity"),
