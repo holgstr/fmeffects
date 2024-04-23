@@ -150,7 +150,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
         ggplot2::scale_fill_gradient(
           name = "Frequency",
           low = "gray87", high = "black",
-          breaks = function(x) {pretty(x, n = 3)}
+          breaks = function(x) {unique(round(pretty(x, n = 3)))}
         ) +
         ggplot2::geom_smooth(ggplot2::aes(x = x1, y = fme), se = TRUE, method = "gam", fullrange = TRUE, linetype = "solid", linewidth = 0.7, color = "black") +
         ggplot2::annotate("segment",
@@ -184,7 +184,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
           ggplot2::scale_fill_gradient(
             name = "Frequency",
             low = "gray87", high = "black",
-            breaks = function(x) {pretty(x, n = 3)}
+            breaks = function(x) {unique(round(pretty(x, n = 3)))}
           ) +
           ggplot2::annotate("segment",
                             x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
