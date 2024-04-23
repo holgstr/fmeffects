@@ -62,6 +62,7 @@ print.ForwardMarginalEffect = function(x, ...) {
 
 #' Plots an ForwardMarginalEffect object.
 #' @param x object of class `ForwardMarginalEffect`.
+#'   See the method `$plot()` in [fmeffects::ForwardMarginalEffect()] for details.
 #' @param ... additional arguments affecting the summary produced.
 #' @export
 plot.ForwardMarginalEffect = function(x, ...) {

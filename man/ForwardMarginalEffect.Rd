@@ -165,7 +165,7 @@ effects$compute()
 \subsection{Method \code{plot()}}{
 Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an \code{FME} object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ForwardMarginalEffect$plot(with.nlm = FALSE, jitter = c(0, 0))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ForwardMarginalEffect$plot(with.nlm = FALSE, bins = 40, binwidth = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -173,9 +173,11 @@ Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an \code{F
 \describe{
 \item{\code{with.nlm}}{Plots NLMs if computed, defaults to \code{FALSE}.}
 
-\item{\code{jitter}}{Jitters data. A two-dimensional numeric vector, corresponds to \code{"width"} and \code{"height"}. See \code{?ggplot2::geom_jitter} for details.
-Not available if \code{step.type} is categorical.
-Defaults to no jittering, i.e., c(0, 0).}
+\item{\code{bins}}{Numeric vector giving number of bins in both vertical and horizontal directions.
+See \code{\link[ggplot2:stat_summary_2d]{ggplot2::stat_summary_hex()}} for details.}
+
+\item{\code{binwidth}}{Numeric vector giving bin width in both vertical and horizontal directions. Overrides bins if both set.
+See \code{\link[ggplot2:stat_summary_2d]{ggplot2::stat_summary_hex()}} for details.}
 }
 \if{html}{\out{</div>}}
 }
