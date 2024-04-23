@@ -12,7 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Introduction
+# Introduction
 
 The `fmeffects` package computes, aggregates, and visualizes forward marginal effects (FMEs) for any supervised machine learning model. Read [here][4] how they are computed or the [research paper][1] for a more in-depth understanding. There are three main functions: 
 
@@ -20,7 +20,7 @@ The `fmeffects` package computes, aggregates, and visualizes forward marginal ef
 - `came()` can be applied subsequently to find subspaces of the feature space where FMEs are more homogeneous
 - `ame()` provides an overview of the prediction function w.r.t. each feature by using average marginal effects (AMEs) based on FMEs.
 
-### Example
+## Example
 
 For demonstration purposes, we consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It contains information about bike sharing usage in Washington, D.C. for the years 2011-2012 during the period from 7 to 8 a.m. We are interested in predicting `count` (the total number of bikes lent out to users).
 
@@ -42,15 +42,15 @@ forest = lrn("regr.ranger")$train(task)
 
 ---
 
-## Compute FMEs
+# Compute FMEs
 
 FMEs can be used to compute feature effects for both numerical and categorical features. This can be done with the `fme()` function.
 
-### Numerical Features
+## Numerical Features
 
 The most common application is to compute the FME for a single numerical feature, i.e., a univariate feature effect. The variable of interest must be specified with the `feature` argument. In this case, `step.size` can be any number deemed most useful for the purpose of interpretation. Most of the time, this will be a unit change, e.g., `step.size = 1`. As the concept of numerical FMEs extends to multivariate feature effects as well, `fme()` can be asked to compute a bivariate feature effect as well. In this case, `feature` needs to be supplied with the names of two numerical features, and `step.size` requires a vector, e.g., `step.size = c(1, 1)`.
 
-#### Univariate Feature Effects
+### Univariate Feature Effects
 
 Assume we are interested in the effect of temperature on bike sharing usage. Specifically, we set `step.size = 1` to investigate the FME of an increase in temperature by 1 degree Celsius (°C). Thus, we compute FMEs for ` feature = "temp"` and `step.size = 1`.
 
@@ -65,7 +65,7 @@ effects = fme(model = forest,
 Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 1°C to the temperature results in the temperature value falling outside the range of `temp` in the overall data. Thereby, we reduce the risk of asking the model to extrapolate.
 
 ```{r, warning=FALSE}
-plot(effects, jitter = c(0.2, 0))
+plot(effects)
 ```
 
 The black arrow indicates direction and magnitude of `step.size`. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FME tends to be positive for lower temperature values (0-20°C), it turns negative for higher temperature values (>20°C). \
@@ -83,7 +83,7 @@ head(effects$results)
 ```
 
 
-#### Bivariate Feature Effects
+### Bivariate Feature Effects
 
 Bivariate feature effects can be considered when one is interested in the combined effect of two features on the target variable. Let's assume we want to estimate the effect of a decrease in temperature by 3°C, combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
 
@@ -94,7 +94,7 @@ effects2 = fme(model = forest,
                step.size = c(-3, -0.1),
                ep.method = "envelope")
 
-plot(effects2, jitter = c(0.1, 0.02))
+plot(effects2)
 ```
 
 The plot for bivariate FMEs uses a color scale to indicate direction and magnitude of the estimated effect. Let's check the AME:
@@ -111,7 +111,34 @@ var(effects2$results$fme)
 
 Therefore, it could be interesting to move the interpretation of feature effects from a global to a [semi-global perspective][Semi-global Interpretations] via the `came()` function.
 
-### Categorical Features
+### Non-Linearity Measure (NLM)
+
+The non-linearity measure is a complimentary tool to an FME. Any numerical, observation-wise FME is prone to be misinterpreted as a linear effect. To counteract this, the NLM quantifies the linearity of the prediction function for a single observation and step size. A value of 1 indicates linearity, a value of 0 or lower indicates non-linearity (similar to R-squared, the NLM can take negative values). A detailed explanation can be found in the [FME methods paper][1].
+
+We can compute and plot NLMs alongside FMEs for univariate and multivariate feature changes. Computing NLMs can be computationally demanding, so we use `furrr` for parallelization. To illustrate NLMs, let's recompute the first example of an increase in temperature by 1 degree Celsius (°C) on a subset of the bikes data:
+
+```{r, results='hide'}
+effects = fme(model = forest,
+               data = bikes[1:50,],
+               feature = "temp",
+               step.size = 1,
+               ep.method = "envelope",
+               compute.nlm = TRUE)
+```
+
+Similarly to the AME, we can extract an Average NLM (ANLM):
+
+```{r}
+effects$anlm
+```
+
+If NLMs have been computed, they can be visualized alongside FMEs using `with.nlm = TRUE`:
+
+```{r}
+plot(effects, with.nlm = TRUE)
+```
+
+## Categorical Features
 
 For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `step.size`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
 
@@ -130,7 +157,7 @@ For categorical feature effects, we can plot the empirical distribution of the F
 plot(effects3)
 ```
 
-### Model Overview with AMEs
+## Model Overview with AMEs
 
 For an informative overview of all feature effects in a model, we can use the `ame()` function:
 
@@ -155,7 +182,7 @@ Again, note that often it is advisable to set `ep.method = "envelope"` so we avo
 -->
 ------
 
-## Semi-global Interpretations
+# Semi-global Interpretations
 
 We can use `came()` on a specific FME object to compute subspaces of the feature space where FMEs are more homogeneous. Let's take the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, and see if we can find three appropriate subspaces.
 
@@ -170,17 +197,17 @@ As can be seen, the CTREE algorithm was used to partition the feature space into
 plot(subspaces)
 ```
 
-In this case, we get a decision tree that assigns observations to a feature subspace according to the weather situation (`weather`) and the day of the week (`weekday`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. With cAMEs of -4.88, 4.16, and 25.68, respectively, the expected ME is estimated to vary substantially in direction and magnitude across the subspaces. For example, the cAME is highest on rainy days. It turns negative on non-rainy days in spring, summer and winter.
+In this case, we get a decision tree that assigns observations to a feature subspace according to the weather situation (`weather`) and the day of the week (`weekday`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. With cAMEs of -4.87, 6.35, and 42.11, respectively, the expected ME is estimated to vary substantially in direction and magnitude across the subspaces. For example, the cAME is highest on rainy days. It turns negative on non-rainy days in spring, summer and winter.
 
 ---
 
-## References
+# References
 
 Fanaee-T, H. and Gama, J. (2014). Event labeling combining ensemble detectors and background knowledge. Progress in Artificial Intelligence 2(2): 113–127
 
 Vanschoren, J., van Rijn, J. N., Bischl, B. and Torgo, L. (2013). Openml: networked science in machine learning. SIGKDD Explorations 15(2): 49–60
 
-[1]: https://arxiv.org/abs/2201.08837
+[1]: https://link.springer.com/article/10.1007/s10618-023-00993-x
 
 [2]: https://www.openml.org/search?type=data&status=active&id=42712
 

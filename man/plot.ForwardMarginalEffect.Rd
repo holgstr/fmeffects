@@ -7,7 +7,8 @@
 \method{plot}{ForwardMarginalEffect}(x, ...)
 }
 \arguments{
-\item{x}{object of class \code{ForwardMarginalEffect}.}
+\item{x}{object of class \code{ForwardMarginalEffect}.
+See the method \verb{$plot()} in \code{\link[=ForwardMarginalEffect]{ForwardMarginalEffect()}} for details.}
 
 \item{...}{additional arguments affecting the summary produced.}
 }

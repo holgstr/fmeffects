@@ -112,19 +112,20 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
     #' @description
     #' Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an `FME` object.
     #' @param with.nlm Plots NLMs if computed, defaults to `FALSE`.
-    #' @param jitter Jitters data. A two-dimensional numeric vector, corresponds to `"width"` and `"height"`. See `?ggplot2::geom_jitter` for details.
-    #' Not available if `step.type` is categorical.
-    #' Defaults to no jittering, i.e., c(0, 0).
+    #' @param bins Numeric vector giving number of bins in both vertical and horizontal directions.
+    #'   See [ggplot2::stat_summary_hex()] for details.
+    #' @param binwidth Numeric vector giving bin width in both vertical and horizontal directions. Overrides bins if both set.
+    #'   See [ggplot2::stat_summary_hex()] for details.
     #' @examples
     #' # Compute results:
     #' effects$plot()
-    plot = function(with.nlm = FALSE, jitter = c(0, 0)) {
+    plot = function(with.nlm = FALSE, bins = 40, binwidth = NULL) {
       if (self$step.type == "categorical") {
-        FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, jitter)
+        FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
       } else if (length(self$feature) == 1) {
-        FMEPlotUnivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, jitter)
+        FMEPlotUnivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, bins, binwidth)
       } else {
-        FMEPlotBivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, jitter)
+        FMEPlotBivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, bins, binwidth)
       }
     },
 
@@ -243,8 +244,8 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
                            nlm.intervals = nlm.intervals),
             packages = c("fmeffects")
           )
-          nlm_id(.x)
           utils::setTxtProgressBar(pb, .x)
+          nlm_id(.x)
         })
         close(pb)
 
