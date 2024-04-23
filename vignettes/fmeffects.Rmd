@@ -119,7 +119,7 @@ We can compute and plot NLMs alongside FMEs for univariate and multivariate feat
 
 ```{r, results='hide'}
 effects = fme(model = forest,
-               data = bikes[1:50,],
+               data = bikes[1:200,],
                feature = "temp",
                step.size = 1,
                ep.method = "envelope",
