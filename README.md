@@ -116,7 +116,7 @@ summary(effects)
 plot(effects)
 ```
 
-![](man/figures/unnamed-chunk-6-1.png)<!-- -->
+![](man/figures/unnamed-chunk-7-1.png)<!-- -->
 
 On average, an increase in temperature by 1°C results in an increase in
 the predicted number of bike rentals by more than 2. This is called the
