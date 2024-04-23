@@ -157,7 +157,7 @@ For categorical feature effects, we can plot the empirical distribution of the F
 plot(effects3)
 ```
 
-## Model Overview with AMEs
+# Model Overview with AMEs
 
 For an informative overview of all feature effects in a model, we can use the `ame()` function:
 
@@ -197,7 +197,7 @@ As can be seen, the CTREE algorithm was used to partition the feature space into
 plot(subspaces)
 ```
 
-In this case, we get a decision tree that assigns observations to a feature subspace according to the weather situation (`weather`) and the day of the week (`weekday`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. With cAMEs of -4.87, 6.35, and 42.11, respectively, the expected ME is estimated to vary substantially in direction and magnitude across the subspaces. For example, the cAME is highest on rainy days. It turns negative on non-rainy days in spring, summer and winter.
+In this case, we get a decision tree that assigns observations to a feature subspace according to the weather situation (`weather`) and the day of the week (`weekday`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. The difference in the cAMEs across the groups means the expected ME is estimated to vary substantially in direction and magnitude across the subspaces. For example, the cAME is highest on rainy days. It turns negative on non-rainy days in spring, summer and winter.
 
 ---
 

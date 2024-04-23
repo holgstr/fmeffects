@@ -103,7 +103,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       # Descriptive statistics for the results
       self$ame = mean(self$results$fme)
       if ("nlm" %in% names(self$results)) {
-        self$anlm = round(mean(self$results$nlm, na.rm = TRUE), 2)
+        self$anlm = round(mean(self$results$nlm, na.rm = TRUE), 4)
       }
       self$computed = TRUE
       invisible(self)
