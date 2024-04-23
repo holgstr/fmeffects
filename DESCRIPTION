@@ -17,6 +17,7 @@ Suggests:
     caret,
     furrr,
     future,
+    hexbin,
     knitr,
     mlr3verse,
     parallelly,
