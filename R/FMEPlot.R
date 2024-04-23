@@ -195,7 +195,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                             arrow = grid::arrow(length = grid::unit(0.3, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(nlm))) +
-          ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$nlm), label = paste0('ANLM: ', round(mean(df$fme), 4)), fill = 'white') +
+          ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$nlm), label = paste0('ANLM: ', round(mean(df$nlm), 4)), fill = 'white') +
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab("NLM") +
           ggplot2::theme_bw() +
