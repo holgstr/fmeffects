@@ -4,7 +4,7 @@
 \alias{PredictorLM}
 \title{PredictorLM}
 \description{
-This task specializes \link{Predictor} for \code{lm} and \code{glm} models.
+This task specializes \link{Predictor} for \code{lm} and \code{lm}-type models.
 The \code{model} is assumed to be a \code{lm}.
 
 It is recommended to use \code{\link[=makePredictor]{makePredictor()}} for construction of Predictor objects.

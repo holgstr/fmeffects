@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 This package implements [forward marginal effects (FMEs)][1], a model-agnostic framework for interpreting feature effects in machine learning models. FMEs are the simplest and most intuitive way to interpret feature effects - we explain [here][3] how they are computed and why they should be preferred to existing methods. Currently, `fmeffects` supports 100+ regression and (binary) classification models:
 
 * All models from the [tidymodels][6], [mlr3][2] and [caret][4] libraries.
-* Native support for `lm`-type models, e.g. generalized linear models (`glm`) or generalized additive models (`gam`).
+* Native support for `lm`-type models, e.g. `glm` or `gam`.
 
 ## Installation
 
@@ -90,7 +90,7 @@ summary(effects)
 ### Plot effects
 
 ```{r, message = FALSE, warning = FALSE}
-plot(effects, jitter = c(0.2, 0))
+plot(effects)
 ```
 
 On average, an increase in temperature by 1°C results in an increase in the predicted number of bike rentals by more than 2. This is called the average marginal effect (AME).

@@ -68,14 +68,14 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                           y = min(x2)-0.03*range.x2,
                           yend = min(x2)-0.03*range.x2,
                           colour = 'black', size = 1,
-                          arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
+                          arrow = ggplot2::arrow(length = ggplot2::unit(0.3, "cm")),
                           lineend = "round", linejoin = "mitre") +
         ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
                           yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
                           x = min(x1)-0.03*range.x1,
                           xend = min(x1)-0.03*range.x1,
                           colour = 'black', size = 1,
-                          arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
+                          arrow = ggplot2::arrow(length = ggplot2::unit(0.3, "cm")),
                           lineend = "round", linejoin = "mitre") +
         ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
                        axis.title = ggplot2::element_text(size = 12),
@@ -102,14 +102,14 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                             y = min(x2)-0.03*range.x2,
                             yend = min(x2)-0.03*range.x2,
                             colour = 'black', size = 1,
-                            arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
+                            arrow = ggplot2::arrow(length = ggplot2::unit(0.3, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
                             yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
                             x = min(x1)-0.03*range.x1,
                             xend = min(x1)-0.03*range.x1,
                             colour = 'black', size = 1,
-                            arrow = ggplot2::arrow(length = ggplot2::unit(0.5, "cm")),
+                            arrow = ggplot2::arrow(length = ggplot2::unit(0.3, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
                          axis.title = ggplot2::element_text(size = 12),
@@ -159,7 +159,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                  y = min(df$fme)-0.03*diff(range(df$fme)),
                  yend = min(df$fme)-0.03*diff(range(df$fme)),
                  colour = 'black', size = 1,
-                 arrow = grid::arrow(length = grid::unit(0.5, "cm")),
+                 arrow = grid::arrow(length = grid::unit(0.3, "cm")),
                  lineend = "round", linejoin = "mitre") +
         ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme))) +
         ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$fme), label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
@@ -192,7 +192,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                             y = min(df$nlm)-0.03*diff(range(df$nlm)),
                             yend = min(df$nlm)-0.03*diff(range(df$nlm)),
                             colour = 'black', size = 1,
-                            arrow = grid::arrow(length = grid::unit(0.5, "cm")),
+                            arrow = grid::arrow(length = grid::unit(0.3, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(nlm))) +
           ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$nlm), label = paste0('ANLM: ', round(mean(df$fme), 4)), fill = 'white') +

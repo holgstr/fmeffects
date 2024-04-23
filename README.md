@@ -29,8 +29,7 @@ classification models:
   [mlr3](https://mlr3learners.mlr-org.com/) and
   [caret](https://topepo.github.io/caret/available-models.html)
   libraries.
-- Native support for `lm`-type models, e.g. generalized linear models
-  (`glm`) or generalized additive models (`gam`).
+- Native support for `lm`-type models, e.g. `glm` or `gam`.
 
 ## Installation
 
@@ -114,7 +113,7 @@ summary(effects)
 ### Plot effects
 
 ``` r
-plot(effects, jitter = c(0.2, 0))
+plot(effects)
 ```
 
 ![](man/figures/unnamed-chunk-6-1.png)<!-- -->

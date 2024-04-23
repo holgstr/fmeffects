@@ -3,7 +3,7 @@
 #' @include Predictor.R
 #'
 #' @description
-#' This task specializes [Predictor] for `lm` and `glm` models.
+#' This task specializes [Predictor] for `lm` and `lm`-type models.
 #' The `model` is assumed to be a `lm`.
 #'
 #' It is recommended to use [makePredictor()] for construction of Predictor objects.
