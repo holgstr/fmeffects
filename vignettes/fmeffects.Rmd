@@ -134,7 +134,7 @@ effects3$anlm
 
 If NLMs have been computed, they can be visualized alongside FMEs using `with.nlm = TRUE`:
 
-```{r, message = FALSE}
+```{r, message = FALSE, fig.height = 4}
 plot(effects3, with.nlm = TRUE)
 ```
 
@@ -149,7 +149,7 @@ effects4 = fme(model = forest,
                compute.nlm = TRUE)
 ```
 
-```{r, message = FALSE}
+```{r, message = FALSE, fig.height = 4}
 plot(effects4, with.nlm = TRUE)
 ```
 
