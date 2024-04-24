@@ -143,14 +143,16 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
       checkmate::assertNumeric(binwidth, len = 2, null.ok = TRUE)
       df = as.data.frame(self$df)
       names(df)[which(names(df) == self$feature)] = "x1"
-      range.x1 = diff(range(df$x1))
-      min.x1 = min(df$x1)
-      max.x1 = max(df$x1)
-      range.fme = diff(range(df$fme))
+      range.x1 = diff(range(df$x1, na.rm = TRUE))
+      min.x1 = min(df$x1, na.rm = TRUE)
+      max.x1 = max(df$x1, na.rm = TRUE)
+      range.fme = diff(range(df$fme, na.rm = TRUE))
+      min.fme = min(df$fme, na.rm = TRUE)
 
       pfme = ggplot2::ggplot(df, ggplot2::aes(x = x1, y = fme)) +
         ggplot2::stat_summary_hex(ggplot2::aes(z = fme), fun = function(x) {length(x)}, bins = bins, binwidth = binwidth) +
-        ggplot2::xlim(NA, max(df$x1) + 0.15 * range.x1) +
+        ggplot2::xlim(NA, max.x1 + 0.15 * range.x1) +
+        ggplot2::ylim(min.fme - 0.05 * range.fme, NA) +
         ggplot2::scale_fill_gradient(
           name = "Count",
           low = "gray87", high = "black",
@@ -161,13 +163,13 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
         ggplot2::annotate("segment",
                  x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
                  xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
-                 y = min(df$fme)-0.03*diff(range(df$fme)),
-                 yend = min(df$fme)-0.03*diff(range(df$fme)),
+                 y = min.fme - 0.06 * range.fme,
+                 yend = min.fme - 0.06 * range.fme,
                  colour = 'black', size = 1,
                  arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                  lineend = "round", linejoin = "mitre") +
-        ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme))) +
-        ggplot2::geom_label(x = max(df$x1) + 0.1 * range.x1, y = mean(df$fme), label = "AME", size = 3, fill = 'white') +
+        ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme, na.rm = TRUE))) +
+        ggplot2::geom_label(x = max.x1 + 0.1 * range.x1, y = mean(df$fme, na.rm = TRUE), label = "AME", size = 3, fill = 'white') +
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab("FME") +
         ggplot2::theme_bw() +
@@ -186,7 +188,8 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
         range.nlm = diff(range(df$nlm, na.rm = FALSE))
         pnlm = ggplot2::ggplot(df, ggplot2::aes(x = x1, y = nlm)) +
           ggplot2::stat_summary_hex(ggplot2::aes(z =nlm), fun = function(x) {length(x)}, bins = bins, binwidth = binwidth) +
-          ggplot2::xlim(NA, max(df$x1) + 0.18 * range.x1) +
+          ggplot2::xlim(NA, max.x1 + 0.18 * range.x1) +
+          ggplot2::ylim(-0.05, NA) +
           ggplot2::scale_fill_gradient(
             name = "Count",
             low = "gray87", high = "black",
