@@ -247,11 +247,11 @@ and magnitude of the estimated effect. Let’s check the AME:</p>
 <pre><code><span><span class="co">## [1] -2.687935</span></span></code></pre>
 <p>It seems that a combined decrease in temperature by 3°C and humidity
 by 10 percentage points seems to result in slightly lower bike sharing
-usage (on average). However, a quick check of the variance of the FMEs
-implies that effects are highly heterogeneous:</p>
+usage (on average). However, a quick check of the standard deviation of
+the FMEs implies that effects are highly heterogeneous:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">effects2</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="va">fme</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 580.2032</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">effects2</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="va">fme</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 24.08741</span></span></code></pre>
 <p>Therefore, it could be interesting to move the interpretation of
 feature effects from a global to a <a href="#semi-global-interpretations">semi-global perspective</a> via the
 <code><a href="../reference/came.html">came()</a></code> function.</p>
