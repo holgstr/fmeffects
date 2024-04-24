@@ -273,7 +273,7 @@ demanding, so we use <code>furrr</code> for parallelization. To
 illustrate NLMs, let’s recompute the first example of an increase in
 temperature by 1 degree Celsius (°C) on a subset of the bikes data:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">effects</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
+<code class="sourceCode R"><span><span class="va">effects3</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">bikes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>,<span class="op">]</span>,</span>
 <span>               feature <span class="op">=</span> <span class="st">"temp"</span>,</span>
 <span>               step.size <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -281,14 +281,25 @@ temperature by 1 degree Celsius (°C) on a subset of the bikes data:</p>
 <span>               compute.nlm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Similarly to the AME, we can extract an Average NLM (ANLM):</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">effects</span><span class="op">$</span><span class="va">anlm</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">effects3</span><span class="op">$</span><span class="va">anlm</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.4648</span></span></code></pre>
 <p>If NLMs have been computed, they can be visualized alongside FMEs
 using <code>with.nlm = TRUE</code>:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects</span>, with.nlm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## `geom_smooth()` using formula = 'y ~ s(x, bs = "cs")'</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects3</span>, with.nlm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p>Equivalently, let’s compute an example with bivariate FMEs with
+NLMs:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">effects4</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
+<span>               data <span class="op">=</span> <span class="va">bikes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>,<span class="op">]</span>,</span>
+<span>               feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"temp"</span>, <span class="st">"humidity"</span><span class="op">)</span>,</span>
+<span>               step.size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>               ep.method <span class="op">=</span> <span class="st">"envelope"</span>,</span>
+<span>               compute.nlm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects4</span>, with.nlm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fmeffects_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level3">
@@ -301,12 +312,12 @@ instance, one could be interested in the effect of rainy weather on the
 bike sharing demand, i.e., the FME of changing the feature value of
 <code>weather</code> to <code>rain</code> for observations where weather
 is either <code>clear</code> or <code>misty</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">effects3</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">effects5</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>              data <span class="op">=</span> <span class="va">bikes</span>,</span>
 <span>              feature <span class="op">=</span> <span class="st">"weather"</span>,</span>
 <span>              step.size <span class="op">=</span> <span class="st">"rain"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">effects3</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">effects5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Forward Marginal Effects Object</span></span>
 <span><span class="co">## </span></span>
@@ -326,9 +337,9 @@ all other features constant, a change to rainy weather can be expected
 to reduce bike sharing usage by 55.<br>
 For categorical feature effects, we can plot the empirical distribution
 of the FMEs:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fmeffects_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects5</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fmeffects_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -336,7 +347,7 @@ of the FMEs:</p>
 </h2>
 <p>For an informative overview of all feature effects in a model, we can
 use the <code><a href="../reference/ame.html">ame()</a></code> function:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">overview</span> <span class="op">=</span> <span class="fu"><a href="../reference/ame.html">ame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>           data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span></span>
 <span><span class="va">overview</span><span class="op">$</span><span class="va">results</span></span></code></pre></div>
@@ -418,7 +429,7 @@ subspaces of the feature space where FMEs are more homogeneous. Let’s
 take the effect of a decrease in temperature by 3°C combined with a
 decrease in humidity by 10 percentage points, and see if we can find
 three appropriate subspaces.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subspaces</span> <span class="op">=</span> <span class="fu"><a href="../reference/came.html">came</a></span><span class="op">(</span>effects <span class="op">=</span> <span class="va">effects2</span>, number.partitions <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">subspaces</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -442,9 +453,9 @@ the CoV is substantially smaller in each of the subspaces than in the
 root node, i.e., the global feature space. The conditional AME (cAME)
 can be used to interpret how the expected FME varies across the
 subspaces. Let’s visualize our results:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">subspaces</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fmeffects_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="fmeffects_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 <p>In this case, we get a decision tree that assigns observations to a
 feature subspace according to the weather situation
 (<code>weather</code>) and the day of the week (<code>weekday</code>).
