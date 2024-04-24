@@ -242,7 +242,9 @@ FME for <code>feature = c("temp", "humidity")</code> and
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p>The plot for bivariate FMEs uses a color scale to indicate direction
-and magnitude of the estimated effect. Let’s check the AME:</p>
+and magnitude of the estimated effect. We can see that FMEs tend to be
+positive for days with high temperature and high humidity. Let’s check
+the AME:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects2</span><span class="op">$</span><span class="va">ame</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] -2.687935</span></span></code></pre>
