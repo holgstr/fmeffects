@@ -60,6 +60,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
           midpoint = 0,
           breaks = function(x) {pretty(x, n = 5)}
         ) +
+        ggplot2::geom_rug() +
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab(self$feature[2]) +
         ggplot2::theme_bw() +
@@ -95,6 +96,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
             breaks = c(0, 0.5, 1),
             limits = c(0, 1)
           ) +
+          ggplot2::geom_rug() +
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab(self$feature[2]) +
           ggplot2::theme_bw() +
@@ -153,6 +155,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
           low = "gray87", high = "black",
           breaks = function(x) {unique(round(pretty(x, n = 3)))}
         ) +
+        ggplot2::geom_rug(sides = "b") +
         ggplot2::geom_smooth(ggplot2::aes(x = x1, y = fme), se = TRUE, method = "gam", fullrange = TRUE, linetype = "solid", linewidth = 0.7, color = "black") +
         ggplot2::annotate("segment",
                  x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
@@ -187,6 +190,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
             low = "gray87", high = "black",
             breaks = function(x) {unique(round(pretty(x, n = 3)))}
           ) +
+          ggplot2::geom_rug(sides = "b") +
           ggplot2::annotate("segment",
                             x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
                             xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
