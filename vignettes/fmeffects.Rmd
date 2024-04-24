@@ -101,7 +101,7 @@ effects2 = fme(model = forest,
 plot(effects2)
 ```
 
-The plot for bivariate FMEs uses a color scale to indicate direction and magnitude of the estimated effect. Let's check the AME:
+The plot for bivariate FMEs uses a color scale to indicate direction and magnitude of the estimated effect. We can see that FMEs tend to be positive for days with high temperature and high humidity. Let's check the AME:
 
 ```{r}
 effects2$ame
