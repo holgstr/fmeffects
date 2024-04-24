@@ -69,7 +69,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                           y = min(x2)-0.03*range.x2,
                           yend = min(x2)-0.03*range.x2,
                           colour = 'black', size = 1,
-                          arrow = ggplot2::arrow(length = ggplot2::unit(0.3, "cm")),
+                          arrow = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
                           lineend = "round", linejoin = "mitre") +
         ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
                           yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
@@ -105,7 +105,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                             y = min(x2)-0.03*range.x2,
                             yend = min(x2)-0.03*range.x2,
                             colour = 'black', size = 1,
-                            arrow = ggplot2::arrow(length = ggplot2::unit(0.3, "cm")),
+                            arrow = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
                             yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
@@ -166,7 +166,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                  arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                  lineend = "round", linejoin = "mitre") +
         ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme))) +
-        ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$fme), label = "AME", fill = 'white') +
+        ggplot2::geom_label(x = max(df$x1) - 0.13 * range.x1, y = mean(df$fme), label = "AME", fill = 'white') +
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab("FME") +
         ggplot2::theme_bw() +
@@ -200,7 +200,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                             arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = meannlm)) +
-          ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = meannlm, label = "ANLM", fill = 'white') +
+          ggplot2::geom_label(x = max(df$x1) - 0.15 * range.x1, y = meannlm, label = "ANLM", fill = 'white') +
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab("NLM") +
           ggplot2::theme_bw() +
