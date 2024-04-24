@@ -157,7 +157,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
           breaks = function(x) {unique(round(pretty(x, n = 3)))}
         ) +
         ggplot2::geom_rug(sides = "b", length = ggplot2::unit(0.015, "npc")) +
-        ggplot2::geom_smooth(ggplot2::aes(x = x1, y = fme), se = FALSE, fullrange = FALSE, linetype = "solid", linewidth = 0.7, color = "black") +
+        ggplot2::geom_smooth(ggplot2::aes(x = x1, y = fme), se = FALSE, fullrange = FALSE, linetype = "dashed", linewidth = 0.7, color = "black") +
         ggplot2::annotate("segment",
                  x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
                  xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
