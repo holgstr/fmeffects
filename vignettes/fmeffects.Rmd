@@ -150,7 +150,7 @@ effects4 = fme(model = forest,
 ```
 
 ```{r, message = FALSE, fig.asp = 0.4}
-plot(effects4, with.nlm = TRUE)
+plot(effects4, bins = 25, with.nlm = TRUE)
 ```
 
 ## Categorical Features
