@@ -148,7 +148,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
       pfme = ggplot2::ggplot(df, ggplot2::aes(x = x1, y = fme)) +
         ggplot2::stat_summary_hex(ggplot2::aes(z = fme), fun = function(x) {length(x)}, bins = bins, binwidth = binwidth) +
         ggplot2::scale_fill_gradient(
-          name = "Frequency",
+          name = "Count",
           low = "gray87", high = "black",
           breaks = function(x) {unique(round(pretty(x, n = 3)))}
         ) +
@@ -182,7 +182,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
         pnlm = ggplot2::ggplot(df, ggplot2::aes(x = x1, y = nlm)) +
           ggplot2::stat_summary_hex(ggplot2::aes(z =nlm), fun = function(x) {length(x)}, bins = bins, binwidth = binwidth) +
           ggplot2::scale_fill_gradient(
-            name = "Frequency",
+            name = "Count",
             low = "gray87", high = "black",
             breaks = function(x) {unique(round(pretty(x, n = 3)))}
           ) +
