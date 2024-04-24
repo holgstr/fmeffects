@@ -48,33 +48,37 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
       checkmate::assertNumeric(binwidth, len = 2, null.ok = TRUE)
       df = as.data.frame(self$df)
       x1 = df[,which(self$feature[1] == names(df))]
-      range.x1 = diff(range(x1))
+      range.x1 = diff(range(x1, na.rm = TRUE))
+      min.x1 = min(x1, na.rm = TRUE)
       x2 = df[,which(self$feature[2] == names(df))]
-      range.x2 = diff(range(x2))
+      range.x2 = diff(range(x2, na.rm = TRUE))
+      min.x2 = min(x2, na.rm = TRUE)
 
       pfme <- ggplot2::ggplot(df, ggplot2::aes(x = x1, y = x2)) +
         ggplot2::stat_summary_hex(ggplot2::aes(z = fme), fun = mean, bins = bins, binwidth = binwidth) +
         ggplot2::scale_fill_gradient2(
           name = "FME",
-          low = "#D55E00", mid = "white", high = "#0072B2",
+          low = "#D55E00", mid = "#ECF4F9", high = "#0072B2",
           midpoint = 0,
           breaks = function(x) {pretty(x, n = 5)}
         ) +
+        ggplot2::xlim(min.x1 - 0.06 * range.x1, NA) +
+        ggplot2::ylim(min.x2 - 0.06 * range.x2, NA) +
         ggplot2::geom_rug(length = ggplot2::unit(0.015, "npc")) +
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab(self$feature[2]) +
         ggplot2::theme_bw() +
         ggplot2::annotate("segment", x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
-                          xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
-                          y = min(x2)-0.03*range.x2,
-                          yend = min(x2)-0.03*range.x2,
+                          xend = (0.5 * min.x1 + 0.5 * max(x1) + 0.5 * self$step.size[1]),
+                          y = min.x2 - 0.06 * range.x2,
+                          yend = min.x2 - 0.06 * range.x2,
                           colour = 'black', size = 1,
                           arrow = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
                           lineend = "round", linejoin = "mitre") +
         ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
                           yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
-                          x = min(x1)-0.03*range.x1,
-                          xend = min(x1)-0.03*range.x1,
+                          x = min.x1 - 0.06 * range.x1,
+                          xend = min.x1 - 0.06 * range.x1,
                           colour = 'black', size = 1,
                           arrow = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
                           lineend = "round", linejoin = "mitre") +
@@ -96,6 +100,8 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
             breaks = c(0, 0.5, 1),
             limits = c(0, 1)
           ) +
+          ggplot2::xlim(min.x1 - 0.06 * range.x1, NA) +
+          ggplot2::ylim(min.x2 - 0.06 * range.x2, NA) +
           ggplot2::geom_rug(length = ggplot2::unit(0.015, "npc")) +
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab(self$feature[2]) +
@@ -152,7 +158,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
       pfme = ggplot2::ggplot(df, ggplot2::aes(x = x1, y = fme)) +
         ggplot2::stat_summary_hex(ggplot2::aes(z = fme), fun = function(x) {length(x)}, bins = bins, binwidth = binwidth) +
         ggplot2::xlim(NA, max.x1 + 0.15 * range.x1) +
-        ggplot2::ylim(min.fme - 0.05 * range.fme, NA) +
+        ggplot2::ylim(min.fme - 0.1 * range.fme, NA) +
         ggplot2::scale_fill_gradient(
           name = "Count",
           low = "gray87", high = "black",
@@ -175,8 +181,8 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
         ggplot2::theme_bw() +
         ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
               axis.title = ggplot2::element_text(size = 12),
-              axis.text.x   = ggplot2::element_text(colour = "black", size = 10),
-              axis.text.y   = ggplot2::element_text(colour = "black", size = 10),
+              axis.text.x = ggplot2::element_text(colour = "black", size = 10),
+              axis.text.y = ggplot2::element_text(colour = "black", size = 10),
               legend.title = ggplot2::element_text(color = "black", size = 12),
               legend.text = ggplot2::element_text(color = "black", size = 10))
 
@@ -185,11 +191,12 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
       } else if ("nlm" %in% names(df)) {
         meannlm = mean(df$nlm, na.rm = TRUE)
         df$nlm = sapply(df$nlm, FUN = function(x) {max(x, 0, na.rm = TRUE)})
-        range.nlm = diff(range(df$nlm, na.rm = FALSE))
+        range.nlm = diff(range(df$nlm, na.rm = TRUE))
+        min.nlm = min(df$nlm, na.rm = TRUE)
         pnlm = ggplot2::ggplot(df, ggplot2::aes(x = x1, y = nlm)) +
-          ggplot2::stat_summary_hex(ggplot2::aes(z =nlm), fun = function(x) {length(x)}, bins = bins, binwidth = binwidth) +
+          ggplot2::stat_summary_hex(ggplot2::aes(z = nlm), fun = function(x) {length(x)}, bins = bins, binwidth = binwidth) +
           ggplot2::xlim(NA, max.x1 + 0.18 * range.x1) +
-          ggplot2::ylim(-0.05, NA) +
+          ggplot2::ylim(-0.1, NA) +
           ggplot2::scale_fill_gradient(
             name = "Count",
             low = "gray87", high = "black",
@@ -199,8 +206,8 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
           ggplot2::annotate("segment",
                             x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
                             xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
-                            y = min(df$nlm)-0.03*diff(range(df$nlm)),
-                            yend = min(df$nlm)-0.03*diff(range(df$nlm)),
+                            y = min.nlm - 0.06 * range.nlm,
+                            yend = min.nlm - 0.06 * range.nlm,
                             colour = 'black', size = 1,
                             arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                             lineend = "round", linejoin = "mitre") +
@@ -211,8 +218,8 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
           ggplot2::theme_bw() +
           ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
                          axis.title = ggplot2::element_text(size = 12),
-                         axis.text.x   = ggplot2::element_text(colour = "black", size = 10),
-                         axis.text.y   = ggplot2::element_text(colour = "black", size = 10),
+                         axis.text.x = ggplot2::element_text(colour = "black", size = 10),
+                         axis.text.y = ggplot2::element_text(colour = "black", size = 10),
                          legend.title = ggplot2::element_text(color = "black", size = 12),
                          legend.text = ggplot2::element_text(color = "black", size = 10))
         cowplot::plot_grid(pfme, pnlm, ncol = 2, rel_widths = c(0.5, 0.5))
@@ -258,8 +265,8 @@ FMEPlotCategorical = R6::R6Class("FMEPlotCategorical",
           ggplot2::theme_bw() +
           ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
                 axis.title = ggplot2::element_text(size = 12),
-                axis.text.x   = ggplot2::element_text(colour = "black", size = 10),
-                axis.text.y   = ggplot2::element_text(colour = "black", size = 10))
+                axis.text.x = ggplot2::element_text(colour = "black", size = 10),
+                axis.text.y = ggplot2::element_text(colour = "black", size = 10))
       } else {
         stop("Cannot plot NLM because NLM can only be computed for numerical features.")
       }
