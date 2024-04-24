@@ -253,8 +253,8 @@ the FMEs implies that effects are highly heterogeneous:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">effects2</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="va">fme</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 24.08741</span></span></code></pre>
 <p>Therefore, it could be interesting to move the interpretation of
-feature effects from a global to a <a href="#semi-global-interpretations">semi-global perspective</a> via the
-<code><a href="../reference/came.html">came()</a></code> function.</p>
+feature effects from a global to a [semi-global perspective][Semi-global
+Interpretations] via the <code><a href="../reference/came.html">came()</a></code> function.</p>
 </div>
 <div class="section level4">
 <h4 id="non-linearity-measure-nlm">Non-Linearity Measure (NLM)<a class="anchor" aria-label="anchor" href="#non-linearity-measure-nlm"></a>
@@ -422,7 +422,7 @@ Again, note that often it is advisable to set `ep.method = "envelope"` so we avo
 --> ——</p>
 </div>
 <div class="section level2">
-<h2 id="semi-global-interpretations">Semi-global Interpretations<a class="anchor" aria-label="anchor" href="#semi-global-interpretations"></a>
+<h2 id="regional-interpretations">Regional Interpretations<a class="anchor" aria-label="anchor" href="#regional-interpretations"></a>
 </h2>
 <p>We can use <code><a href="../reference/came.html">came()</a></code> on a specific FME object to compute
 subspaces of the feature space where FMEs are more homogeneous. Let’s
@@ -447,12 +447,12 @@ three appropriate subspaces.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## AME (Global): -2.6879</span></span></code></pre>
 <p>As can be seen, the CTREE algorithm was used to partition the feature
-space into three subspaces. The coefficient of variation (CoV) is used
+space into three subspaces. The standard deviation (SD) of FMEs is used
 as a criterion to measure homogeneity in each subspace. We can see that
-the CoV is substantially smaller in each of the subspaces than in the
-root node, i.e., the global feature space. The conditional AME (cAME)
-can be used to interpret how the expected FME varies across the
-subspaces. Let’s visualize our results:</p>
+the SD is substantially smaller in two of the three subspaces when
+compared to the root node, i.e., the global feature space. The
+conditional AME (cAME) can be used to interpret how the expected FME
+varies across the subspaces. Let’s visualize our results:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">subspaces</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
