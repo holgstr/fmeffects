@@ -91,8 +91,9 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
           ggplot2::stat_summary_hex(ggplot2::aes(z = nlm), fun = mean, bins = bins, binwidth = binwidth) +
           ggplot2::scale_fill_gradient(
             name = "NLM",
-            low = "gray87", high = "black",
-            breaks = c(0, 0.5, 1)
+            low = "white", high = "#0072B2",
+            breaks = c(0, 0.5, 1),
+            limits = c(0, 1)
           ) +
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab(self$feature[2]) +
