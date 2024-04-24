@@ -14,7 +14,10 @@ vignette: >
 
 # Introduction
 
-The `fmeffects` package computes, aggregates, and visualizes forward marginal effects (FMEs) for any supervised machine learning model. Read [here][4] how they are computed or the [research paper][1] for a more in-depth understanding. There are three main functions: 
+The `fmeffects` package computes, aggregates, and visualizes forward marginal effects (FMEs) for any supervised machine learning model.
+To learn about FMEs, look [here][4] how they are computed or read the methods [paper][1] for a more in-depth understanding. Our [website][5] is the best way to find all available resources.
+
+There are three main functions: 
 
 - `fme()` computes FMEs for a given model, data, feature of interest, and step size
 - `came()` can be applied subsequently to find subspaces of the feature space where FMEs are more homogeneous
@@ -82,7 +85,6 @@ For a more in-depth analysis, we can inspect the FME for each observation in the
 head(effects$results)
 ```
 
-
 ### Bivariate Feature Effects
 
 Bivariate feature effects can be considered when one is interested in the combined effect of two features on the target variable. Let's assume we want to estimate the effect of a decrease in temperature by 3°C, combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
@@ -93,7 +95,9 @@ effects2 = fme(model = forest,
                feature = c("temp", "humidity"),
                step.size = c(-3, -0.1),
                ep.method = "envelope")
+```
 
+```{r, message=FALSE}
 plot(effects2)
 ```
 
@@ -229,3 +233,5 @@ Vanschoren, J., van Rijn, J. N., Bischl, B. and Torgo, L. (2013). Openml: networ
 [3]: https://mlr3learners.mlr-org.com/
 
 [4]: https://holgstr.github.io/fmeffects/articles/fme_theory.html
+
+[5]: https://holgstr.github.io/fmeffects/

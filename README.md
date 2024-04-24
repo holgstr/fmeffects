@@ -15,10 +15,10 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/fmeffects)](https://cra
 # **`fmeffects`**: An R Package for Forward Marginal Effects <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
 This package implements [forward marginal effects
-(FMEs)](https://arxiv.org/abs/2201.08837), a model-agnostic framework
-for interpreting feature effects in machine learning models. FMEs are
-the simplest and most intuitive way to interpret feature effects - we
-explain
+(FMEs)](https://link.springer.com/article/10.1007/s10618-023-00993-x), a
+model-agnostic framework for interpreting feature effects in machine
+learning models. FMEs are the simplest and most intuitive way to
+interpret feature effects - we explain
 [here](https://holgstr.github.io/fmeffects/articles/fme_theory.html) how
 they are computed and why they should be preferred to existing methods.
 Currently, `fmeffects` supports 100+ regression and (binary)

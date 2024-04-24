@@ -104,7 +104,7 @@ overview <- ame(model = forest,
                data = bikes)
 summary(overview)
 ```
-[1]: https://arxiv.org/abs/2201.08837
+[1]: https://link.springer.com/article/10.1007/s10618-023-00993-x
 
 [2]: https://mlr3learners.mlr-org.com/
 
