@@ -197,7 +197,7 @@ Again, note that often it is advisable to set `ep.method = "envelope"` so we avo
 -->
 ------
 
-# Semi-global Interpretations
+# Regional Interpretations
 
 We can use `came()` on a specific FME object to compute subspaces of the feature space where FMEs are more homogeneous. Let's take the effect of a decrease in temperature by 3°C combined with a decrease in humidity by 10 percentage points, and see if we can find three appropriate subspaces.
 
@@ -206,7 +206,7 @@ subspaces = came(effects = effects2, number.partitions = 3)
 summary(subspaces)
 ```
 
-As can be seen, the CTREE algorithm was used to partition the feature space into three subspaces. The coefficient of variation (CoV) is used as a criterion to measure homogeneity in each subspace. We can see that the CoV is substantially smaller in each of the subspaces than in the root node, i.e., the global feature space. The conditional AME (cAME) can be used to interpret how the expected FME varies across the subspaces. Let's visualize our results:
+As can be seen, the CTREE algorithm was used to partition the feature space into three subspaces. The standard deviation (SD) of FMEs is used as a criterion to measure homogeneity in each subspace. We can see that the SD is substantially smaller in two of the three subspaces when compared to the root node, i.e., the global feature space. The conditional AME (cAME) can be used to interpret how the expected FME varies across the subspaces. Let's visualize our results:
 
 ```{r}
 plot(subspaces)
