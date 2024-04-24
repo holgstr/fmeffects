@@ -60,7 +60,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
           midpoint = 0,
           breaks = function(x) {pretty(x, n = 5)}
         ) +
-        ggplot2::geom_rug() +
+        ggplot2::geom_rug(length = unit(0.015, "npc")) +
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab(self$feature[2]) +
         ggplot2::theme_bw() +
@@ -76,7 +76,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                           x = min(x1)-0.03*range.x1,
                           xend = min(x1)-0.03*range.x1,
                           colour = 'black', size = 1,
-                          arrow = ggplot2::arrow(length = ggplot2::unit(0.3, "cm")),
+                          arrow = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
                           lineend = "round", linejoin = "mitre") +
         ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
                        axis.title = ggplot2::element_text(size = 12),
@@ -96,7 +96,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
             breaks = c(0, 0.5, 1),
             limits = c(0, 1)
           ) +
-          ggplot2::geom_rug() +
+          ggplot2::geom_rug(length = unit(0.015, "npc")) +
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab(self$feature[2]) +
           ggplot2::theme_bw() +
@@ -112,7 +112,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
                             x = min(x1)-0.03*range.x1,
                             xend = min(x1)-0.03*range.x1,
                             colour = 'black', size = 1,
-                            arrow = ggplot2::arrow(length = ggplot2::unit(0.3, "cm")),
+                            arrow = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
                          axis.title = ggplot2::element_text(size = 12),
@@ -155,7 +155,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
           low = "gray87", high = "black",
           breaks = function(x) {unique(round(pretty(x, n = 3)))}
         ) +
-        ggplot2::geom_rug(sides = "b") +
+        ggplot2::geom_rug(sides = "b", length = unit(0.015, "npc")) +
         ggplot2::geom_smooth(ggplot2::aes(x = x1, y = fme), se = TRUE, method = "gam", fullrange = TRUE, linetype = "solid", linewidth = 0.7, color = "black") +
         ggplot2::annotate("segment",
                  x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
@@ -163,7 +163,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                  y = min(df$fme)-0.03*diff(range(df$fme)),
                  yend = min(df$fme)-0.03*diff(range(df$fme)),
                  colour = 'black', size = 1,
-                 arrow = grid::arrow(length = grid::unit(0.3, "cm")),
+                 arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                  lineend = "round", linejoin = "mitre") +
         ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme))) +
         ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = mean(df$fme), label = "AME", fill = 'white') +
@@ -190,14 +190,14 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
             low = "gray87", high = "black",
             breaks = function(x) {unique(round(pretty(x, n = 3)))}
           ) +
-          ggplot2::geom_rug(sides = "b") +
+          ggplot2::geom_rug(sides = "b", length = unit(0.015, "npc")) +
           ggplot2::annotate("segment",
                             x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
                             xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
                             y = min(df$nlm)-0.03*diff(range(df$nlm)),
                             yend = min(df$nlm)-0.03*diff(range(df$nlm)),
                             colour = 'black', size = 1,
-                            arrow = grid::arrow(length = grid::unit(0.3, "cm")),
+                            arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = meannlm)) +
           ggplot2::geom_label(x = max(df$x1) - 0.2 * range.x1, y = meannlm, label = "ANLM", fill = 'white') +
