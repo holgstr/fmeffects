@@ -118,7 +118,7 @@ The non-linearity measure is a complimentary tool to an FME. Any numerical, obse
 We can compute and plot NLMs alongside FMEs for univariate and multivariate feature changes. Computing NLMs can be computationally demanding, so we use `furrr` for parallelization. To illustrate NLMs, let's recompute the first example of an increase in temperature by 1 degree Celsius (°C) on a subset of the bikes data:
 
 ```{r, results='hide'}
-effects = fme(model = forest,
+effects3 = fme(model = forest,
                data = bikes[1:200,],
                feature = "temp",
                step.size = 1,
@@ -129,13 +129,28 @@ effects = fme(model = forest,
 Similarly to the AME, we can extract an Average NLM (ANLM):
 
 ```{r}
-effects$anlm
+effects3$anlm
 ```
 
 If NLMs have been computed, they can be visualized alongside FMEs using `with.nlm = TRUE`:
 
-```{r}
-plot(effects, with.nlm = TRUE)
+```{r, message = FALSE}
+plot(effects3, with.nlm = TRUE)
+```
+
+Equivalently, let's compute an example with bivariate FMEs with NLMs:
+
+```{r, results='hide'}
+effects4 = fme(model = forest,
+               data = bikes[1:200,],
+               feature = c("temp", "humidity"),
+               step.size = c(-3, -0.1),
+               ep.method = "envelope",
+               compute.nlm = TRUE)
+```
+
+```{r, message = FALSE}
+plot(effects4, with.nlm = TRUE)
 ```
 
 ## Categorical Features
@@ -143,18 +158,18 @@ plot(effects, with.nlm = TRUE)
 For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `step.size`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
 
 ```{r}
-effects3 = fme(model = forest,
+effects5 = fme(model = forest,
               data = bikes,
               feature = "weather",
               step.size = "rain")
-summary(effects3)
+summary(effects5)
 ```
 
 Here, the AME of `rain` is -55. Therefore, while holding all other features constant, a change to rainy weather can be expected to reduce bike sharing usage by 55. \
 For categorical feature effects, we can plot the empirical distribution of the FMEs:
 
 ```{r, warning=FALSE}
-plot(effects3)
+plot(effects5)
 ```
 
 # Model Overview with AMEs
