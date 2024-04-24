@@ -186,7 +186,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
         range.nlm = diff(range(df$nlm, na.rm = FALSE))
         pnlm = ggplot2::ggplot(df, ggplot2::aes(x = x1, y = nlm)) +
           ggplot2::stat_summary_hex(ggplot2::aes(z =nlm), fun = function(x) {length(x)}, bins = bins, binwidth = binwidth) +
-          ggplot2::xlim(NA, max(df$x1) + 0.15 * range.x1) +
+          ggplot2::xlim(NA, max(df$x1) + 0.18 * range.x1) +
           ggplot2::scale_fill_gradient(
             name = "Count",
             low = "gray87", high = "black",
@@ -202,7 +202,7 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
                             arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = meannlm)) +
-          ggplot2::geom_label(x = max(df$x1) + 0.1 * range.x1, y = meannlm, label = "ANLM", size = 3, fill = 'white') +
+          ggplot2::geom_label(x = max(df$x1) + 0.09 * range.x1, y = meannlm, label = "ANLM", size = 3, fill = 'white') +
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab("NLM") +
           ggplot2::theme_bw() +
