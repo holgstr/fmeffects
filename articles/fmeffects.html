@@ -154,15 +154,11 @@ the <code>ranger</code> algorithm:</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="compute-fmes">Compute FMEs<a class="anchor" aria-label="anchor" href="#compute-fmes"></a>
+<h2 id="numerical-fme">Numerical FME<a class="anchor" aria-label="anchor" href="#numerical-fme"></a>
 </h2>
 <p>FMEs can be used to compute feature effects for both numerical and
 categorical features. This can be done with the <code><a href="../reference/fme.html">fme()</a></code>
-function.</p>
-<div class="section level3">
-<h3 id="numerical-features">Numerical Features<a class="anchor" aria-label="anchor" href="#numerical-features"></a>
-</h3>
-<p>The most common application is to compute the FME for a single
+function. The most common application is to compute the FME for a single
 numerical feature, i.e., a univariate feature effect. The variable of
 interest must be specified with the <code>features</code> argument. This
 is a named list with the feature names and step lengths. The step length
@@ -172,9 +168,9 @@ interpretation. Most of the time, this will be a unit change, e.g.,
 numerical FMEs extends to multivariate feature changes as well,
 <code><a href="../reference/fme.html">fme()</a></code> can be asked to compute a multivariate feature
 effect.</p>
-<div class="section level4">
-<h4 id="univariate-feature-effects">Univariate Feature Effects<a class="anchor" aria-label="anchor" href="#univariate-feature-effects"></a>
-</h4>
+<div class="section level3">
+<h3 id="univariate-feature-effects">Univariate Feature Effects<a class="anchor" aria-label="anchor" href="#univariate-feature-effects"></a>
+</h3>
 <p>Assume we are interested in the effect of temperature on bike sharing
 usage. Specifically, we set the step size to 1 to investigate the FME of
 an increase in temperature by 1 degree Celsius (°C). Thus, we compute
@@ -219,9 +215,9 @@ observation in the data set:</p>
 <span><span class="co">## 5:      5  4.084969</span></span>
 <span><span class="co">## 6:      6  4.704511</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="multivariate-feature-effects">Multivariate Feature Effects<a class="anchor" aria-label="anchor" href="#multivariate-feature-effects"></a>
-</h4>
+<div class="section level3">
+<h3 id="multivariate-feature-effects">Multivariate Feature Effects<a class="anchor" aria-label="anchor" href="#multivariate-feature-effects"></a>
+</h3>
 <p>Multivariate feature effects can be considered when one is interested
 in the combined effect of two or more numeric features. Let’s assume we
 want to estimate the effect of a decrease in temperature by 3°C,
@@ -255,9 +251,9 @@ the FMEs implies that effects are highly heterogeneous:</p>
 feature effects from a global to a [semi-global perspective][Semi-global
 Interpretations] via the <code><a href="../reference/came.html">came()</a></code> function.</p>
 </div>
-<div class="section level4">
-<h4 id="non-linearity-measure-nlm">Non-Linearity Measure (NLM)<a class="anchor" aria-label="anchor" href="#non-linearity-measure-nlm"></a>
-</h4>
+<div class="section level3">
+<h3 id="non-linearity-measure-nlm">Non-Linearity Measure (NLM)<a class="anchor" aria-label="anchor" href="#non-linearity-measure-nlm"></a>
+</h3>
 <p>The non-linearity measure is a complimentary tool to an FME. Any
 numerical, observation-wise FME is prone to be misinterpreted as a
 linear effect. To counteract this, the NLM quantifies the linearity of
@@ -303,9 +299,9 @@ NLMs:</p>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="categorical-features">Categorical Features<a class="anchor" aria-label="anchor" href="#categorical-features"></a>
-</h3>
+<div class="section level2">
+<h2 id="categorical-fme">Categorical FME<a class="anchor" aria-label="anchor" href="#categorical-fme"></a>
+</h2>
 <p>For a categorical feature, the FME of an observation is simply the
 difference in predictions when changing the observed category of the
 feature to the category specified in <code>features</code>. For
@@ -341,7 +337,6 @@ of the FMEs:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 <hr>
-</div>
 </div>
 <div class="section level2">
 <h2 id="model-overview-with-ames">Model Overview with AMEs<a class="anchor" aria-label="anchor" href="#model-overview-with-ames"></a>

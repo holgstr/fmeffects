@@ -144,7 +144,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>              data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>              features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span>              features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>temp <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">effects</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Forward Marginal Effects Object</span></span>
@@ -175,7 +175,7 @@
 <p>Let’s compute the AME for every feature of the model:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">overview</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ame.html">ame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
-<span>               data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span></span>
+<span>                data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Model Summary Using Average Marginal Effects:</span></span>
