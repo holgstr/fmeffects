@@ -131,7 +131,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Train a model with mlr3:</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3verse.mlr-org.com" class="external-link">mlr3verse</a></span><span class="op">)</span></span>
-<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span>
+<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span>
 <span><span class="va">forest</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -144,8 +144,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>              data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>              feature <span class="op">=</span> <span class="st">"temp"</span>,</span>
-<span>              step.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>              features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">effects</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Forward Marginal Effects Object</span></span>
