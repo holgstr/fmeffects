@@ -164,27 +164,25 @@ function.</p>
 </h3>
 <p>The most common application is to compute the FME for a single
 numerical feature, i.e., a univariate feature effect. The variable of
-interest must be specified with the <code>feature</code> argument. In
-this case, <code>step.size</code> can be any number deemed most useful
-for the purpose of interpretation. Most of the time, this will be a unit
-change, e.g., <code>step.size = 1</code>. As the concept of numerical
-FMEs extends to multivariate feature effects as well, <code><a href="../reference/fme.html">fme()</a></code>
-can be asked to compute a bivariate feature effect as well. In this
-case, <code>feature</code> needs to be supplied with the names of two
-numerical features, and <code>step.size</code> requires a vector, e.g.,
-<code>step.size = c(1, 1)</code>.</p>
+interest must be specified with the <code>features</code> argument. This
+is a named list with the feature names and step lengths. The step length
+is chosen to be the number deemed most useful for the purpose of
+interpretation. Most of the time, this will be a unit change, e.g.,
+<code>features = list(feature_name = 1)</code>. As the concept of
+numerical FMEs extends to multivariate feature changes as well,
+<code><a href="../reference/fme.html">fme()</a></code> can be asked to compute a multivariate feature
+effect.</p>
 <div class="section level4">
 <h4 id="univariate-feature-effects">Univariate Feature Effects<a class="anchor" aria-label="anchor" href="#univariate-feature-effects"></a>
 </h4>
 <p>Assume we are interested in the effect of temperature on bike sharing
-usage. Specifically, we set <code>step.size = 1</code> to investigate
-the FME of an increase in temperature by 1 degree Celsius (°C). Thus, we
-compute FMEs for <code>feature = "temp"</code> and
-<code>step.size = 1</code>.</p>
+usage. Specifically, we set the step size to 1 to investigate the FME of
+an increase in temperature by 1 degree Celsius (°C). Thus, we compute
+FMEs for <code>features = list("temp" = 1)</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>temp <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>               ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that we have specified <code>ep.method = "envelope"</code>. This
 means we exclude observations for which adding 1°C to the temperature
@@ -194,15 +192,14 @@ asking the model to extrapolate.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<p>The black arrow indicates direction and magnitude of
-<code>step.size</code>. The horizontal line is the average marginal
-effect (AME). The AME is computed as a simple mean over all
-observation-wise FMEs. Therefore, on average, the FME of a temperature
-increase of 1°C on bike sharing usage is roughly 2.4. As can be seen,
-the observation-wise effects seem to vary for different values of temp.
-While the FME tends to be positive for lower temperature values
-(0-20°C), it turns negative for higher temperature values
-(&gt;20°C).<br></p>
+<p>The black arrow indicates direction and magnitude of the step size.
+The horizontal line is the average marginal effect (AME). The AME is
+computed as a simple mean over all observation-wise FMEs. Therefore, on
+average, the FME of a temperature increase of 1°C on bike sharing usage
+is roughly 2.4. As can be seen, the observation-wise effects seem to
+vary for different values of temp. While the FME tends to be positive
+for lower temperature values (0-20°C), it turns negative for higher
+temperature values (&gt;20°C).<br></p>
 <p>Also, we can extract all relevant aggregate information from the
 <code>effects</code> object:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -223,19 +220,20 @@ observation in the data set:</p>
 <span><span class="co">## 6:      6  4.704511</span></span></code></pre>
 </div>
 <div class="section level4">
-<h4 id="bivariate-feature-effects">Bivariate Feature Effects<a class="anchor" aria-label="anchor" href="#bivariate-feature-effects"></a>
+<h4 id="multivariate-feature-effects">Multivariate Feature Effects<a class="anchor" aria-label="anchor" href="#multivariate-feature-effects"></a>
 </h4>
-<p>Bivariate feature effects can be considered when one is interested in
-the combined effect of two features on the target variable. Let’s assume
-we want to estimate the effect of a decrease in temperature by 3°C,
+<p>Multivariate feature effects can be considered when one is interested
+in the combined effect of two or more numeric features. Let’s assume we
+want to estimate the effect of a decrease in temperature by 3°C,
 combined with a decrease in humidity by 10 percentage points, i.e., the
-FME for <code>feature = c("temp", "humidity")</code> and
-<code>step.size = c(−3, −0.1)</code>:</p>
+FME for <code>features = list(temp = -3, humidity = -0.1)</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects2</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, <span class="st">"humidity"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>temp <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, humidity <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>               ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></code></pre></div>
+<p>For bivariate effects, we can plot the effects (we cannot for more
+than two features):</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
@@ -276,7 +274,7 @@ temperature by 1 degree Celsius (°C) on a subset of the bikes data:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects3</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">bikes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>,<span class="op">]</span>,</span>
-<span>               feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>               feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>temp <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>               ep.method <span class="op">=</span> <span class="st">"envelope"</span>,</span>
 <span>               compute.nlm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Similarly to the AME, we can extract an Average NLM (ANLM):</p>
@@ -284,7 +282,7 @@ temperature by 1 degree Celsius (°C) on a subset of the bikes data:</p>
 <code class="sourceCode R"><span><span class="va">effects3</span><span class="op">$</span><span class="va">anlm</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.4648</span></span></code></pre>
 <p>A value of 0.5 indicates that a linear effect can describe some but
-not all of the change of the prediction function along the bivariate
+not all of the change of the prediction function along the multivariate
 feature step. This means we should be weary of interpreting the FME as a
 linear effect.</p>
 <p>If NLMs have been computed, they can be visualized alongside FMEs
@@ -297,7 +295,7 @@ NLMs:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects4</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">bikes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>,<span class="op">]</span>,</span>
-<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, <span class="st">"humidity"</span> <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>temp <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, humidity <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>               ep.method <span class="op">=</span> <span class="st">"envelope"</span>,</span>
 <span>               compute.nlm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -310,7 +308,7 @@ NLMs:</p>
 </h3>
 <p>For a categorical feature, the FME of an observation is simply the
 difference in predictions when changing the observed category of the
-feature to the category specified in <code>step.size</code>. For
+feature to the category specified in <code>features</code>. For
 instance, one could be interested in the effect of rainy weather on the
 bike sharing demand, i.e., the FME of changing the feature value of
 <code>weather</code> to <code>rain</code> for observations where weather
@@ -318,7 +316,7 @@ is either <code>clear</code> or <code>misty</code>:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects5</span> <span class="op">=</span> <span class="fu"><a href="../reference/fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>              data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>              features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"weather"</span> <span class="op">=</span> <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span></span>
+<span>              features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weather <span class="op">=</span> <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">effects5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Forward Marginal Effects Object</span></span>
@@ -342,6 +340,7 @@ of the FMEs:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<hr>
 </div>
 </div>
 <div class="section level2">
@@ -361,27 +360,22 @@ use the <code><a href="../reference/ame.html">ame()</a></code> function:</p>
 <p>This computes the AME for each feature included in the model, with a
 default step size of 1 for numerical features (or, 0.01 if their range
 is smaller than 1). For categorical features, AMEs are computed for all
-available categories.<br><!--We can specify a custom subset of features and step sizes using the `features` argument:
-
-
-```r
-overview = ame(model = forest,
-               data = bikes,
-               features = c(weather = c("rain", "clear"), temp = -1, humidity = 0.1),
-               ep.method = "envelope")
-overview$results
-```
-
-```
-##    Feature step.size      AME       SD      0.25     0.75   n
-## 1  weather      rain -55.3083 53.01272 -94.40958 -5.48097 657
-## 2  weather     clear 26.19828 41.78861   3.59911 25.92567 284
-## 3     temp        -1 -2.03736  6.77662  -3.75185   0.5965 724
-## 4 humidity       0.1 -7.75386 17.23894  -8.54966  1.32707 640
-```
-
-Again, note that often it is advisable to set `ep.method = "envelope"` so we avoid model extrapolation.
---> ——</p>
+available categories. We can specify a custom subset of features and
+step sizes using the <code>features</code> argument:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">overview</span> <span class="op">=</span> <span class="fu"><a href="../reference/ame.html">ame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
+<span>               data <span class="op">=</span> <span class="va">bikes</span>,</span>
+<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weather <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rain"</span>, <span class="st">"clear"</span><span class="op">)</span>, temp <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, humidity <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>               ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span>
+<span><span class="va">overview</span><span class="op">$</span><span class="va">results</span></span></code></pre></div>
+<pre><code><span><span class="co">##    Feature step.size      AME       SD      0.25     0.75   n</span></span>
+<span><span class="co">## 1  weather      rain -55.3083 53.01272 -94.40958 -5.48097 657</span></span>
+<span><span class="co">## 2  weather     clear 26.19828 41.78861   3.59911 25.92567 284</span></span>
+<span><span class="co">## 3     temp        -1 -2.03736  6.77662  -3.75185   0.5965 724</span></span>
+<span><span class="co">## 4 humidity       0.1 -7.75386 17.23894  -8.54966  1.32707 640</span></span></code></pre>
+<p>Again, note that often it is advisable to set
+<code>ep.method = "envelope"</code> so we avoid model extrapolation.</p>
+<hr>
 </div>
 <div class="section level2">
 <h2 id="regional-interpretations">Regional Interpretations<a class="anchor" aria-label="anchor" href="#regional-interpretations"></a>
@@ -391,7 +385,7 @@ subspaces of the feature space where FMEs are more homogeneous. Let’s
 take the effect of a decrease in temperature by 3°C combined with a
 decrease in humidity by 10 percentage points, and see if we can find
 three appropriate subspaces.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subspaces</span> <span class="op">=</span> <span class="fu"><a href="../reference/came.html">came</a></span><span class="op">(</span>effects <span class="op">=</span> <span class="va">effects2</span>, number.partitions <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">subspaces</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -415,7 +409,7 @@ the SD is substantially smaller in two of the three subspaces when
 compared to the root node, i.e., the global feature space. The
 conditional AME (cAME) can be used to interpret how the expected FME
 varies across the subspaces. Let’s visualize our results:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">subspaces</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
 <p>In this case, we get a decision tree that assigns observations to a

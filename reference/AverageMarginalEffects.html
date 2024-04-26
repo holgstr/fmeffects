@@ -110,7 +110,9 @@
 
 
 <dt><code>features</code></dt>
-<dd><p>A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.</p></dd>
+<dd><p>If not NULL, a named list of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
+For numeric features, the step size must be a single number.
+For categorial features, the step size must be a character vector of category names that is a subset of the levels of the factor variable.</p></dd>
 
 
 <dt><code>ep.method</code></dt>
