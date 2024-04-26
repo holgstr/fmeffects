@@ -30,23 +30,27 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       feature = names(features)
       step.size = unlist(features, use.names = FALSE)
 
-      # Check if feature is unique character vector of length 1 or 2 and matches names in data
-      checkmate::assertCharacter(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
+      # Check if feature is unique character vector of minimum length 1 and matches names in data
+      checkmate::assertCharacter(feature, min.len = 1, max.len = length(predictor$feature.names), unique = TRUE, any.missing = FALSE)
       checkmate::assertSubset(feature, choices = predictor$feature.names)
 
-      # Check if feature.types are numeric when feature is of length 2
+      # Check if feature.types are numeric when feature is of length >2
       feature.types = predictor$feature.types[which(predictor$feature.names %in% feature)]
-      if (length(feature) == 2) {
+      if (length(feature) >= 2) {
         checkmate::assertSetEqual(feature.types, y = c("numerical"))
       }
-
       # Check if step.size corresponds to feature in length, format and range
-      if (length(feature) == 2) { # bivariate
-        checkmate::assertNumeric(step.size, len = 2)
-        range1 = diff(range(predictor$X[, feature, with=FALSE][,1]))
-        checkmate::assertNumeric(step.size[1], len = 1, lower = (-range1), upper = range1)
-        range2 = diff(range(predictor$X[, feature, with=FALSE][,2]))
-        checkmate::assertNumeric(step.size[2], len = 1, lower = (-range2), upper = range2)
+      if (length(feature) >= 2) { # multivariate
+        checkmate::assertNumeric(step.size, min.len = 2)
+        range_check = function(feature_number) {
+          range = diff(range(predictor$X[, feature, with = FALSE][, ..feature_number]))
+          checkmate::assertNumeric(step.size[feature_number], len = 1, lower = (-range), upper = range)
+        }
+        sapply(X = feature, FUN = function(x) {range_check(x)})
+        #range1 = diff(range(predictor$X[, feature, with=FALSE][,1]))
+        #checkmate::assertNumeric(step.size[1], len = 1, lower = (-range1), upper = range1)
+        #range2 = diff(range(predictor$X[, feature, with=FALSE][,2]))
+        #checkmate::assertNumeric(step.size[2], len = 1, lower = (-range2), upper = range2)
         self$step.type = "numerical"
       } else if (feature.types == "numerical"){ # univariate numerical
         range = diff(range(predictor$X[, feature, with=FALSE]))
@@ -125,8 +129,10 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
         FMEPlotCategorical$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
       } else if (length(self$feature) == 1) {
         FMEPlotUnivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, bins, binwidth)
-      } else {
+      } else if (length(self$feature) == 2){
         FMEPlotBivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, bins, binwidth)
+      } else {
+        stop("Cannot plot effects for more than two numerical features.")
       }
     },
 

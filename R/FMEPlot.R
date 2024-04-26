@@ -53,6 +53,7 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
       x2 = df[,which(self$feature[2] == names(df))]
       range.x2 = diff(range(x2, na.rm = TRUE))
       min.x2 = min(x2, na.rm = TRUE)
+      step.size <- sign(self$step.size) * pmin(abs(self$step.size), c(range.x1, range.x2))
 
       pfme <- ggplot2::ggplot(df, ggplot2::aes(x = x1, y = x2)) +
         ggplot2::stat_summary_hex(ggplot2::aes(z = fme), fun = mean, bins = bins, binwidth = binwidth) +
@@ -68,15 +69,15 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab(self$feature[2]) +
         ggplot2::theme_bw() +
-        ggplot2::annotate("segment", x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
-                          xend = (0.5 * min.x1 + 0.5 * max(x1) + 0.5 * self$step.size[1]),
+        ggplot2::annotate("segment", x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * step.size[1]),
+                          xend = (0.5 * min.x1 + 0.5 * max(x1) + 0.5 * step.size[1]),
                           y = min.x2 - 0.06 * range.x2,
                           yend = min.x2 - 0.06 * range.x2,
                           colour = 'black', size = 1,
                           arrow = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
                           lineend = "round", linejoin = "mitre") +
-        ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
-                          yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
+        ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * step.size[2]),
+                          yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * step.size[2]),
                           x = min.x1 - 0.06 * range.x1,
                           xend = min.x1 - 0.06 * range.x1,
                           colour = 'black', size = 1,
@@ -106,15 +107,15 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab(self$feature[2]) +
           ggplot2::theme_bw() +
-          ggplot2::annotate("segment", x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * self$step.size[1]),
-                            xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * self$step.size[1]),
+          ggplot2::annotate("segment", x = (0.5 * min(x1) + 0.5 * max(x1) - 0.5 * step.size[1]),
+                            xend = (0.5 * min(x1) + 0.5 * max(x1) + 0.5 * step.size[1]),
                             y = min(x2)-0.03*range.x2,
                             yend = min(x2)-0.03*range.x2,
                             colour = 'black', size = 1,
                             arrow = ggplot2::arrow(length = ggplot2::unit(0.2, "cm")),
                             lineend = "round", linejoin = "mitre") +
-          ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * self$step.size[2]),
-                            yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * self$step.size[2]),
+          ggplot2::annotate("segment", y = (0.5 * min(x2) + 0.5 * max(x2) - 0.5 * step.size[2]),
+                            yend = (0.5 * min(x2) + 0.5 * max(x2) + 0.5 * step.size[2]),
                             x = min(x1)-0.03*range.x1,
                             xend = min(x1)-0.03*range.x1,
                             colour = 'black', size = 1,

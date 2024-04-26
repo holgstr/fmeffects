@@ -80,7 +80,9 @@ Create a new AME object.
 
 \item{\code{data}}{The data used for computing AMEs, must be data.frame or data.table.}
 
-\item{\code{features}}{A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.}
+\item{\code{features}}{If not NULL, a named list of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
+For numeric features, the step size must be a single number.
+For categorial features, the step size must be a character vector of category names that is a subset of the levels of the factor variable.}
 
 \item{\code{ep.method}}{String specifying the method used for extrapolation detection. One of \code{"none"} or \code{"envelope"}. Defaults to \code{"none"}.}
 }

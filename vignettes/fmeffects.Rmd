@@ -51,16 +51,16 @@ FMEs can be used to compute feature effects for both numerical and categorical f
 
 ## Numerical Features
 
-The most common application is to compute the FME for a single numerical feature, i.e., a univariate feature effect. The variable of interest must be specified with the `feature` argument. In this case, `step.size` can be any number deemed most useful for the purpose of interpretation. Most of the time, this will be a unit change, e.g., `step.size = 1`. As the concept of numerical FMEs extends to multivariate feature effects as well, `fme()` can be asked to compute a bivariate feature effect as well. In this case, `feature` needs to be supplied with the names of two numerical features, and `step.size` requires a vector, e.g., `step.size = c(1, 1)`.
+The most common application is to compute the FME for a single numerical feature, i.e., a univariate feature effect. The variable of interest must be specified with the `features` argument. This is a named list with the feature names and step lengths. The step length is chosen to be the number deemed most useful for the purpose of interpretation. Most of the time, this will be a unit change, e.g., `features = list(feature_name = 1)`. As the concept of numerical FMEs extends to multivariate feature changes as well, `fme()` can be asked to compute a multivariate feature effect.
 
 ### Univariate Feature Effects
 
-Assume we are interested in the effect of temperature on bike sharing usage. Specifically, we set `step.size = 1` to investigate the FME of an increase in temperature by 1 degree Celsius (°C). Thus, we compute FMEs for ` feature = "temp"` and `step.size = 1`.
+Assume we are interested in the effect of temperature on bike sharing usage. Specifically, we set the step size to 1 to investigate the FME of an increase in temperature by 1 degree Celsius (°C). Thus, we compute FMEs for `features = list("temp" = 1)`.
 
 ```{r}
 effects = fme(model = forest,
                data = bikes,
-               features = list("temp" = 1),
+               features = list(temp = 1),
                ep.method = "envelope")
 ```
 
@@ -70,7 +70,7 @@ Note that we have specified `ep.method = "envelope"`. This means we exclude obse
 plot(effects)
 ```
 
-The black arrow indicates direction and magnitude of `step.size`. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FME tends to be positive for lower temperature values (0-20°C), it turns negative for higher temperature values (>20°C). \
+The black arrow indicates direction and magnitude of the step size. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FME tends to be positive for lower temperature values (0-20°C), it turns negative for higher temperature values (>20°C). \
 
 Also, we can extract all relevant aggregate information from the `effects` object:
 
@@ -84,16 +84,18 @@ For a more in-depth analysis, we can inspect the FME for each observation in the
 head(effects$results)
 ```
 
-### Bivariate Feature Effects
+### Multivariate Feature Effects
 
-Bivariate feature effects can be considered when one is interested in the combined effect of two features on the target variable. Let's assume we want to estimate the effect of a decrease in temperature by 3°C, combined with a decrease in humidity by 10 percentage points, i.e., the FME for `feature = c("temp", "humidity")` and `step.size = c(−3, −0.1)`:
+Multivariate feature effects can be considered when one is interested in the combined effect of two or more numeric features. Let's assume we want to estimate the effect of a decrease in temperature by 3°C, combined with a decrease in humidity by 10 percentage points, i.e., the FME for `features = list(temp = -3, humidity = -0.1)`:
 
 ```{r, message=FALSE}
 effects2 = fme(model = forest,
                data = bikes,
-               features = list("temp" = -3, "humidity" = -0.1),
+               features = list(temp = -3, humidity = -0.1),
                ep.method = "envelope")
 ```
+
+For bivariate effects, we can plot the effects (we cannot for more than two features):
 
 ```{r, message=FALSE}
 plot(effects2)
@@ -122,7 +124,7 @@ We can compute and plot NLMs alongside FMEs for univariate and multivariate feat
 ```{r, results='hide'}
 effects3 = fme(model = forest,
                data = bikes[1:200,],
-               feature = list("temp" = 1),
+               feature = list(temp = 1),
                ep.method = "envelope",
                compute.nlm = TRUE)
 ```
@@ -133,7 +135,7 @@ Similarly to the AME, we can extract an Average NLM (ANLM):
 effects3$anlm
 ```
 
-A value of 0.5 indicates that a linear effect can describe some but not all of the change of the prediction function along the bivariate feature step. This means we should be weary of interpreting the FME as a linear effect.
+A value of 0.5 indicates that a linear effect can describe some but not all of the change of the prediction function along the multivariate feature step. This means we should be weary of interpreting the FME as a linear effect.
 
 If NLMs have been computed, they can be visualized alongside FMEs using `with.nlm = TRUE`:
 
@@ -146,7 +148,7 @@ Equivalently, let's compute an example with bivariate FMEs with NLMs:
 ```{r, results='hide'}
 effects4 = fme(model = forest,
                data = bikes[1:200,],
-               features = list("temp" = -3, "humidity" = -0.1),
+               features = list(temp = -3, humidity = -0.1),
                ep.method = "envelope",
                compute.nlm = TRUE)
 ```
@@ -157,12 +159,12 @@ plot(effects4, bins = 25, with.nlm = TRUE)
 
 ## Categorical Features
 
-For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `step.size`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
+For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `features`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
 
 ```{r}
 effects5 = fme(model = forest,
               data = bikes,
-              features = list("weather" = "rain"))
+              features = list(weather = "rain"))
 summary(effects5)
 ```
 
@@ -172,6 +174,8 @@ For categorical feature effects, we can plot the empirical distribution of the F
 ```{r, warning=FALSE}
 plot(effects5)
 ```
+
+---
 
 # Model Overview with AMEs
 
@@ -184,20 +188,20 @@ overview = ame(model = forest,
 overview$results
 ```
 
-This computes the AME for each feature included in the model, with a default step size of 1 for numerical features (or, 0.01 if their range is smaller than 1). For categorical features, AMEs are computed for all available categories. \
-<!--We can specify a custom subset of features and step sizes using the `features` argument:
+This computes the AME for each feature included in the model, with a default step size of 1 for numerical features (or, 0.01 if their range is smaller than 1). For categorical features, AMEs are computed for all available categories.
+We can specify a custom subset of features and step sizes using the `features` argument:
 
 ```{r, warning=FALSE}
 overview = ame(model = forest,
                data = bikes,
-               features = c(weather = c("rain", "clear"), temp = -1, humidity = 0.1),
+               features = list(weather = c("rain", "clear"), temp = -1, humidity = 0.1),
                ep.method = "envelope")
 overview$results
 ```
 
 Again, note that often it is advisable to set `ep.method = "envelope"` so we avoid model extrapolation.
--->
-------
+
+---
 
 # Regional Interpretations
 

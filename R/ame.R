@@ -8,7 +8,9 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
     #' Create a new AME object.
     #' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
     #' @param data The data used for computing AMEs, must be data.frame or data.table.
-    #' @param features A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
+    #' @param features If not NULL, a named list of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
+    #' For numeric features, the step size must be a single number.
+    #' For categorial features, the step size must be a character vector of category names that is a subset of the levels of the factor variable.
     #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
     #' @return A new `AME` object.
     #' @examples
