@@ -195,7 +195,7 @@ Partitioning = R6::R6Class("Partitioning",
 #' Either `number.partitions` or `max.sd` can be specified.
 #' @param rp.method One of `"ctree"` or `"rpart"`. The RP algorithm used for growing the decision tree. Defaults to `"ctree"`.
 #' @param tree.control Control parameters for the RP algorithm. One of `"ctree.control(...)"` or `"rpart.control(...)"`.
-#' #' @return `Partitioning` Object with identified feature subspaces.
+#' @return `Partitioning` Object with identified feature subspaces.
 #' @references
 #' Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x
 #' @examples

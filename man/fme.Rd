@@ -18,7 +18,7 @@ fme(
 
 \item{data}{The data used for computing FMEs, must be data.frame or data.table.}
 
-\item{features}{A named list with the feature name(s) and step size(s). The list names should correspond to the the names of the feature variables affected by the step.
+\item{features}{A named list with the feature name(s) and step size(s). The list names should correspond to the names of the feature variables affected by the step.
 The list can contain either 1 or 2 numeric features, or 1 categorical feature.
 Numeric features must have a number as step size, categorical features the name of the reference category.}
 
@@ -54,7 +54,7 @@ plot(effects)
 effects$results
 
 # Compute the AME for a categorial feature:
-fme(model = forest, data = bikes, features = list("weather" = "rain"), ep.method = "envelope")$ame
+fme(model = forest, data = bikes, features = list("weather" = "rain"))$ame
 }
 \references{
 Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x

@@ -24,8 +24,10 @@ Either \code{number.partitions} or \code{max.sd} can be specified.}
 
 \item{rp.method}{One of \code{"ctree"} or \code{"rpart"}. The RP algorithm used for growing the decision tree. Defaults to \code{"ctree"}.}
 
-\item{tree.control}{Control parameters for the RP algorithm. One of \code{"ctree.control(...)"} or \code{"rpart.control(...)"}.
-#' @return \code{Partitioning} Object with identified feature subspaces.}
+\item{tree.control}{Control parameters for the RP algorithm. One of \code{"ctree.control(...)"} or \code{"rpart.control(...)"}.}
+}
+\value{
+\code{Partitioning} Object with identified feature subspaces.
 }
 \description{
 This is a wrapper function that creates the correct subclass of \code{Partitioning}.

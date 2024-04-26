@@ -268,7 +268,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' It computes forward marginal effects (FMEs) for a specified change in feature values.
 #' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
 #' @param data The data used for computing FMEs, must be data.frame or data.table.
-#' @param features A named list with the feature name(s) and step size(s). The list names should correspond to the the names of the feature variables affected by the step.
+#' @param features A named list with the feature name(s) and step size(s). The list names should correspond to the names of the feature variables affected by the step.
 #' The list can contain either 1 or 2 numeric features, or 1 categorical feature.
 #' Numeric features must have a number as step size, categorical features the name of the reference category.
 #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
@@ -296,7 +296,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' effects$results
 #'
 #' # Compute the AME for a categorial feature:
-#' fme(model = forest, data = bikes, features = list("weather" = "rain"), ep.method = "envelope")$ame
+#' fme(model = forest, data = bikes, features = list("weather" = "rain"))$ame
 #' @export
 fme = function(model, data, features, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
   return(ForwardMarginalEffect$new(makePredictor(model, data),
