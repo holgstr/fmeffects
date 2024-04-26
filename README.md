@@ -91,7 +91,7 @@ forest <- lrn("regr.ranger")$train(task)
 ``` r
 effects <- fme(model = forest,
               data = bikes,
-              features = list("temp" = 1))
+              features = list(temp = 1))
 summary(effects)
 #> 
 #> Forward Marginal Effects Object
@@ -127,7 +127,7 @@ Let’s compute the AME for every feature of the model:
 
 ``` r
 overview <- ame(model = forest,
-               data = bikes)
+                data = bikes)
 summary(overview)
 #> 
 #> Model Summary Using Average Marginal Effects:
