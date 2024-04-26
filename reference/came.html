@@ -100,7 +100,7 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 </dl></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., &amp; Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.</p>
+    <p>Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x</p>
     </div>
 
     <div class="section level2">
@@ -112,8 +112,7 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span>, package <span class="op">=</span> <span class="st">"fmeffects"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">effects</span> <span class="op">=</span> <span class="fu"><a href="fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, feature <span class="op">=</span> <span class="st">"temp"</span>,</span></span>
-<span class="r-in"><span>              step.size <span class="op">=</span> <span class="fl">1</span>, ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">effects</span> <span class="op">=</span> <span class="fu"><a href="fme.html">fme</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Find a partitioning with exactly 3 subspaces:</span></span></span>
 <span class="r-in"><span><span class="va">subspaces</span> <span class="op">=</span> <span class="fu">came</span><span class="op">(</span><span class="va">effects</span>, number.partitions <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>

@@ -131,8 +131,7 @@
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ForwardMarginalEffect.html">ForwardMarginalEffect</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">predictor</span>,</span>
-<span>  <span class="va">feature</span>,</span>
-<span>  <span class="va">step.size</span>,</span>
+<span>  <span class="va">features</span>,</span>
 <span>  ep.method <span class="op">=</span> <span class="st">"none"</span>,</span>
 <span>  compute.nlm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  nlm.intervals <span class="op">=</span> <span class="fl">1</span></span>
@@ -145,12 +144,8 @@
 <dd><p><code>Predictor</code> object.</p></dd>
 
 
-<dt><code>feature</code></dt>
-<dd><p>Feature vector.</p></dd>
-
-
-<dt><code>step.size</code></dt>
-<dd><p>Vector of step sizes.</p></dd>
+<dt><code>features</code></dt>
+<dd><p>A named list with the feature name(s) and step size(s).</p></dd>
 
 
 <dt><code>ep.method</code></dt>
@@ -179,12 +174,11 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3verse.mlr-org.com" class="external-link">mlr3verse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://imbs-hl.github.io/ranger/" class="external-link">ranger</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span>, package <span class="op">=</span> <span class="st">"fmeffects"</span><span class="op">)</span></span>
-<span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create an `ForwardMarginalEffect` object:</span></span>
 <span><span class="va">effects</span> <span class="op">=</span> <span class="va"><a href="../reference/ForwardMarginalEffect.html">ForwardMarginalEffect</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu"><a href="../reference/makePredictor.html">makePredictor</a></span><span class="op">(</span><span class="va">forest</span>, <span class="va">bikes</span><span class="op">)</span>,</span>
-<span>                  feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"temp"</span>, <span class="st">"humidity"</span><span class="op">)</span>,</span>
-<span>                  step.size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.01</span><span class="op">)</span>,</span>
+<span>                  features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="fl">1</span>, <span class="st">"humidity"</span> <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>,</span>
 <span>                  ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -272,12 +266,11 @@ See <code><a href="https://ggplot2.tidyverse.org/reference/stat_summary_2d.html"
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3verse.mlr-org.com" class="external-link">mlr3verse</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://imbs-hl.github.io/ranger/" class="external-link">ranger</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span>, package <span class="op">=</span> <span class="st">"fmeffects"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create an `ForwardMarginalEffect` object:</span></span></span>
 <span class="r-in"><span><span class="va">effects</span> <span class="op">=</span> <span class="va">ForwardMarginalEffect</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fu"><a href="makePredictor.html">makePredictor</a></span><span class="op">(</span><span class="va">forest</span>, <span class="va">bikes</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                  feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"temp"</span>, <span class="st">"humidity"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                  step.size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.01</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="fl">1</span>, <span class="st">"humidity"</span> <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                  ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
