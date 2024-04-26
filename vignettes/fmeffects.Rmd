@@ -45,11 +45,11 @@ forest = lrn("regr.ranger")$train(task)
 
 ---
 
-# Numerical FME
+# Numeric Feature Effects
 
 FMEs can be used to compute feature effects for both numerical and categorical features. This can be done with the `fme()` function. The most common application is to compute the FME for a single numerical feature, i.e., a univariate feature effect. The variable of interest must be specified with the `features` argument. This is a named list with the feature names and step lengths. The step length is chosen to be the number deemed most useful for the purpose of interpretation. Most of the time, this will be a unit change, e.g., `features = list(feature_name = 1)`. As the concept of numerical FMEs extends to multivariate feature changes as well, `fme()` can be asked to compute a multivariate feature effect.
 
-## Univariate Feature Effects
+## Univariate
 
 Assume we are interested in the effect of temperature on bike sharing usage. Specifically, we set the step size to 1 to investigate the FME of an increase in temperature by 1 degree Celsius (°C). Thus, we compute FMEs for `features = list("temp" = 1)`.
 
@@ -80,7 +80,7 @@ For a more in-depth analysis, we can inspect the FME for each observation in the
 head(effects$results)
 ```
 
-## Multivariate Feature Effects
+## Multivariate
 
 Multivariate feature effects can be considered when one is interested in the combined effect of two or more numeric features. Let's assume we want to estimate the effect of a decrease in temperature by 3°C, combined with a decrease in humidity by 10 percentage points, i.e., the FME for `features = list(temp = -3, humidity = -0.1)`:
 
@@ -111,9 +111,9 @@ sd(effects2$results$fme)
 
 Therefore, it could be interesting to move the interpretation of feature effects from a global to a [semi-global perspective][Semi-global Interpretations] via the `came()` function.
 
-## Non-Linearity Measure (NLM)
+## Non-Linearity Measure
 
-The non-linearity measure is a complimentary tool to an FME. Any numerical, observation-wise FME is prone to be misinterpreted as a linear effect. To counteract this, the NLM quantifies the linearity of the prediction function for a single observation and step size. A value of 1 indicates linearity, a value of 0 or lower indicates non-linearity (similar to R-squared, the NLM can take negative values). A detailed explanation can be found in the [FME methods paper][1].
+The non-linearity measure (NLM) is a complimentary tool to an FME. Any numerical, observation-wise FME is prone to be misinterpreted as a linear effect. To counteract this, the NLM quantifies the linearity of the prediction function for a single observation and step size. A value of 1 indicates linearity, a value of 0 or lower indicates non-linearity (similar to R-squared, the NLM can take negative values). A detailed explanation can be found in the [FME methods paper][1].
 
 We can compute and plot NLMs alongside FMEs for univariate and multivariate feature changes. Computing NLMs can be computationally demanding, so we use `furrr` for parallelization. To illustrate NLMs, let's recompute the first example of an increase in temperature by 1 degree Celsius (°C) on a subset of the bikes data:
 
@@ -153,7 +153,7 @@ effects4 = fme(model = forest,
 plot(effects4, bins = 25, with.nlm = TRUE)
 ```
 
-# Categorical FME
+# Categorical Effects
 
 For a categorical feature, the FME of an observation is simply the difference in predictions when changing the observed category of the feature to the category specified in `features`. For instance, one could be interested in the effect of rainy weather on the bike sharing demand, i.e., the FME of changing the feature value of `weather` to `rain` for observations where weather is either `clear` or `misty`:
 
