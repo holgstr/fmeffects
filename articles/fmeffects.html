@@ -154,7 +154,7 @@ the <code>ranger</code> algorithm:</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="numerical-fme">Numerical FME<a class="anchor" aria-label="anchor" href="#numerical-fme"></a>
+<h2 id="numeric-feature-effects">Numeric Feature Effects<a class="anchor" aria-label="anchor" href="#numeric-feature-effects"></a>
 </h2>
 <p>FMEs can be used to compute feature effects for both numerical and
 categorical features. This can be done with the <code><a href="../reference/fme.html">fme()</a></code>
@@ -169,7 +169,7 @@ numerical FMEs extends to multivariate feature changes as well,
 <code><a href="../reference/fme.html">fme()</a></code> can be asked to compute a multivariate feature
 effect.</p>
 <div class="section level3">
-<h3 id="univariate-feature-effects">Univariate Feature Effects<a class="anchor" aria-label="anchor" href="#univariate-feature-effects"></a>
+<h3 id="univariate">Univariate<a class="anchor" aria-label="anchor" href="#univariate"></a>
 </h3>
 <p>Assume we are interested in the effect of temperature on bike sharing
 usage. Specifically, we set the step size to 1 to investigate the FME of
@@ -216,7 +216,7 @@ observation in the data set:</p>
 <span><span class="co">## 6:      6  4.704511</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="multivariate-feature-effects">Multivariate Feature Effects<a class="anchor" aria-label="anchor" href="#multivariate-feature-effects"></a>
+<h3 id="multivariate">Multivariate<a class="anchor" aria-label="anchor" href="#multivariate"></a>
 </h3>
 <p>Multivariate feature effects can be considered when one is interested
 in the combined effect of two or more numeric features. Let’s assume we
@@ -252,10 +252,10 @@ feature effects from a global to a [semi-global perspective][Semi-global
 Interpretations] via the <code><a href="../reference/came.html">came()</a></code> function.</p>
 </div>
 <div class="section level3">
-<h3 id="non-linearity-measure-nlm">Non-Linearity Measure (NLM)<a class="anchor" aria-label="anchor" href="#non-linearity-measure-nlm"></a>
+<h3 id="non-linearity-measure">Non-Linearity Measure<a class="anchor" aria-label="anchor" href="#non-linearity-measure"></a>
 </h3>
-<p>The non-linearity measure is a complimentary tool to an FME. Any
-numerical, observation-wise FME is prone to be misinterpreted as a
+<p>The non-linearity measure (NLM) is a complimentary tool to an FME.
+Any numerical, observation-wise FME is prone to be misinterpreted as a
 linear effect. To counteract this, the NLM quantifies the linearity of
 the prediction function for a single observation and step size. A value
 of 1 indicates linearity, a value of 0 or lower indicates non-linearity
@@ -300,7 +300,7 @@ NLMs:</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="categorical-fme">Categorical FME<a class="anchor" aria-label="anchor" href="#categorical-fme"></a>
+<h2 id="categorical-effects">Categorical Effects<a class="anchor" aria-label="anchor" href="#categorical-effects"></a>
 </h2>
 <p>For a categorical feature, the FME of an observation is simply the
 difference in predictions when changing the observed category of the
