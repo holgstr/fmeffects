@@ -84,7 +84,7 @@ It computes forward marginal effects (FMEs) for a specified change in feature va
 
 
 <dt>features</dt>
-<dd><p>A named list with the feature name(s) and step size(s). The list names should correspond to the the names of the feature variables affected by the step.
+<dd><p>A named list with the feature name(s) and step size(s). The list names should correspond to the names of the feature variables affected by the step.
 The list can contain either 1 or 2 numeric features, or 1 categorical feature.
 Numeric features must have a number as step size, categorical features the name of the reference category.</p></dd>
 
@@ -162,7 +162,7 @@ Numeric features must have a number as step size, categorical features the name 
 <span class="r-out co"><span class="r-pr">#&gt;</span> 721:    727  8.8983844</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute the AME for a categorial feature:</span></span></span>
-<span class="r-in"><span><span class="fu">fme</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"weather"</span> <span class="op">=</span> <span class="st">"rain"</span><span class="op">)</span>, ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span><span class="op">$</span><span class="va">ame</span></span></span>
+<span class="r-in"><span><span class="fu">fme</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"weather"</span> <span class="op">=</span> <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">ame</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -55.38214</span>
 </code></pre></div>
     </div>
