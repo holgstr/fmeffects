@@ -11,7 +11,9 @@ ame(model, data, features = NULL, ep.method = "none")
 
 \item{data}{The data used for computing AMEs, must be data.frame or data.table.}
 
-\item{features}{A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.}
+\item{features}{If not NULL, a named list of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
+For numeric features, the step size must be a single number.
+For categorial features, the step size must be a character vector of category names that is a subset of the levels of the factor variable.}
 
 \item{ep.method}{String specifying the method used for extrapolation detection. One of \code{"none"} or \code{"envelope"}. Defaults to \code{"none"}.}
 }
@@ -50,7 +52,7 @@ summary(overview)
 # Compute AMEs for a subset of features with non-default step.sizes:
 overview = ame(model = forest,
                data = bikes,
-               features = c(humidity = 0.1, weather = c("clear", "rain")))
+               features = list(humidity = 0.1, weather = c("clear", "rain")))
 summary(overview)
 
 # Extract results:

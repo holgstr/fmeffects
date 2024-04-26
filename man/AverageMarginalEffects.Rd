@@ -30,7 +30,7 @@ summary(overview)
 # Compute AMEs for a subset of features with non-default step.sizes:
 overview = AverageMarginalEffects$new(model = forest,
                                       data = bikes,
-                                      features = c(humidity = 0.1,
+                                      features = list(humidity = 0.1,
                                                    weather = c("clear", "rain")))$compute()
 summary(overview)
 
@@ -109,7 +109,7 @@ summary(overview)
 # Compute AMEs for a subset of features with non-default step.sizes:
 overview = AverageMarginalEffects$new(model = forest,
                                       data = bikes,
-                                      features = c(humidity = 0.1,
+                                      features = list(humidity = 0.1,
                                                    weather = c("clear", "rain")))$compute()
 summary(overview)
 }

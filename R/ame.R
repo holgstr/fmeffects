@@ -30,13 +30,15 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
     #' # Compute AMEs for a subset of features with non-default step.sizes:
     #' overview = AverageMarginalEffects$new(model = forest,
     #'                                       data = bikes,
-    #'                                       features = c(humidity = 0.1,
+    #'                                       features = list(humidity = 0.1,
     #'                                                    weather = c("clear", "rain")))$compute()
     #' summary(overview)
     initialize = function(model, data, features = NULL, ep.method = "none") {
 
       # Initialize predictor (this includes the relevant assertions)
       predictor = makePredictor(model = model, data = data)
+
+      features = unlist(features)
 
       # Check whether feature names in 'features' argument match predictor
       is_feature_allowed = function(feature, allowed_base_features) {
@@ -196,7 +198,9 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 #' It computes Average Marginal Effects (AME) based on Forward Marginal Effects (FME) for a model. The AME is a simple mean FME and computed w.r.t. a feature variable and a model.
 #' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
 #' @param data The data used for computing AMEs, must be data.frame or data.table.
-#' @param features A named character vector of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
+#' @param features If not NULL, a named list of the names of the feature variables for which AMEs should be computed, together with the desired step sizes.
+#' For numeric features, the step size must be a single number.
+#' For categorial features, the step size must be a character vector of category names that is a subset of the levels of the factor variable.
 #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
 #' @return An `AverageMarginalEffects` object, with a field `results` containing a list of summary statistics, including
 #' * `Feature`: The name of the feature.
@@ -227,12 +231,12 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 #' # Compute AMEs for a subset of features with non-default step.sizes:
 #' overview = ame(model = forest,
 #'                data = bikes,
-#'                features = c(humidity = 0.1, weather = c("clear", "rain")))
+#'                features = list(humidity = 0.1, weather = c("clear", "rain")))
 #' summary(overview)
 #'
 #' # Extract results:
 #' overview$results
 #' @export
 ame = function(model, data, features = NULL, ep.method = "none") {
-  return(AverageMarginalEffects$new(model, data, features = NULL, ep.method = "none")$compute())
+  return(AverageMarginalEffects$new(model, data, features = features, ep.method = ep.method)$compute())
 }

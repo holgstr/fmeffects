@@ -19,7 +19,7 @@ To learn about FMEs, look [here][4] how they are computed or read the methods [p
 
 There are three main functions: 
 
-- `fme()` computes FMEs for a given model, data, feature of interest, and step size
+- `fme()` computes FMEs for a given model, data, feature(s) of interest, and step size
 - `came()` can be applied subsequently to find subspaces of the feature space where FMEs are more homogeneous
 - `ame()` provides an overview of the prediction function w.r.t. each feature by using average marginal effects (AMEs) based on FMEs.
 
@@ -179,7 +179,8 @@ For an informative overview of all feature effects in a model, we can use the `a
 
 ```{r, warning=FALSE}
 overview = ame(model = forest,
-           data = bikes)
+           data = bikes,
+           features = c(humidity = 0.1, weather = c("clear", "rain")))
 overview$results
 ```
 
