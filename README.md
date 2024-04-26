@@ -80,7 +80,7 @@ forest <- forest %>% fit(count ~ ., data = bikes)
 ``` r
 # Train a model with mlr3:
 library(mlr3verse)
-task <- as_task_regr(x = bikes, id = "bikes", target = "count")
+task <- as_task_regr(x = bikes, target = "count")
 forest <- lrn("regr.ranger")$train(task)
 ```
 
@@ -91,8 +91,7 @@ forest <- lrn("regr.ranger")$train(task)
 ``` r
 effects <- fme(model = forest,
               data = bikes,
-              feature = "temp",
-              step.size = 1)
+              features = list("temp" = 1))
 summary(effects)
 #> 
 #> Forward Marginal Effects Object
