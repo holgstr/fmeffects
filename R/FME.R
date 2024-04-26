@@ -7,8 +7,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
     #' @description
     #' Create a new ForwardMarginalEffect object.
     #' @param predictor `Predictor` object.
-    #' @param feature Feature vector.
-    #' @param step.size Vector of step sizes.
+    #' @param features A named list with the feature name(s) and step size(s).
     #' @param ep.method String specifying extrapolation detection method.
     #' @param compute.nlm Compute NLM with FMEs? Defaults to `FALSE`.
     #' @param nlm.intervals How many intervals for NLM computation. Defaults to `1`.
@@ -20,14 +19,16 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
     #' library(mlr3verse)
     #' library(ranger)
     #' data(bikes, package = "fmeffects")
-    #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+    #' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, target = "count"))
     #'
     #' # Create an `ForwardMarginalEffect` object:
     #' effects = ForwardMarginalEffect$new(makePredictor(forest, bikes),
-    #'                   feature = c("temp", "humidity"),
-    #'                   step.size = c(1, 0.01),
+    #'                   features = list("temp" = 1, "humidity" = 0.01),
     #'                   ep.method = "envelope")
-    initialize = function(predictor, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
+    initialize = function(predictor, features, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
+
+      feature = names(features)
+      step.size = unlist(features, use.names = FALSE)
 
       # Check if feature is unique character vector of length 1 or 2 and matches names in data
       checkmate::assertCharacter(feature, min.len = 1, max.len = 2, unique = TRUE, any.missing = FALSE)
@@ -267,29 +268,25 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' It computes forward marginal effects (FMEs) for a specified change in feature values.
 #' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
 #' @param data The data used for computing FMEs, must be data.frame or data.table.
-#' @param feature A character vector of the names of the feature variables affected by the step.
-#' For numerical steps, this must have length 1 or 2.
-#' For categorical steps, this must have length 1.
-#' @param step.size A numeric vector of the step lengths in the features affected by the step.
-#' For numerical steps, this must have length 1 or 2.
-#' For categorical steps, this is the name of the reference category.
+#' @param features A named list with the feature name(s) and step size(s). The list names should correspond to the the names of the feature variables affected by the step.
+#' The list can contain either 1 or 2 numeric features, or 1 categorical feature.
+#' Numeric features must have a number as step size, categorical features the name of the reference category.
 #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
 #' @param compute.nlm Compute NLMs for FMEs for numerical steps. Defaults to `FALSE`.
 #' @param nlm.intervals Number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to `1`.
 #' @return `FME` Object with FMEs computed.
 #' @references
-#' Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
+#' Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x
 #' @examples
 #' # Train a model:
 #'
 #' library(mlr3verse)
 #' library(ranger)
 #' data(bikes, package = "fmeffects")
-#' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+#' forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, target = "count"))
 #'
-#' # Compute FMEs:
-#' effects = fme(model = forest, data = bikes, feature = "temp",
-#'               step.size = 1, ep.method = "envelope")
+#' # Compute FMEs for a numerical feature:
+#' effects = fme(model = forest, data = bikes, features = list("temp" = 1), ep.method = "envelope")
 #'
 #' # Analyze results:
 #' summary(effects)
@@ -297,11 +294,13 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #'
 #' # Extract results:
 #' effects$results
+#'
+#' # Compute the AME for a categorial feature:
+#' fme(model = forest, data = bikes, features = list("weather" = "rain"), ep.method = "envelope")$ame
 #' @export
-fme = function(model, data, feature, step.size, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
+fme = function(model, data, features, ep.method = "none", compute.nlm = FALSE, nlm.intervals = 1) {
   return(ForwardMarginalEffect$new(makePredictor(model, data),
-          feature = feature,
-          step.size = step.size,
+          features = features,
           ep.method = ep.method,
           compute.nlm = compute.nlm,
           nlm.intervals = nlm.intervals)$compute())

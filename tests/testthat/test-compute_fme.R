@@ -17,8 +17,7 @@ testthat::test_that("FME computation correct", {
 
   fme.results = fme(model = tree,
                     data = df,
-                    feature = "x",
-                    step.size = 2,
+                    features = list("x" = 2),
                     ep.method = "none")
 
   testthat::expect_equal(fme.results$results$fme, fme.manual)

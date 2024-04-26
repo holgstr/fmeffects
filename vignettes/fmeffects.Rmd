@@ -39,7 +39,7 @@ FMEs are a model-agnostic interpretation method, i.e., they can be applied to an
 set.seed(123)
 library(mlr3verse)
 library(ranger)
-task = as_task_regr(x = bikes, id = "bikes", target = "count")
+task = as_task_regr(x = bikes, target = "count")
 forest = lrn("regr.ranger")$train(task)
 ```
 
@@ -60,8 +60,7 @@ Assume we are interested in the effect of temperature on bike sharing usage. Spe
 ```{r}
 effects = fme(model = forest,
                data = bikes,
-               feature = "temp",
-               step.size = 1,
+               features = list("temp" = 1),
                ep.method = "envelope")
 ```
 
@@ -92,8 +91,7 @@ Bivariate feature effects can be considered when one is interested in the combin
 ```{r, message=FALSE}
 effects2 = fme(model = forest,
                data = bikes,
-               feature = c("temp", "humidity"),
-               step.size = c(-3, -0.1),
+               features = list("temp" = -3, "humidity" = -0.1),
                ep.method = "envelope")
 ```
 
@@ -124,8 +122,7 @@ We can compute and plot NLMs alongside FMEs for univariate and multivariate feat
 ```{r, results='hide'}
 effects3 = fme(model = forest,
                data = bikes[1:200,],
-               feature = "temp",
-               step.size = 1,
+               feature = list("temp" = 1),
                ep.method = "envelope",
                compute.nlm = TRUE)
 ```
@@ -135,6 +132,8 @@ Similarly to the AME, we can extract an Average NLM (ANLM):
 ```{r}
 effects3$anlm
 ```
+
+A value of 0.5 indicates that a linear effect can describe some but not all of the change of the prediction function along the bivariate feature step. This means we should be weary of interpreting the FME as a linear effect.
 
 If NLMs have been computed, they can be visualized alongside FMEs using `with.nlm = TRUE`:
 
@@ -147,8 +146,7 @@ Equivalently, let's compute an example with bivariate FMEs with NLMs:
 ```{r, results='hide'}
 effects4 = fme(model = forest,
                data = bikes[1:200,],
-               feature = c("temp", "humidity"),
-               step.size = c(-3, -0.1),
+               features = list("temp" = -3, "humidity" = -0.1),
                ep.method = "envelope",
                compute.nlm = TRUE)
 ```
@@ -164,8 +162,7 @@ For a categorical feature, the FME of an observation is simply the difference in
 ```{r}
 effects5 = fme(model = forest,
               data = bikes,
-              feature = "weather",
-              step.size = "rain")
+              features = list("weather" = "rain"))
 summary(effects5)
 ```
 

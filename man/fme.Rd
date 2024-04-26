@@ -7,8 +7,7 @@
 fme(
   model,
   data,
-  feature,
-  step.size,
+  features,
   ep.method = "none",
   compute.nlm = FALSE,
   nlm.intervals = 1
@@ -19,13 +18,9 @@ fme(
 
 \item{data}{The data used for computing FMEs, must be data.frame or data.table.}
 
-\item{feature}{A character vector of the names of the feature variables affected by the step.
-For numerical steps, this must have length 1 or 2.
-For categorical steps, this must have length 1.}
-
-\item{step.size}{A numeric vector of the step lengths in the features affected by the step.
-For numerical steps, this must have length 1 or 2.
-For categorical steps, this is the name of the reference category.}
+\item{features}{A named list with the feature name(s) and step size(s). The list names should correspond to the the names of the feature variables affected by the step.
+The list can contain either 1 or 2 numeric features, or 1 categorical feature.
+Numeric features must have a number as step size, categorical features the name of the reference category.}
 
 \item{ep.method}{String specifying the method used for extrapolation detection. One of \code{"none"} or \code{"envelope"}. Defaults to \code{"none"}.}
 
@@ -46,11 +41,10 @@ It computes forward marginal effects (FMEs) for a specified change in feature va
 library(mlr3verse)
 library(ranger)
 data(bikes, package = "fmeffects")
-forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, target = "count"))
 
-# Compute FMEs:
-effects = fme(model = forest, data = bikes, feature = "temp",
-              step.size = 1, ep.method = "envelope")
+# Compute FMEs for a numerical feature:
+effects = fme(model = forest, data = bikes, features = list("temp" = 1), ep.method = "envelope")
 
 # Analyze results:
 summary(effects)
@@ -58,7 +52,10 @@ plot(effects)
 
 # Extract results:
 effects$results
+
+# Compute the AME for a categorial feature:
+fme(model = forest, data = bikes, features = list("weather" = "rain"), ep.method = "envelope")$ame
 }
 \references{
-Scholbeck, C. A., Casalicchio, G., Molnar, C., Bischl, B., & Heumann, C. (2022). Marginal Effects for Non-Linear Prediction Functions.
+Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x
 }

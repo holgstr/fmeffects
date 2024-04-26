@@ -18,12 +18,11 @@ The FME is a forward difference in prediction due to a specified change in featu
 library(mlr3verse)
 library(ranger)
 data(bikes, package = "fmeffects")
-forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, target = "count"))
 
 # Create an `ForwardMarginalEffect` object:
 effects = ForwardMarginalEffect$new(makePredictor(forest, bikes),
-                  feature = c("temp", "humidity"),
-                  step.size = c(1, 0.01),
+                  features = list("temp" = 1, "humidity" = 0.01),
                   ep.method = "envelope")
 
 ## ------------------------------------------------
@@ -88,8 +87,7 @@ Create a new ForwardMarginalEffect object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ForwardMarginalEffect$new(
   predictor,
-  feature,
-  step.size,
+  features,
   ep.method = "none",
   compute.nlm = FALSE,
   nlm.intervals = 1
@@ -101,9 +99,7 @@ Create a new ForwardMarginalEffect object.
 \describe{
 \item{\code{predictor}}{\code{Predictor} object.}
 
-\item{\code{feature}}{Feature vector.}
-
-\item{\code{step.size}}{Vector of step sizes.}
+\item{\code{features}}{A named list with the feature name(s) and step size(s).}
 
 \item{\code{ep.method}}{String specifying extrapolation detection method.}
 
@@ -124,12 +120,11 @@ A new \code{ForwardMarginalEffect} object.
 library(mlr3verse)
 library(ranger)
 data(bikes, package = "fmeffects")
-forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, id = "bikes", target = "count"))
+forest = lrn("regr.ranger")$train(as_task_regr(x = bikes, target = "count"))
 
 # Create an `ForwardMarginalEffect` object:
 effects = ForwardMarginalEffect$new(makePredictor(forest, bikes),
-                  feature = c("temp", "humidity"),
-                  step.size = c(1, 0.01),
+                  features = list("temp" = 1, "humidity" = 0.01),
                   ep.method = "envelope")
 }
 \if{html}{\out{</div>}}
