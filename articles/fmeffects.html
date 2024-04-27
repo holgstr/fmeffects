@@ -116,10 +116,8 @@ w.r.t. each feature by using average marginal effects (AMEs).</li>
 <div class="section level3">
 <h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h3>
-<p>For demonstration purposes, we consider usage data from the Capital
-Bike Sharing scheme (Fanaee-T and Gama, 2014). It contains information
-about bike sharing usage in Washington, D.C. for the years 2011-2012
-during the period from 7 to 8 a.m. We are interested in predicting
+<p>Let’s look at data from a bike sharing usage system in Washington,
+D.C. (Fanaee-T and Gama, 2014). We are interested in predicting
 <code>count</code> (the total number of bikes lent out to users).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://holgstr.github.io/fmeffects/">fmeffects</a></span><span class="op">)</span></span>
@@ -141,10 +139,10 @@ during the period from 7 to 8 a.m. We are interested in predicting
 <p>FMEs are a model-agnostic interpretation method, i.e., they can be
 applied to any regression or (binary) classification model. Before we
 can compute FMEs, we need a trained model. In addition to generic
-<code>glm</code> models, the <code>fme</code> package supports 100+
-models from the <code>mlr3</code>, <code>tidymodels</code> (parsnip) and
-<code>caret</code> libraries. Let’s try it with a random forest using
-the <code>ranger</code> algorithm:</p>
+<code>lm</code>-type models, the <code>fme</code> package supports 100+
+models from the <code>mlr3</code>, <code>tidymodels</code> and
+<code>caret</code> libraries. Let’s try a random forest using the
+<code>ranger</code> algorithm:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3verse.mlr-org.com" class="external-link">mlr3verse</a></span><span class="op">)</span></span>
@@ -170,7 +168,7 @@ numerical FMEs extends to multivariate feature changes as well,
 <code><a href="../reference/fme.html">fme()</a></code> can be asked to compute a multivariate feature
 effect.</p>
 <div class="section level3">
-<h3 id="univariate">Univariate<a class="anchor" aria-label="anchor" href="#univariate"></a>
+<h3 id="univariate-effects">Univariate Effects<a class="anchor" aria-label="anchor" href="#univariate-effects"></a>
 </h3>
 <p>Assume we are interested in the effect of temperature on bike sharing
 usage. Specifically, we set the step size to 1 to investigate the FME of
@@ -217,7 +215,7 @@ observation in the data set:</p>
 <span><span class="co">## 6:      6  4.704511</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="multivariate">Multivariate<a class="anchor" aria-label="anchor" href="#multivariate"></a>
+<h3 id="multivariate-effects">Multivariate Effects<a class="anchor" aria-label="anchor" href="#multivariate-effects"></a>
 </h3>
 <p>Multivariate feature effects can be considered when one is interested
 in the combined effect of two or more numeric features. Let’s assume we
