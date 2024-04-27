@@ -37,7 +37,7 @@ This is a wrapper function for \code{FME$new(...)$compute()}.
 It computes forward marginal effects (FMEs) for a specified change in feature values.
 }
 \details{
-If one or more numeric features are passed to the \code{features} argument, FMEs are computed as FME_{x^{(i)}, h} = f(x^{(i)} + h) - f(x^{(i)}).
+If one or more numeric features are passed to the \code{features} argument, FMEs are computed as \deqn{FME_{x^{(i)}, \bold{h}} = \frac{f(x^{(i)} + \bold{h}) - f(x^{(i)})}{\bold{h}}}.
 }
 \examples{
 # Train a model:
