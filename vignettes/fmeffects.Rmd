@@ -26,7 +26,7 @@ There are three main functions:
 
 ## Example
 
-For demonstration purposes, we consider usage data from the Capital Bike Sharing scheme (Fanaee-T and Gama, 2014). It contains information about bike sharing usage in Washington, D.C. for the years 2011-2012 during the period from 7 to 8 a.m. We are interested in predicting `count` (the total number of bikes lent out to users).
+Let's look at data from a bike sharing usage system in Washington, D.C. (Fanaee-T and Gama, 2014). We are interested in predicting `count` (the total number of bikes lent out to users).
 
 ```{r}
 library(fmeffects)
@@ -34,7 +34,7 @@ data(bikes, package = "fmeffects")
 str(bikes)
 ```
 
-FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before we can compute FMEs, we need a trained model. In addition to generic `glm` models, the `fme` package supports 100+ models from the `mlr3`, `tidymodels` (parsnip) and `caret` libraries. Let's try it with a random forest using the `ranger` algorithm:
+FMEs are a model-agnostic interpretation method, i.e., they can be applied to any regression or (binary) classification model. Before we can compute FMEs, we need a trained model. In addition to generic `lm`-type models, the `fme` package supports 100+ models from the `mlr3`, `tidymodels` and `caret` libraries. Let's try a random forest using the `ranger` algorithm:
 
 ```{r, message=FALSE}
 set.seed(123)
@@ -50,7 +50,7 @@ forest = lrn("regr.ranger")$train(task)
 
 FMEs can be used to compute feature effects for both numerical and categorical features. This can be done with the `fme()` function. The most common application is to compute the FME for a single numerical feature, i.e., a univariate feature effect. The variable of interest must be specified with the `features` argument. This is a named list with the feature names and step lengths. The step length is chosen to be the number deemed most useful for the purpose of interpretation. Most of the time, this will be a unit change, e.g., `features = list(feature_name = 1)`. As the concept of numerical FMEs extends to multivariate feature changes as well, `fme()` can be asked to compute a multivariate feature effect.
 
-## Univariate
+## Univariate Effects
 
 Assume we are interested in the effect of temperature on bike sharing usage. Specifically, we set the step size to 1 to investigate the FME of an increase in temperature by 1 degree Celsius (°C). Thus, we compute FMEs for `features = list("temp" = 1)`.
 
@@ -81,7 +81,7 @@ For a more in-depth analysis, we can inspect the FME for each observation in the
 head(effects$results)
 ```
 
-## Multivariate
+## Multivariate Effects
 
 Multivariate feature effects can be considered when one is interested in the combined effect of two or more numeric features. Let's assume we want to estimate the effect of a decrease in temperature by 3°C, combined with a decrease in humidity by 10 percentage points, i.e., the FME for `features = list(temp = -3, humidity = -0.1)`:
 
