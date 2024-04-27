@@ -14,14 +14,15 @@ vignette: >
 
 # Introduction
 
-The `fmeffects` package computes, aggregates, and visualizes forward marginal effects (FMEs) for any supervised machine learning model.
-To learn about FMEs, look [here][4] how they are computed or read the methods [paper][1] for a more in-depth understanding. Our [website][5] is the best way to find all available resources.
+The `fmeffects` package computes, aggregates, and visualizes forward marginal effects (FMEs) for supervised machine learning models.
+Put simply, an FME is the change in a model's prediction if a feature is changed by a certain value for s given data set.
+Read the [article][4] on how FMEs are computed or the methods [paper][1] for more details. Our [website][5] is the best way to find all resources.
 
 There are three main functions: 
 
-- `fme()` computes FMEs for a given model, data, feature(s) of interest, and step size
-- `came()` can be applied subsequently to find subspaces of the feature space where FMEs are more homogeneous
-- `ame()` provides an overview of the prediction function w.r.t. each feature by using average marginal effects (AMEs) based on FMEs.
+- `fme()` computes FMEs for a given model, data, feature(s) of interest, and step size(s).
+- `came()` can be applied subsequently to find subspaces of the feature space where FMEs are more homogeneous.
+- `ame()` provides an overview of the prediction function w.r.t. each feature by using average marginal effects (AMEs).
 
 ## Example
 
