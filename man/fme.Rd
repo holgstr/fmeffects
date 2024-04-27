@@ -29,11 +29,15 @@ Numeric features must have a number as step size, categorical features the name 
 \item{nlm.intervals}{Number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to \code{1}.}
 }
 \value{
-\code{FME} Object with FMEs computed.
+\code{ForwardsMarginalEffect} object. The field \verb{$results} contains a \code{data.table} with the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
+The field \verb{$data.step} contains the feature matrix after the step has been applied. Aggregations of observation-wise FMEs and NLMs are contained in \verb{$ame} and \verb{$anlm}.
 }
 \description{
 This is a wrapper function for \code{FME$new(...)$compute()}.
 It computes forward marginal effects (FMEs) for a specified change in feature values.
+}
+\details{
+If one or more numeric features are passed to the \code{features} argument, FMEs are computed as $\textrm{FME}_{\mathbf{x}^{(i)}, \, \mathbf{h}} = \widehat{f}(\mathbf{x}^{(i)} + \mathbf{h}) - (\widehat{f}(\mathbf{x}^{(i)})$.
 }
 \examples{
 # Train a model:

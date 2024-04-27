@@ -280,7 +280,10 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
 #' @param compute.nlm Compute NLMs for FMEs for numerical steps. Defaults to `FALSE`.
 #' @param nlm.intervals Number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to `1`.
-#' @return `FME` Object with FMEs computed.
+#' @return `ForwardsMarginalEffect` object. The field `$results` contains a `data.table` with the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
+#' The field `$data.step` contains the feature matrix after the step has been applied. Aggregations of observation-wise FMEs and NLMs are contained in `$ame` and `$anlm`.
+#' @details
+#' If one or more numeric features are passed to the `features` argument, FMEs are computed as $\textrm{FME}_{\mathbf{x}^{(i)}, \, \mathbf{h}} = \widehat{f}(\mathbf{x}^{(i)} + \mathbf{h}) - (\widehat{f}(\mathbf{x}^{(i)})$.
 #' @references
 #' Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x
 #' @examples
