@@ -37,8 +37,8 @@ This is a wrapper function for \code{FME$new(...)$compute()}.
 It computes forward marginal effects (FMEs) for a specified change in feature values.
 }
 \details{
-If one or more numeric features are passed to the \code{features} argument, FMEs are computed as \deqn{FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)}, where \eqn{h_{S}} is the step size vector and \eqn{x_{-S}} the features not contained in \code{features}).
-If a categorical feature is passed to \code{features}, \deqn{FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)}, where \eqn{c_{j}} is the selected reference category in \code{features} and \eqn{x_{-j}} the features not contained in \code{features}.
+If one or more numeric features are passed to the \code{features} argument, FMEs are computed as \deqn{FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)} where \eqn{h_{S}} is the step size vector and \eqn{x_{-S}} the features not contained in \code{features}).
+If a categorical feature is passed to \code{features}, \deqn{FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)} where \eqn{c_{j}} is the selected reference category in \code{features} and \eqn{x_{-j}} the features not contained in \code{features}.
 }
 \examples{
 # Train a model:

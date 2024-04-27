@@ -283,8 +283,8 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' @return `ForwardsMarginalEffect` object. The field `$results` contains a `data.table` with the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
 #' The field `$data.step` contains the feature matrix after the step has been applied. Aggregations of observation-wise FMEs and NLMs are contained in `$ame` and `$anlm`.
 #' @details
-#' If one or more numeric features are passed to the `features` argument, FMEs are computed as \deqn{FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)}, where \eqn{h_{S}} is the step size vector and \eqn{x_{-S}} the features not contained in `features`).
-#' If a categorical feature is passed to `features`, \deqn{FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)}, where \eqn{c_{j}} is the selected reference category in `features` and \eqn{x_{-j}} the features not contained in `features`.
+#' If one or more numeric features are passed to the `features` argument, FMEs are computed as \deqn{FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)} where \eqn{h_{S}} is the step size vector and \eqn{x_{-S}} the features not contained in `features`).
+#' If a categorical feature is passed to `features`, \deqn{FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)} where \eqn{c_{j}} is the selected reference category in `features` and \eqn{x_{-j}} the features not contained in `features`.
 #' @references
 #' Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x
 #' @examples
