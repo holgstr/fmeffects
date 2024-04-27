@@ -94,23 +94,24 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>The <code>fmeffects</code> package computes, aggregates, and
-visualizes forward marginal effects (FMEs) for any supervised machine
-learning model. To learn about FMEs, look <a href="https://holgstr.github.io/fmeffects/articles/fme_theory.html">here</a>
-how they are computed or read the methods <a href="https://link.springer.com/article/10.1007/s10618-023-00993-x" class="external-link">paper</a>
-for a more in-depth understanding. Our <a href="https://holgstr.github.io/fmeffects/">website</a> is the best way
-to find all available resources.</p>
+visualizes forward marginal effects (FMEs) for supervised machine
+learning models. Put simply, an FME is the change in a model’s
+prediction if a feature is changed by a certain value for s given data
+set. Read the <a href="https://holgstr.github.io/fmeffects/articles/fme_theory.html">article</a>
+on how FMEs are computed or the methods <a href="https://link.springer.com/article/10.1007/s10618-023-00993-x" class="external-link">paper</a>
+for more details. Our <a href="https://holgstr.github.io/fmeffects/">website</a> is the best way
+to find all resources.</p>
 <p>There are three main functions:</p>
 <ul>
 <li>
 <code><a href="../reference/fme.html">fme()</a></code> computes FMEs for a given model, data, feature(s)
-of interest, and step size</li>
+of interest, and step size(s).</li>
 <li>
 <code><a href="../reference/came.html">came()</a></code> can be applied subsequently to find subspaces of
-the feature space where FMEs are more homogeneous</li>
+the feature space where FMEs are more homogeneous.</li>
 <li>
 <code><a href="../reference/ame.html">ame()</a></code> provides an overview of the prediction function
-w.r.t. each feature by using average marginal effects (AMEs) based on
-FMEs.</li>
+w.r.t. each feature by using average marginal effects (AMEs).</li>
 </ul>
 <div class="section level3">
 <h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
