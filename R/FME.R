@@ -283,7 +283,7 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' @return `ForwardsMarginalEffect` object. The field `$results` contains a `data.table` with the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
 #' The field `$data.step` contains the feature matrix after the step has been applied. Aggregations of observation-wise FMEs and NLMs are contained in `$ame` and `$anlm`.
 #' @details
-#' If one or more numeric features are passed to the `features` argument, FMEs are computed as \deqn{FME_{x^{(i)}, \bold{h}} = \frac{f(x^{(i)} + \bold{h}) - f(x^{(i)})}{\bold{h}}}.
+#' If one or more numeric features are passed to the `features` argument, FMEs are computed as \deqn{FME_{x^{(i)}, h} = \frac{f(x^{(i)} + h) - f(x^{(i)})}{h}}.
 #' @references
 #' Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x
 #' @examples
