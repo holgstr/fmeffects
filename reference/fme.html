@@ -105,13 +105,16 @@ Numeric features must have a number as step size, categorical features the name 
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>ForwardsMarginalEffect</code> object. The field <code>$results</code> contains a <code>data.table</code> with the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
-The field <code>$data.step</code> contains the feature matrix after the step has been applied. Aggregations of observation-wise FMEs and NLMs are contained in <code>$ame</code> and <code>$anlm</code>.</p>
-    </div>
+<p><code>ForwardsMarginalEffect</code> object, includes the following fields:</p><ul><li><p><code>ame</code> Average marginal effect.</p></li>
+<li><p><code>anlm</code> Average non-linearity measure.</p></li>
+<li><p><code>extrapolation.ids</code> observations that have been identified as extrapolation points and not included in the analysis.</p></li>
+<li><p><code>data.step</code>, a <code>data.table</code> of the feature matrix after the step has been applied.</p></li>
+<li><p><code>results</code>, a <code>data.table</code> of the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If one or more numeric features are passed to the <code>features</code> argument, FMEs are computed as $$FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)$$ where \(h_{S}\) is the step size vector and \(x_{-S}\) the features not contained in <code>features</code>).
-If a categorical feature is passed to <code>features</code>, $$FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)$$ where \(c_{j}\) is the selected reference category in <code>features</code> and \(x_{-j}\) the features not contained in <code>features</code>.</p>
+    <p>If one or more numeric features are passed to the <code>features</code> argument, FMEs are computed as $$FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)$$ where \(h_{S}\) is the step size vector and \(x_{-S}\) the other features.
+If a categorical feature is passed to <code>features</code>, $$FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)$$ where \(c_{j}\) is the selected reference category in <code>features</code> and \(x_{-j}\) the other features.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
