@@ -29,16 +29,22 @@ Numeric features must have a number as step size, categorical features the name 
 \item{nlm.intervals}{Number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to \code{1}.}
 }
 \value{
-\code{ForwardsMarginalEffect} object. The field \verb{$results} contains a \code{data.table} with the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
-The field \verb{$data.step} contains the feature matrix after the step has been applied. Aggregations of observation-wise FMEs and NLMs are contained in \verb{$ame} and \verb{$anlm}.
+\code{ForwardsMarginalEffect} object, includes the following fields:
+\itemize{
+\item \code{ame} Average marginal effect.
+\item \code{anlm} Average non-linearity measure.
+\item \code{extrapolation.ids} observations that have been identified as extrapolation points and not included in the analysis.
+\item \code{data.step}, a \code{data.table} of the feature matrix after the step has been applied.
+\item \code{results}, a \code{data.table} of the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
+}
 }
 \description{
 This is a wrapper function for \code{FME$new(...)$compute()}.
 It computes forward marginal effects (FMEs) for a specified change in feature values.
 }
 \details{
-If one or more numeric features are passed to the \code{features} argument, FMEs are computed as \deqn{FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)} where \eqn{h_{S}} is the step size vector and \eqn{x_{-S}} the features not contained in \code{features}).
-If a categorical feature is passed to \code{features}, \deqn{FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)} where \eqn{c_{j}} is the selected reference category in \code{features} and \eqn{x_{-j}} the features not contained in \code{features}.
+If one or more numeric features are passed to the \code{features} argument, FMEs are computed as \deqn{FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)} where \eqn{h_{S}} is the step size vector and \eqn{x_{-S}} the other features.
+If a categorical feature is passed to \code{features}, \deqn{FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)} where \eqn{c_{j}} is the selected reference category in \code{features} and \eqn{x_{-j}} the other features.
 }
 \examples{
 # Train a model:
