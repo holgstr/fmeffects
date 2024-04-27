@@ -15,7 +15,7 @@ vignette: >
 # Introduction
 
 The `fmeffects` package computes, aggregates, and visualizes forward marginal effects (FMEs) for supervised machine learning models.
-Put simply, an FME is the change in a model's prediction if a feature is changed by a certain value for s given data set.
+Put simply, an FME is the change in a model's predicted value for a given observation if the feature is changed by a certain value.
 Read the [article][4] on how FMEs are computed or the methods [paper][1] for more details. Our [website][5] is the best way to find all resources.
 
 There are three main functions: 
