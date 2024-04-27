@@ -105,7 +105,12 @@ Numeric features must have a number as step size, categorical features the name 
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code>FME</code> Object with FMEs computed.</p>
+<p><code>ForwardsMarginalEffect</code> object. The field <code>$results</code> contains a <code>data.table</code> with the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
+The field <code>$data.step</code> contains the feature matrix after the step has been applied. Aggregations of observation-wise FMEs and NLMs are contained in <code>$ame</code> and <code>$anlm</code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>If one or more numeric features are passed to the <code>features</code> argument, FMEs are computed as $FME_x^(i), \, h = f(x^(i) + h) - (f(x^(i))$.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
