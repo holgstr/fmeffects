@@ -47,16 +47,15 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       } else {
         cli::cli_abort("{.arg features} cannot contain both numeric or categorical features.")
       }
-      #if (length(feature) >= 2) {
-      #  checkmate::assertSetEqual(feature.types, y = c("numerical"))
-      #}
       # Check if step.size corresponds to feature in length, format and range
-      #if (length(feature) >= 2) { # multivariate
-      #  checkmate::assertNumeric(step.size, min.len = 2)
+      if (self$step.type == "numerical") { # multivariate
+        if(!checkmate::test_numeric(step.size, min.len = 1)) {
+          cli::cli_abort("{.arg features} must have numeric step lengths for numeric features.")
+        }
       #  range_check = function(feature_number) {
       #    range = diff(range(predictor$X[, feature, with = FALSE][, ..feature_number]))
       #    checkmate::assertNumeric(step.size[feature_number], len = 1, lower = (-range), upper = range)
-      #  }
+      }
       #  sapply(X = feature, FUN = function(x) {range_check(x)})
         #range1 = diff(range(predictor$X[, feature, with=FALSE][,1]))
         #checkmate::assertNumeric(step.size[1], len = 1, lower = (-range1), upper = range1)
