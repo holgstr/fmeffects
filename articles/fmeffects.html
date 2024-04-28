@@ -193,7 +193,7 @@ computed as a simple mean over all observation-wise FMEs. Therefore, on
 average, the FME of a temperature increase of 1°C on bike sharing usage
 is roughly 2.4. As can be seen, the observation-wise effects seem to
 vary for different values of temp. While the FME tends to be positive
-for lower temperature values (0-20°C), it turns negative for higher
+for lower temperature values (5-20°C), it turns negative for higher
 temperature values (&gt;20°C).<br></p>
 <p>Also, we can extract all relevant aggregate information from the
 <code>effects</code> object:</p>
@@ -247,8 +247,8 @@ the FMEs implies that effects are highly heterogeneous:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">effects2</span><span class="op">$</span><span class="va">results</span><span class="op">$</span><span class="va">fme</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 24.08741</span></span></code></pre>
 <p>Therefore, it could be interesting to move the interpretation of
-feature effects from a global to a [semi-global perspective][Semi-global
-Interpretations] via the <code><a href="../reference/came.html">came()</a></code> function.</p>
+feature effects from a global to a <a href="#regional-interpretations">regional perspective</a> via the
+<code><a href="../reference/came.html">came()</a></code> function.</p>
 </div>
 <div class="section level3">
 <h3 id="non-linearity-measure">Non-Linearity Measure<a class="anchor" aria-label="anchor" href="#non-linearity-measure"></a>
