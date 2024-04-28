@@ -31,37 +31,47 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       step.size = unlist(features, use.names = FALSE)
 
       # Check if feature is unique character vector of minimum length 1 and matches names in data
-      checkmate::assertCharacter(feature, min.len = 1, max.len = length(predictor$feature.names), unique = TRUE, any.missing = FALSE)
-      checkmate::assertSubset(feature, choices = predictor$feature.names)
+      if (!checkmate::test_character(feature, min.len = 1, max.len = length(predictor$feature.names), unique = TRUE, any.missing = FALSE)) {
+        cli::cli_abort(paste("Number of features in {.arg features} must be between 1 and"), length(predictor$feature.names), ".")
+      }
+      if (!checkmate::test_subset(feature, choices = predictor$feature.names)) {
+        cli::cli_abort("{.arg features} must correspond to features in the data.")
+      }
 
       # Check if feature.types are numeric when feature is of length >2
       feature.types = predictor$feature.types[which(predictor$feature.names %in% feature)]
-      if (length(feature) >= 2) {
-        checkmate::assertSetEqual(feature.types, y = c("numerical"))
+      if (checkmate::test_set_equal(feature.types, y = "numerical")) {
+        self$step.type = "numerical"
+      } else if (checkmate::test_set_equal(feature.types, y = "categorical")) {
+        self$step.type = "categorical"
+      } else {
+        cli::cli_abort("{.arg features} cannot contain both numeric or categorical features.")
       }
+      #if (length(feature) >= 2) {
+      #  checkmate::assertSetEqual(feature.types, y = c("numerical"))
+      #}
       # Check if step.size corresponds to feature in length, format and range
-      if (length(feature) >= 2) { # multivariate
-        checkmate::assertNumeric(step.size, min.len = 2)
-        range_check = function(feature_number) {
-          range = diff(range(predictor$X[, feature, with = FALSE][, ..feature_number]))
-          checkmate::assertNumeric(step.size[feature_number], len = 1, lower = (-range), upper = range)
-        }
-        sapply(X = feature, FUN = function(x) {range_check(x)})
+      #if (length(feature) >= 2) { # multivariate
+      #  checkmate::assertNumeric(step.size, min.len = 2)
+      #  range_check = function(feature_number) {
+      #    range = diff(range(predictor$X[, feature, with = FALSE][, ..feature_number]))
+      #    checkmate::assertNumeric(step.size[feature_number], len = 1, lower = (-range), upper = range)
+      #  }
+      #  sapply(X = feature, FUN = function(x) {range_check(x)})
         #range1 = diff(range(predictor$X[, feature, with=FALSE][,1]))
         #checkmate::assertNumeric(step.size[1], len = 1, lower = (-range1), upper = range1)
         #range2 = diff(range(predictor$X[, feature, with=FALSE][,2]))
         #checkmate::assertNumeric(step.size[2], len = 1, lower = (-range2), upper = range2)
-        self$step.type = "numerical"
-      } else if (feature.types == "numerical"){ # univariate numerical
-        range = diff(range(predictor$X[, feature, with=FALSE]))
-        checkmate::assertNumeric(step.size, len = 1, lower = (-range), upper = range)
-        self$step.type = "numerical"
-      } else { # univariate categorical
-        checkmate::assertCharacter(step.size, len = 1)
-        checkmate::assertTRUE(step.size %in% predictor$X[, feature, with=FALSE][[1]])
-        self$step.type = "categorical"
-      }
-
+        #self$step.type = "numerical"
+      #} else if (feature.types == "numerical"){ # univariate numerical
+      #  range = diff(range(predictor$X[, feature, with=FALSE]))
+      #  checkmate::assertNumeric(step.size, len = 1, lower = (-range), upper = range)
+      #  self$step.type = "numerical"
+      #} else { # univariate categorical
+      #  checkmate::assertCharacter(step.size, len = 1)
+      #  checkmate::assertTRUE(step.size %in% predictor$X[, feature, with=FALSE][[1]])
+      #  self$step.type = "categorical"
+      #}
       # Check if ep.method is one of the options provided
       checkmate::assertChoice(ep.method, choices = c("none", "mcec", "envelope"))
 
@@ -174,9 +184,11 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
           data.table::set(df, j = colname, value = df[, colname, with=FALSE] + step.size[n_col])
         }
       } else {
-        data.table::setkeyv(df, feature)
-        df = df[!step.size]
-        data.table::set(df, j = feature, value = step.size)
+        for (n_col in seq_len(length(feature))) {
+          data.table::setkeyv(df, feature[n_col])
+          df = df[!step.size[n_col]]
+          data.table::set(df, j = feature[n_col], value = step.size[n_col])
+        }
       }
       df
     },
@@ -210,12 +222,14 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       } else {
         # Exclude extrapolation points in data.step
         data.step = data.table::copy(data)
-        data.table::setkeyv(data.step, feature)
-        data.step = data.step[!step.size]
-        data.table::set(data.step, j = feature, value = step.size)
-        # Exclude observations in data that are not in the reference category
-        data.table::setkeyv(data, feature)
-        data = data[!step.size]
+        for (n_col in seq_len(length(feature))) {
+          data.table::setkeyv(data.step, feature[n_col])
+          data.step = data.step[!step.size[n_col]]
+          data.table::set(data.step, j = feature[n_col], value = step.size[n_col])
+          # Exclude observations in data that are not in the reference category
+          data.table::setkeyv(data, feature[n_col])
+          data = data[!step.size[n_col]]
+        }
       }
 
       # Compute fMEs:
@@ -275,20 +289,20 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
 #' @param model The (trained) model, with the ability to predict on new data. This must be a `train.formula` (`tidymodels`), `Learner` (`mlr3`), `train` (`caret`), `lm` or `glm` object.
 #' @param data The data used for computing FMEs, must be data.frame or data.table.
 #' @param features A named list with the feature name(s) and step size(s). The list names should correspond to the names of the feature variables affected by the step.
-#' The list can contain either 1 or 2 numeric features, or 1 categorical feature.
+#' The list must exclusively contain either numeric or categorical features, but not a combination of both.
 #' Numeric features must have a number as step size, categorical features the name of the reference category.
 #' @param ep.method String specifying the method used for extrapolation detection. One of `"none"` or `"envelope"`. Defaults to `"none"`.
 #' @param compute.nlm Compute NLMs for FMEs for numerical steps. Defaults to `FALSE`.
 #' @param nlm.intervals Number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to `1`.
-#' @return `ForwardsMarginalEffect` object, includes the following fields:
-#' * `ame` Average marginal effect.
-#' * `anlm` Average non-linearity measure.
+#' @return `ForwardsMarginalEffect` object with the following fields:
+#' * `ame` average marginal effect (AME).
+#' * `anlm` average non-linearity measure (NLM).
 #' * `extrapolation.ids` observations that have been identified as extrapolation points and not included in the analysis.
 #' * `data.step`, a `data.table` of the feature matrix after the step has been applied.
 #' * `results`, a `data.table` of the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
 #' @details
 #' If one or more numeric features are passed to the `features` argument, FMEs are computed as \deqn{FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)} where \eqn{h_{S}} is the step size vector and \eqn{x_{-S}} the other features.
-#' If a categorical feature is passed to `features`, \deqn{FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)} where \eqn{c_{j}} is the selected reference category in `features` and \eqn{x_{-j}} the other features.
+#' If one or more categorical features are passed to `features`, \deqn{FME_{x, c_{J}} = f(c_{J}, x_{-J}) - f(x)} where \eqn{c_{J}} is the set of selected reference categories in `features` and \eqn{x_{-J}} the other features.
 #' @references
 #' Scholbeck, C.A., Casalicchio, G., Molnar, C. et al. Marginal effects for non-linear prediction functions. Data Min Knowl Disc (2024). https://doi.org/10.1007/s10618-023-00993-x
 #' @examples

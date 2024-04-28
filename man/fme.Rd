@@ -19,7 +19,7 @@ fme(
 \item{data}{The data used for computing FMEs, must be data.frame or data.table.}
 
 \item{features}{A named list with the feature name(s) and step size(s). The list names should correspond to the names of the feature variables affected by the step.
-The list can contain either 1 or 2 numeric features, or 1 categorical feature.
+The list must exclusively contain either numeric or categorical features, but not a combination of both.
 Numeric features must have a number as step size, categorical features the name of the reference category.}
 
 \item{ep.method}{String specifying the method used for extrapolation detection. One of \code{"none"} or \code{"envelope"}. Defaults to \code{"none"}.}
@@ -29,10 +29,10 @@ Numeric features must have a number as step size, categorical features the name 
 \item{nlm.intervals}{Number of intervals for computing NLMs. Results in longer computing time but more accurate approximation of NLMs. Defaults to \code{1}.}
 }
 \value{
-\code{ForwardsMarginalEffect} object, includes the following fields:
+\code{ForwardsMarginalEffect} object with the following fields:
 \itemize{
-\item \code{ame} Average marginal effect.
-\item \code{anlm} Average non-linearity measure.
+\item \code{ame} average marginal effect (AME).
+\item \code{anlm} average non-linearity measure (NLM).
 \item \code{extrapolation.ids} observations that have been identified as extrapolation points and not included in the analysis.
 \item \code{data.step}, a \code{data.table} of the feature matrix after the step has been applied.
 \item \code{results}, a \code{data.table} of the individual FMEs (and NLMs, if applicable) for all observations that are not extrapolation points.
@@ -44,7 +44,7 @@ It computes forward marginal effects (FMEs) for a specified change in feature va
 }
 \details{
 If one or more numeric features are passed to the \code{features} argument, FMEs are computed as \deqn{FME_{x, h_{S}} = f(x + h_{S}, x_{-S}) - f(x)} where \eqn{h_{S}} is the step size vector and \eqn{x_{-S}} the other features.
-If a categorical feature is passed to \code{features}, \deqn{FME_{x, c_{j}} = f(c_{j}, x_{-j}) - f(x)} where \eqn{c_{j}} is the selected reference category in \code{features} and \eqn{x_{-j}} the other features.
+If one or more categorical features are passed to \code{features}, \deqn{FME_{x, c_{J}} = f(c_{J}, x_{-J}) - f(x)} where \eqn{c_{J}} is the set of selected reference categories in \code{features} and \eqn{x_{-J}} the other features.
 }
 \examples{
 # Train a model:

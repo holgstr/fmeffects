@@ -27,6 +27,7 @@ Suggests:
     tidymodels
 Imports: 
     checkmate,
+    cli,
     data.table,
     partykit,
     ggparty,
