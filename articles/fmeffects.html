@@ -356,32 +356,50 @@ a clear sky on the weekend, i.e., <code>weather = "clear"</code> and
 <p>For an informative overview of all feature effects in a model, we can
 use the <code><a href="../reference/ame.html">ame()</a></code> function:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">overview</span> <span class="op">=</span> <span class="fu"><a href="../reference/ame.html">ame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
-<span>           data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>           features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>humidity <span class="op">=</span> <span class="fl">0.1</span>, weather <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clear"</span>, <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">overview</span> <span class="op">=</span> <span class="fu"><a href="../reference/ame.html">ame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span></span>
 <span><span class="va">overview</span><span class="op">$</span><span class="va">results</span></span></code></pre></div>
-<pre><code><span><span class="co">##    Feature step.size      AME       SD      0.25     0.75   n</span></span>
-<span><span class="co">## 1  weather     clear 26.19828 41.78861   3.59911 25.92567 284</span></span>
-<span><span class="co">## 2  weather      rain -55.3083 53.01272 -94.40958 -5.48097 657</span></span>
-<span><span class="co">## 3 humidity       0.1 -7.38328 16.35698   -8.5513  1.07549 727</span></span></code></pre>
+<pre><code><span><span class="co">##       Feature step.size       AME      SD      0.25      0.75   n</span></span>
+<span><span class="co">## 1      season    spring   -29.472 31.5101   -39.955   -5.5139 548</span></span>
+<span><span class="co">## 2      season    summer    0.4772 22.5212   -9.0235   11.6321 543</span></span>
+<span><span class="co">## 3      season      fall   11.7452 28.5851   -2.4282   34.1763 539</span></span>
+<span><span class="co">## 4      season    winter   15.5793 24.6394    1.6525   26.2254 551</span></span>
+<span><span class="co">## 5        year         0   -99.038 67.1788 -157.0608  -20.0628 364</span></span>
+<span><span class="co">## 6        year         1   97.0566  60.521   21.9401  148.0847 363</span></span>
+<span><span class="co">## 7       month         1    4.0814 13.3513   -1.2566     7.459 727</span></span>
+<span><span class="co">## 8     holiday     False   -1.2178 21.6103   -9.1095    9.8232  21</span></span>
+<span><span class="co">## 9     holiday      True   -13.738 25.3496  -32.6323    6.2019 706</span></span>
+<span><span class="co">## 10    weekday       Sat  -55.0908 49.6534  -87.6489  -15.8843 622</span></span>
+<span><span class="co">## 11    weekday       Sun  -85.1527 57.7791 -122.1504  -31.8105 622</span></span>
+<span><span class="co">## 12    weekday       Mon   10.7224 29.2179   -8.4101   30.4207 623</span></span>
+<span><span class="co">## 13    weekday       Tue   17.9396  25.728    1.1959   32.5073 625</span></span>
+<span><span class="co">## 14    weekday       Wed   20.4025 23.1599    1.3386   32.8358 623</span></span>
+<span><span class="co">## 15    weekday       Thu   19.4455 24.1105   -0.3097   33.4997 624</span></span>
+<span><span class="co">## 16    weekday       Fri    1.7712 35.3088  -24.8956   29.5147 623</span></span>
+<span><span class="co">## 17 workingday     False -204.1875 89.3882  -257.144 -142.4332 496</span></span>
+<span><span class="co">## 18 workingday      True  161.0619 62.5733  118.9398  209.6916 231</span></span>
+<span><span class="co">## 19    weather     clear   26.1983 41.7886    3.5991   25.9257 284</span></span>
+<span><span class="co">## 20    weather     misty     3.023 32.8661   -9.1498     0.973 513</span></span>
+<span><span class="co">## 21    weather      rain  -55.3083 53.0127  -94.4096    -5.481 657</span></span>
+<span><span class="co">## 22       temp         1    2.3426  7.1269   -0.4294    4.5534 727</span></span>
+<span><span class="co">## 23   humidity      0.01   -0.2749   2.626   -0.3249    0.3504 727</span></span>
+<span><span class="co">## 24  windspeed         1    0.0052  2.4318   -0.1823    0.2318 727</span></span></code></pre>
 <p>This computes the AME for each feature included in the model, with a
-default step size of 1 for numerical features (or, 0.01 if their range
-is smaller than 1). For categorical features, AMEs are computed for all
-available categories. We can specify a custom subset of features and
-step sizes using the <code>features</code> argument:</p>
+default step size of 1 for numeric features (or, 0.01 if their range is
+smaller than 1). For categorical features, AMEs are computed for all
+available categories. Alternatively, we can specify a subset of features
+and step sizes using the <code>features</code> argument:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">overview</span> <span class="op">=</span> <span class="fu"><a href="../reference/ame.html">ame</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weather <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rain"</span>, <span class="st">"clear"</span><span class="op">)</span>, temp <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, humidity <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weather <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rain"</span>, <span class="st">"clear"</span><span class="op">)</span>, humidity <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>               ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span>
 <span><span class="va">overview</span><span class="op">$</span><span class="va">results</span></span></code></pre></div>
 <pre><code><span><span class="co">##    Feature step.size      AME       SD      0.25     0.75   n</span></span>
 <span><span class="co">## 1  weather      rain -55.3083 53.01272 -94.40958 -5.48097 657</span></span>
 <span><span class="co">## 2  weather     clear 26.19828 41.78861   3.59911 25.92567 284</span></span>
-<span><span class="co">## 3     temp        -1 -2.03736  6.77662  -3.75185   0.5965 724</span></span>
-<span><span class="co">## 4 humidity       0.1 -7.75386 17.23894  -8.54966  1.32707 640</span></span></code></pre>
-<p>Again, note that often it is advisable to set
-<code>ep.method = "envelope"</code> so we avoid model extrapolation.</p>
+<span><span class="co">## 3 humidity       0.1 -7.75386 17.23894  -8.54966  1.32707 640</span></span></code></pre>
+<p>Again, note that we advise to set <code>ep.method = "envelope"</code>
+so we avoid model extrapolation.</p>
 <hr>
 </div>
 <div class="section level2">
