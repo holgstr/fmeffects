@@ -30,7 +30,6 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       feature = names(features)
       step.size = unlist(features, use.names = FALSE)
 
-      # Check if feature is unique character vector of minimum length 1 and matches names in data
       if (!checkmate::test_character(feature, min.len = 1, max.len = length(predictor$feature.names), unique = TRUE, any.missing = FALSE)) {
         cli::cli_abort(paste("Number of features in {.arg features} must be between 1 and"), length(predictor$feature.names), ".")
       }
@@ -38,41 +37,41 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
         cli::cli_abort("{.arg features} must correspond to features in the data.")
       }
 
-      # Check if feature.types are numeric when feature is of length >2
       feature.types = predictor$feature.types[which(predictor$feature.names %in% feature)]
       if (checkmate::test_set_equal(feature.types, y = "numerical")) {
         self$step.type = "numerical"
       } else if (checkmate::test_set_equal(feature.types, y = "categorical")) {
         self$step.type = "categorical"
       } else {
-        cli::cli_abort("{.arg features} cannot contain both numeric or categorical features.")
+        cli::cli_abort("{.arg features} cannot contain both numeric and categorical features.")
       }
-      # Check if step.size corresponds to feature in length, format and range
-      if (self$step.type == "numerical") { # multivariate
+
+      if (self$step.type == "numerical") {
         if(!checkmate::test_numeric(step.size, min.len = 1)) {
           cli::cli_abort("{.arg features} must have numeric step lengths for numeric features.")
         }
-      #  range_check = function(feature_number) {
-      #    range = diff(range(predictor$X[, feature, with = FALSE][, ..feature_number]))
-      #    checkmate::assertNumeric(step.size[feature_number], len = 1, lower = (-range), upper = range)
+        range_check = function(feature_number) {
+          range = diff(range(predictor$X[, feature, with = FALSE][, ..feature_number]))
+          if (!checkmate::test_numeric(step.size[feature_number], len = 1, lower = (-range + 1e-10), upper = (range - 1e-10))) {
+            cli::cli_abort(paste("Feature", feature[feature_number], "must have numeric step length between", (-range + 1e-10), "and", (range - 1e-10), "."))
+          }
+        }
+        lapply(X = seq_len(length(feature)), FUN = function(x) {range_check(x)})
+      } else { # step.type categorical
+        category_check = function(feature_number) {
+          if (!checkmate::test_string(step.size[feature_number])) {
+            cli::cli_abort(paste("The reference category of feature", feature[feature_number], "must be specified with a string."))
+          }
+          levels = levels(predictor$X[, feature[feature_number], with=FALSE][[1]])
+          if (!checkmate::test_choice(step.size[feature_number], levels)) {
+            cli::cli_abort(paste("The reference category of feature", feature[feature_number], "must be one of its levels, e.g.:", paste0(levels[seq_len(min(length(levels), 5))], collapse = ", "), "."))
+          }
+        }
+        lapply(X = seq_len(length(feature)), FUN = function(x) {category_check(x)})
       }
-      #  sapply(X = feature, FUN = function(x) {range_check(x)})
-        #range1 = diff(range(predictor$X[, feature, with=FALSE][,1]))
-        #checkmate::assertNumeric(step.size[1], len = 1, lower = (-range1), upper = range1)
-        #range2 = diff(range(predictor$X[, feature, with=FALSE][,2]))
-        #checkmate::assertNumeric(step.size[2], len = 1, lower = (-range2), upper = range2)
-        #self$step.type = "numerical"
-      #} else if (feature.types == "numerical"){ # univariate numerical
-      #  range = diff(range(predictor$X[, feature, with=FALSE]))
-      #  checkmate::assertNumeric(step.size, len = 1, lower = (-range), upper = range)
-      #  self$step.type = "numerical"
-      #} else { # univariate categorical
-      #  checkmate::assertCharacter(step.size, len = 1)
-      #  checkmate::assertTRUE(step.size %in% predictor$X[, feature, with=FALSE][[1]])
-      #  self$step.type = "categorical"
-      #}
+
       # Check if ep.method is one of the options provided
-      checkmate::assertChoice(ep.method, choices = c("none", "mcec", "envelope"))
+      checkmate::assertChoice(ep.method, choices = c("none", "envelope"))
 
       # Check if compute.nlm is TRUE
       checkmate::assertLogical(compute.nlm, len = 1)
