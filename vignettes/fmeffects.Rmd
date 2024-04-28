@@ -189,24 +189,22 @@ fme(model = forest,
 For an informative overview of all feature effects in a model, we can use the `ame()` function:
 
 ```{r, warning=FALSE}
-overview = ame(model = forest,
-           data = bikes,
-           features = c(humidity = 0.1, weather = c("clear", "rain")))
+overview = ame(model = forest, data = bikes)
 overview$results
 ```
 
-This computes the AME for each feature included in the model, with a default step size of 1 for numerical features (or, 0.01 if their range is smaller than 1). For categorical features, AMEs are computed for all available categories.
-We can specify a custom subset of features and step sizes using the `features` argument:
+This computes the AME for each feature included in the model, with a default step size of 1 for numeric features (or, 0.01 if their range is smaller than 1). For categorical features, AMEs are computed for all available categories.
+Alternatively, we can specify a subset of features and step sizes using the `features` argument:
 
 ```{r, warning=FALSE}
 overview = ame(model = forest,
                data = bikes,
-               features = list(weather = c("rain", "clear"), temp = -1, humidity = 0.1),
+               features = list(weather = c("rain", "clear"), humidity = 0.1),
                ep.method = "envelope")
 overview$results
 ```
 
-Again, note that often it is advisable to set `ep.method = "envelope"` so we avoid model extrapolation.
+Again, note that we advise to set `ep.method = "envelope"` so we avoid model extrapolation.
 
 ---
 
