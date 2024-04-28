@@ -67,7 +67,7 @@ Note that we have specified `ep.method = "envelope"`. This means we exclude obse
 plot(effects)
 ```
 
-The black arrow indicates direction and magnitude of the step size. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FME tends to be positive for lower temperature values (0-20°C), it turns negative for higher temperature values (>20°C). \
+The black arrow indicates direction and magnitude of the step size. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary for different values of temp. While the FME tends to be positive for lower temperature values (5-20°C), it turns negative for higher temperature values (>20°C). \
 
 Also, we can extract all relevant aggregate information from the `effects` object:
 
@@ -110,7 +110,7 @@ It seems that a combined decrease in temperature by 3°C and humidity by 10 perc
 sd(effects2$results$fme)
 ```
 
-Therefore, it could be interesting to move the interpretation of feature effects from a global to a [semi-global perspective][Semi-global Interpretations] via the `came()` function.
+Therefore, it could be interesting to move the interpretation of feature effects from a global to a [regional perspective][Regional Interpretations] via the `came()` function.
 
 ## Non-Linearity Measure
 
