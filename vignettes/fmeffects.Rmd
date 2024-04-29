@@ -61,7 +61,7 @@ effects = fme(model = forest,
                ep.method = "envelope")
 ```
 
-Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 1°C to the temperature results in the temperature value falling outside the range of `temp` in the overall data. Thereby, we reduce the risk of asking the model to extrapolate.
+Note that we have specified `ep.method = "envelope"`. This means we exclude observations for which adding 1°C to the temperature results in the temperature value falling outside the range of `temp` in the data. Thereby, we reduce the risk of model extrapolation.
 
 ```{r, message=FALSE}
 plot(effects)
