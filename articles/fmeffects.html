@@ -182,8 +182,8 @@ FMEs for <code>features = list("temp" = 1)</code>.</p>
 <p>Note that we have specified <code>ep.method = "envelope"</code>. This
 means we exclude observations for which adding 1°C to the temperature
 results in the temperature value falling outside the range of
-<code>temp</code> in the overall data. Thereby, we reduce the risk of
-asking the model to extrapolate.</p>
+<code>temp</code> in the data. Thereby, we reduce the risk of model
+extrapolation.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
