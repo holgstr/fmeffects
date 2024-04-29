@@ -192,16 +192,16 @@ The horizontal line is the average marginal effect (AME). The AME is
 computed as a simple mean over all observation-wise FMEs. Therefore, on
 average, the FME of a temperature increase of 1°C on bike sharing usage
 is roughly 2.4. As can be seen, the observation-wise effects seem to
-vary for different values of temp. While the FME tends to be positive
-for lower temperature values (5-20°C), it turns negative for higher
-temperature values (&gt;20°C).<br></p>
-<p>Also, we can extract all relevant aggregate information from the
+vary along the range of <code>temp</code>. While the FME tends to be
+positive for lower temperature values (5-20°C), it turns negative for
+higher temperature values (&gt;20°C).<br></p>
+<p>We can extract relevant aggregate information from the
 <code>effects</code> object:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">effects</span><span class="op">$</span><span class="va">ame</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 2.366779</span></span></code></pre>
-<p>For a more in-depth analysis, we can inspect the FME for each
-observation in the data set:</p>
+<p>For a more in-depth analysis, we can inspect the FME of each
+observation in the data (excluding extrapolation points):</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">effects</span><span class="op">$</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Key: &lt;obs.id&gt;</span></span>
