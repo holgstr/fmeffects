@@ -43,15 +43,14 @@ FMEPlotHigherOrder = R6::R6Class(
       private$initializeSubclass(results, data, feature, step.size)
     },
 
-    plot = function(with.nlm = FALSE) {
-      if (with.nlm == FALSE) {
+  plot = function(with.nlm = FALSE) {
         df = as.data.frame(self$df)
         countmax = max(hist(df$fme,
                             breaks = seq(min(df$fme),
                                          max(df$fme),
                                          l=min(round(nrow(df))*0.4, 20)+1),
                             plot = FALSE)$counts)
-        ggplot2::ggplot(df) +
+        pfme <- ggplot2::ggplot(df) +
           ggplot2::geom_histogram(lwd = 0.3,
                                   linetype = "solid",
                                   colour = "black",
@@ -74,10 +73,39 @@ FMEPlotHigherOrder = R6::R6Class(
                          axis.title = ggplot2::element_text(size = 12),
                          axis.text.x = ggplot2::element_text(colour = "black", size = 10),
                          axis.text.y = ggplot2::element_text(colour = "black", size = 10))
-      } else {
-        stop("Cannot plot NLM because NLM can only be computed for numerical features.")
-      }
-    }
+
+        if (with.nlm == FALSE) {
+          pfme
+        } else if ("nlm" %in% names(df)) {
+          df$nlm = sapply(df$nlm, FUN = function(x) {max(x, 0)})
+          pnlm <-  ggplot2::ggplot(df) +
+            ggplot2::geom_histogram(lwd = 0.3,
+                                    linetype = "solid",
+                                    colour = "black",
+                                    fill = "gray",
+                                    show.legend = FALSE,
+                                    mapping = ggplot2::aes(x = nlm, y = ggplot2::after_stat(count)),
+                                    bins = min(round(nrow(df))*0.4, 20),
+                                    na.rm = TRUE) +
+            ggplot2::geom_vline(lwd = 1.2, mapping = ggplot2::aes(xintercept = mean(nlm))) +
+            ggplot2::geom_label(x = mean(df$nlm), y = countmax*0.9, label = paste0('ANLM: ', round(mean(df$nlm), 4)), fill = 'white') +
+            ggplot2::xlab(
+              paste0("NLM (",
+                     paste(
+                       paste(
+                         self$feature, "=", self$step.size), collapse = " | ")
+                     ,")")) +
+            ggplot2::ylab("") +
+            ggplot2::theme_bw() +
+            ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
+                           axis.title = ggplot2::element_text(size = 12),
+                           axis.text.x = ggplot2::element_text(colour = "black", size = 10),
+                           axis.text.y = ggplot2::element_text(colour = "black", size = 10))
+          suppressWarnings(cowplot::plot_grid(pfme, pnlm, ncol = 2, rel_widths = c(0.5, 0.5)))
+        } else {
+          stop("Only possible to plot NLM for FME objects with NLM computed.")
+        }
+  }
   )
 )
 
