@@ -45,7 +45,6 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       } else {
         cli::cli_abort("{.arg features} cannot contain both numeric and categorical features.")
       }
-
       if (self$step.type == "numerical") {
         if(!checkmate::test_numeric(step.size, min.len = 1)) {
           cli::cli_abort("{.arg features} must have numeric step lengths for numeric features.")
@@ -139,6 +138,8 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
         FMEPlotUnivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, bins, binwidth)
       } else if (length(self$feature) == 2){
         FMEPlotBivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, bins, binwidth)
+      } else if (length(self$feature) >= 3){
+      FMEPlotHigherOrder$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
       } else {
         stop("Cannot plot effects for more than two numerical features.")
       }

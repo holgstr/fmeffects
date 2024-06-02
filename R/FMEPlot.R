@@ -32,8 +32,58 @@ FMEPlot = R6::R6Class("FMEPlot",
 )
 
 
+# FMEPlot for Higher-Order Numerical Steps
+FMEPlotHigherOrder = R6::R6Class(
+  "FMEPlotHigherOrder",
+  inherit = FMEPlot,
+
+  public = list(
+
+    initialize = function(results, data, feature, step.size) {
+      private$initializeSubclass(results, data, feature, step.size)
+    },
+
+    plot = function(with.nlm = FALSE) {
+      if (with.nlm == FALSE) {
+        df = as.data.frame(self$df)
+        countmax = max(hist(df$fme,
+                            breaks = seq(min(df$fme),
+                                         max(df$fme),
+                                         l=min(round(nrow(df))*0.4, 20)+1),
+                            plot = FALSE)$counts)
+        ggplot2::ggplot(df) +
+          ggplot2::geom_histogram(lwd = 0.3,
+                                  linetype = "solid",
+                                  colour = "black",
+                                  fill = "gray",
+                                  show.legend = FALSE,
+                                  mapping = ggplot2::aes(x = fme, y = ggplot2::after_stat(count)),
+                                  bins = min(round(nrow(df))*0.4, 20),
+                                  na.rm = TRUE) +
+          ggplot2::geom_vline(lwd = 1.2, mapping = ggplot2::aes(xintercept = mean(fme))) +
+          ggplot2::geom_label(x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
+          ggplot2::xlab(
+            paste0("FME (",
+                   paste(
+                     paste(
+                       self$feature, "=", self$step.size), collapse = " | ")
+                   ,")")) +
+          ggplot2::ylab("") +
+          ggplot2::theme_bw() +
+          ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
+                         axis.title = ggplot2::element_text(size = 12),
+                         axis.text.x = ggplot2::element_text(colour = "black", size = 10),
+                         axis.text.y = ggplot2::element_text(colour = "black", size = 10))
+      } else {
+        stop("Cannot plot NLM because NLM can only be computed for numerical features.")
+      }
+    }
+  )
+)
+
 # FMEPlot for Bivariate Numerical Steps
-FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
+FMEPlotBivariate = R6::R6Class(
+  "FMEPlotBivariate",
 
   inherit = FMEPlot,
 
@@ -135,7 +185,8 @@ FMEPlotBivariate = R6::R6Class("FMEPlotBivariate",
 )
 
 # FMEPlot for Univariate Numerical Steps
-FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
+FMEPlotUnivariate = R6::R6Class(
+  "FMEPlotUnivariate",
 
   inherit = FMEPlot,
 
@@ -168,24 +219,24 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
         ggplot2::geom_rug(sides = "b", length = ggplot2::unit(0.015, "npc")) +
         ggplot2::geom_smooth(ggplot2::aes(x = x1, y = fme), se = FALSE, fullrange = FALSE, linetype = "dashed", linewidth = 0.7, color = "black") +
         ggplot2::annotate("segment",
-                 x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
-                 xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
-                 y = min.fme - 0.06 * range.fme,
-                 yend = min.fme - 0.06 * range.fme,
-                 colour = 'black', size = 1,
-                 arrow = grid::arrow(length = grid::unit(0.2, "cm")),
-                 lineend = "round", linejoin = "mitre") +
+                          x = 0.5 * min(df$x1) + 0.5 * max(df$x1) - 0.5 * self$step.size[1],
+                          xend = 0.5 * min(df$x1) + 0.5 * max(df$x1) + 0.5 * self$step.size[1],
+                          y = min.fme - 0.06 * range.fme,
+                          yend = min.fme - 0.06 * range.fme,
+                          colour = 'black', size = 1,
+                          arrow = grid::arrow(length = grid::unit(0.2, "cm")),
+                          lineend = "round", linejoin = "mitre") +
         ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme, na.rm = TRUE))) +
         ggplot2::geom_label(x = max.x1 + 0.1 * range.x1, y = mean(df$fme, na.rm = TRUE), label = "AME", size = 3, fill = 'white') +
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab("FME") +
         ggplot2::theme_bw() +
         ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
-              axis.title = ggplot2::element_text(size = 12),
-              axis.text.x = ggplot2::element_text(colour = "black", size = 10),
-              axis.text.y = ggplot2::element_text(colour = "black", size = 10),
-              legend.title = ggplot2::element_text(color = "black", size = 12),
-              legend.text = ggplot2::element_text(color = "black", size = 10))
+                       axis.title = ggplot2::element_text(size = 12),
+                       axis.text.x = ggplot2::element_text(colour = "black", size = 10),
+                       axis.text.y = ggplot2::element_text(colour = "black", size = 10),
+                       legend.title = ggplot2::element_text(color = "black", size = 12),
+                       legend.text = ggplot2::element_text(color = "black", size = 10))
 
       if (with.nlm == FALSE) {
         pfme
@@ -232,7 +283,8 @@ FMEPlotUnivariate = R6::R6Class("FMEPlotUnivariate",
 )
 
 # FMEPlot for Categorical Steps
-FMEPlotCategorical = R6::R6Class("FMEPlotCategorical",
+FMEPlotCategorical = R6::R6Class(
+  "FMEPlotCategorical",
 
   inherit = FMEPlot,
 
@@ -252,22 +304,22 @@ FMEPlotCategorical = R6::R6Class("FMEPlotCategorical",
                             plot = FALSE)$counts)
         ggplot2::ggplot(df) +
           ggplot2::geom_histogram(lwd = 0.3,
-                         linetype = "solid",
-                         colour = "black",
-                         fill = "gray",
-                         show.legend = FALSE,
-                         mapping = ggplot2::aes(x = fme, y = ggplot2::after_stat(count)),
-                         bins = min(round(nrow(df))*0.4, 20),
-                         na.rm = TRUE) +
+                                  linetype = "solid",
+                                  colour = "black",
+                                  fill = "gray",
+                                  show.legend = FALSE,
+                                  mapping = ggplot2::aes(x = fme, y = ggplot2::after_stat(count)),
+                                  bins = min(round(nrow(df))*0.4, 20),
+                                  na.rm = TRUE) +
           ggplot2::geom_vline(lwd = 1.2, mapping = ggplot2::aes(xintercept = mean(fme))) +
           ggplot2::geom_label(x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
           ggplot2::xlab(paste0("FME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
           ggplot2::ylab("") +
           ggplot2::theme_bw() +
           ggplot2::theme(panel.border = ggplot2::element_rect(colour = "black", fill=NA, size=0.7),
-                axis.title = ggplot2::element_text(size = 12),
-                axis.text.x = ggplot2::element_text(colour = "black", size = 10),
-                axis.text.y = ggplot2::element_text(colour = "black", size = 10))
+                         axis.title = ggplot2::element_text(size = 12),
+                         axis.text.x = ggplot2::element_text(colour = "black", size = 10),
+                         axis.text.y = ggplot2::element_text(colour = "black", size = 10))
       } else {
         stop("Cannot plot NLM because NLM can only be computed for numerical features.")
       }
