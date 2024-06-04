@@ -124,9 +124,9 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
     #' @description
     #' Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an `FME` object.
     #' @param with.nlm Plots NLMs if computed, defaults to `FALSE`.
-    #' @param bins Numeric vector giving number of bins in both vertical and horizontal directions.
+    #' @param bins Numeric vector giving number of bins in both vertical and horizontal directions.  Applies only to univariate or bivariate numeric effects.
     #'   See [ggplot2::stat_summary_hex()] for details.
-    #' @param binwidth Numeric vector giving bin width in both vertical and horizontal directions. Overrides bins if both set.
+    #' @param binwidth Numeric vector giving bin width in both vertical and horizontal directions. Overrides bins if both set. Applies only to univariate or bivariate numeric effects.
     #'   See [ggplot2::stat_summary_hex()] for details.
     #' @examples
     #' # Compute results:

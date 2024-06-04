@@ -16,8 +16,9 @@ FMEPlot = R6::R6Class("FMEPlot",
 
     initializeSubclass = function(results, data, feature, step.size) {
 
-      # Check if results is a data.table with a minimum of one observation
-      checkmate::assertDataTable(results, min.rows = 1)
+      if (!checkmate::test_true(unique(results$fme) == 1)) {
+        cli::cli_abort(paste("Cannot plot effects if they all have the same value."))
+      }
 
       self$feature = feature
       self$step.size = step.size
