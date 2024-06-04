@@ -168,10 +168,10 @@ Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an \code{F
 \describe{
 \item{\code{with.nlm}}{Plots NLMs if computed, defaults to \code{FALSE}.}
 
-\item{\code{bins}}{Numeric vector giving number of bins in both vertical and horizontal directions.
+\item{\code{bins}}{Numeric vector giving number of bins in both vertical and horizontal directions.  Applies only to univariate or bivariate numeric effects.
 See \code{\link[ggplot2:stat_summary_2d]{ggplot2::stat_summary_hex()}} for details.}
 
-\item{\code{binwidth}}{Numeric vector giving bin width in both vertical and horizontal directions. Overrides bins if both set.
+\item{\code{binwidth}}{Numeric vector giving bin width in both vertical and horizontal directions. Overrides bins if both set. Applies only to univariate or bivariate numeric effects.
 See \code{\link[ggplot2:stat_summary_2d]{ggplot2::stat_summary_hex()}} for details.}
 }
 \if{html}{\out{</div>}}

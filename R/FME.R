@@ -45,7 +45,6 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
       } else {
         cli::cli_abort("{.arg features} cannot contain both numeric and categorical features.")
       }
-
       if (self$step.type == "numerical") {
         if(!checkmate::test_numeric(step.size, min.len = 1)) {
           cli::cli_abort("{.arg features} must have numeric step lengths for numeric features.")
@@ -125,9 +124,9 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
     #' @description
     #' Plots results, i.e., FME (and NLMs) for non-extrapolation points, for an `FME` object.
     #' @param with.nlm Plots NLMs if computed, defaults to `FALSE`.
-    #' @param bins Numeric vector giving number of bins in both vertical and horizontal directions.
+    #' @param bins Numeric vector giving number of bins in both vertical and horizontal directions.  Applies only to univariate or bivariate numeric effects.
     #'   See [ggplot2::stat_summary_hex()] for details.
-    #' @param binwidth Numeric vector giving bin width in both vertical and horizontal directions. Overrides bins if both set.
+    #' @param binwidth Numeric vector giving bin width in both vertical and horizontal directions. Overrides bins if both set. Applies only to univariate or bivariate numeric effects.
     #'   See [ggplot2::stat_summary_hex()] for details.
     #' @examples
     #' # Compute results:
@@ -139,6 +138,8 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
         FMEPlotUnivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, bins, binwidth)
       } else if (length(self$feature) == 2){
         FMEPlotBivariate$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm, bins, binwidth)
+      } else if (length(self$feature) >= 3){
+      FMEPlotHigherOrder$new(self$results, self$predictor$X, self$feature, self$step.size)$plot(with.nlm)
       } else {
         stop("Cannot plot effects for more than two numerical features.")
       }

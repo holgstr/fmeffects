@@ -92,7 +92,7 @@ effects2 = fme(model = forest,
                ep.method = "envelope")
 ```
 
-For bivariate effects, we can plot the effects (we cannot for more than two features):
+For bivariate effects, we can plot the effects in a way similar to univariate effects (for more than two features, we can plot only the histogram of effects):
 
 ```{r, message=FALSE}
 plot(effects2)
