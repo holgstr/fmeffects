@@ -227,8 +227,9 @@ FME for <code>features = list(temp = -3, humidity = -0.1)</code>:</p>
 <span>               data <span class="op">=</span> <span class="va">bikes</span>,</span>
 <span>               features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>temp <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>, humidity <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>               ep.method <span class="op">=</span> <span class="st">"envelope"</span><span class="op">)</span></span></code></pre></div>
-<p>For bivariate effects, we can plot the effects (we cannot for more
-than two features):</p>
+<p>For bivariate effects, we can plot the effects in a way similar to
+univariate effects (for more than two features, we can plot only the
+histogram of effects):</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fmeffects_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
