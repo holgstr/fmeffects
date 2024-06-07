@@ -148,7 +148,7 @@ If one or more categorical features are passed to <code>features</code>, $$FME_{
 <span class="r-out co"><span class="r-pr">#&gt;</span>   envelope, EPs: 3 of 731 obs. (0 %)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Average Marginal Effect (AME):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   57.7107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   56.4042</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">effects</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span>
 <span class="r-plt img"><img src="fme-1.png" alt="" width="700" height="433"></span>
@@ -156,23 +156,23 @@ If one or more categorical features are passed to <code>features</code>, $$FME_{
 <span class="r-in"><span><span class="co"># Extract results:</span></span></span>
 <span class="r-in"><span><span class="va">effects</span><span class="op">$</span><span class="va">results</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Key: &lt;obs.id&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      obs.id       fme</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;     &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:      1 139.66991</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:      2 314.27715</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:      3  62.28153</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:      4  93.58907</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:      5 183.74889</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 724:    727 339.13027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 725:    728 291.70992</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 726:    729 410.07049</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 727:    730 473.42936</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 728:    731   5.23601</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      obs.id          fme</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;        &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:      1 158.72019394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:      2 253.46725238</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:      3  58.70801567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:      4  87.22350480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:      5 218.24698054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 724:    727 304.61168137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 725:    728 222.42089939</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 726:    729 383.51970424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 727:    730 434.09039495</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 728:    731  -0.09944615</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute the AME for a categorial feature:</span></span></span>
 <span class="r-in"><span><span class="fu">fme</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>, data <span class="op">=</span> <span class="va">bikes</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"weather"</span> <span class="op">=</span> <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">ame</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -782.7391</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -786.9927</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

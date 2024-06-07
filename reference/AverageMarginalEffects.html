@@ -127,27 +127,30 @@ For categorial features, the step size must be a character vector of category na
 </div>
 <div class="section">
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="co"># Train a model:</span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3verse.mlr-org.com" class="external-link">mlr3verse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://imbs-hl.github.io/ranger/" class="external-link">ranger</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span>, package <span class="op">=</span> <span class="st">"fmeffects"</span><span class="op">)</span></span>
-<span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bikes</span>, id <span class="op">=</span> <span class="st">"bikes"</span>, target <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span>
-<span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Compute AMEs for all features:</span></span>
-<span><span class="va">overview</span> <span class="op">=</span> <span class="va"><a href="../reference/AverageMarginalEffects.html">AverageMarginalEffects</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>  model <span class="op">=</span> <span class="va">forest</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Compute AMEs for a subset of features with non-default step.sizes:</span></span>
-<span><span class="va">overview</span> <span class="op">=</span> <span class="va"><a href="../reference/AverageMarginalEffects.html">AverageMarginalEffects</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span>
-<span>                                      data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>                                      features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>humidity <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>                                                   weather <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clear"</span>, <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code># Train a model:
+
+library(mlr3verse)
+library(ranger)
+set.seed(123)
+data(bikes, package = "fmeffects")
+task = as_task_regr(x = bikes, id = "bikes", target = "count")
+forest = lrn("regr.ranger")$train(task)
+
+# Compute AMEs for all features:
+\dontrun{
+overview = AverageMarginalEffects$new(
+  model = forest,
+  data = bikes)$compute()
+summary(overview)
+
+# Compute AMEs for a subset of features with non-default step.sizes:
+overview = AverageMarginalEffects$new(model = forest,
+                                      data = bikes,
+                                      features = list(humidity = 0.1,
+                                                   weather = c("clear", "rain")))$compute()
+summary(overview)
+}
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -164,8 +167,11 @@ For categorial features, the step size must be a character vector of category na
 </div>
 <div class="section">
 <h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="co"># Compute results:</span></span>
-<span><span class="va">overview</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code># Compute results:
+\dontrun{
+overview$compute()
+}
+</code></pre></div><p></p></div>
 </div>
 
 
@@ -207,37 +213,11 @@ For categorial features, the step size must be a character vector of category na
 <span class="r-in"><span><span class="va">forest</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span><span class="op">)</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute AMEs for all features:</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">overview</span> <span class="op">=</span> <span class="va">AverageMarginalEffects</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">forest</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">bikes</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model Summary Using Average Marginal Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Feature step.size        AME       SD       0.25       0.75   n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      season    winter   -932.474 451.0502 -1264.1138  -630.7163 550</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      season    spring   130.3663 551.5511  -239.1191   633.5755 547</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      season    summer    297.277 532.6362   -35.2344   737.2393 543</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      season      fall   517.0607   561.73    41.4605  1097.7912 553</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        year         0 -1899.0541 644.1449    -2369.9 -1503.1714 366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        year         1  1778.9527 526.8212  1393.5376   2193.307 365</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     holiday        no   193.0899 244.0208    78.3876   221.9392  21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     holiday       yes  -130.9783 160.0358  -190.1349   -23.6453 710</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     weekday    Sunday    155.498  187.478    16.1957   247.5624 626</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    weekday    Monday  -160.4841 217.1682  -268.5519    -7.4552 626</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11    weekday   Tuesday  -116.8528 192.7621  -201.9012    10.0376 626</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12    weekday Wednesday   -45.0773  175.288   -113.629     67.257 627</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    weekday  Thursday    14.3622 161.4098   -62.4143    90.2551 627</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14    weekday    Friday    57.0767 162.6013    -31.529    126.111 627</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15    weekday  Saturday   110.4502 168.8533      2.324   183.8443 627</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 workingday        no   -33.7587 134.2486    -135.34    70.9886 500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 workingday       yes    37.4792 154.3649   -75.7429   132.5064 231</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18    weather     misty  -224.6293 309.4715  -410.8714   -89.6187 484</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19    weather     clear   362.3445 315.0696   145.5768   471.3252 268</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20    weather      rain  -735.7268 345.4745  -983.7076  -491.0294 710</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21       temp         1    57.9582 169.7163   -24.2329   107.1533 731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   humidity      0.01   -19.8485  60.4123    -36.703    12.1158 731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23  windspeed         1   -26.1588   76.209   -56.6761    13.8574 731</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute AMEs for a subset of features with non-default step.sizes:</span></span></span>
 <span class="r-in"><span><span class="va">overview</span> <span class="op">=</span> <span class="va">AverageMarginalEffects</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>model <span class="op">=</span> <span class="va">forest</span>,</span></span>
@@ -245,20 +225,16 @@ For categorial features, the step size must be a character vector of category na
 <span class="r-in"><span>                                      features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>humidity <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
 <span class="r-in"><span>                                                   weather <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clear"</span>, <span class="st">"rain"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">overview</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model Summary Using Average Marginal Effects:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Feature step.size        AME        SD       0.25       0.75   n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  weather     clear  362.34454 315.06963  145.57677  471.32523 268</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  weather      rain  -735.7268 345.47445 -983.70756 -491.02936 710</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 humidity       0.1 -204.12672 308.35744 -299.65295   -1.74606 731</span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co">## Method `AverageMarginalEffects$compute`</span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute results:</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">overview</span><span class="op">$</span><span class="fu">compute</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
