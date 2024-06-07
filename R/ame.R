@@ -24,6 +24,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
     #' forest = lrn("regr.ranger")$train(task)
     #'
     #' # Compute AMEs for all features:
+    #' \dontrun{
     #' overview = AverageMarginalEffects$new(
     #'   model = forest,
     #'   data = bikes)$compute()
@@ -35,6 +36,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
     #'                                       features = list(humidity = 0.1,
     #'                                                    weather = c("clear", "rain")))$compute()
     #' summary(overview)
+    #' }
     initialize = function(model, data, features = NULL, ep.method = "none") {
 
       # Initialize predictor (this includes the relevant assertions)
@@ -67,7 +69,9 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
     #' @return An `AME` object with results.
     #' @examples
     #' # Compute results:
+    #' \dontrun{
     #' overview$compute()
+    #' }
     compute = function() {
 
       predictor = self$predictor
@@ -227,6 +231,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 #' forest = lrn("regr.ranger")$train(task)
 #'
 #' # Compute AMEs for all features:
+#' \dontrun{
 #' overview = ame(model = forest, data = bikes)
 #' summary(overview)
 #'
@@ -238,6 +243,7 @@ AverageMarginalEffects = R6::R6Class("AverageMarginalEffects",
 #'
 #' # Extract results:
 #' overview$results
+#' }
 #' @export
 ame = function(model, data, features = NULL, ep.method = "none") {
   return(AverageMarginalEffects$new(model, data, features = features, ep.method = ep.method)$compute())

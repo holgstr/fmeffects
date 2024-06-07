@@ -22,6 +22,7 @@ task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
+\dontrun{
 overview = AverageMarginalEffects$new(
   model = forest,
   data = bikes)$compute()
@@ -33,13 +34,16 @@ overview = AverageMarginalEffects$new(model = forest,
                                       features = list(humidity = 0.1,
                                                    weather = c("clear", "rain")))$compute()
 summary(overview)
+}
 
 ## ------------------------------------------------
 ## Method `AverageMarginalEffects$compute`
 ## ------------------------------------------------
 
 # Compute results:
+\dontrun{
 overview$compute()
+}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -103,6 +107,7 @@ task = as_task_regr(x = bikes, id = "bikes", target = "count")
 forest = lrn("regr.ranger")$train(task)
 
 # Compute AMEs for all features:
+\dontrun{
 overview = AverageMarginalEffects$new(
   model = forest,
   data = bikes)$compute()
@@ -114,6 +119,7 @@ overview = AverageMarginalEffects$new(model = forest,
                                       features = list(humidity = 0.1,
                                                    weather = c("clear", "rain")))$compute()
 summary(overview)
+}
 }
 \if{html}{\out{</div>}}
 
@@ -135,7 +141,9 @@ An \code{AME} object with results.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{# Compute results:
+\dontrun{
 overview$compute()
+}
 }
 \if{html}{\out{</div>}}
 
