@@ -208,12 +208,12 @@ Partitioning = R6::R6Class("Partitioning",
 #' forest = lrn("regr.ranger")$train(task)
 #' effects = fme(model = forest, data = bikes, features = list("temp" = 1), ep.method = "envelope")
 #'
-#' # Find a partitioning with exactly 3 subspaces:
-#' subspaces = came(effects, number.partitions = 3)
+#' # Find a partitioning with exactly 5 subspaces:
+#' subspaces = came(effects, number.partitions = 5)
 #'
-#' # Find a partitioning with a maximum standard deviation of 20, use `rpart`:
+#' # Find a partitioning with a maximum standard deviation of 500, use `rpart`:
 #' library(rpart)
-#' subspaces = came(effects, max.sd = 20, rp.method = "rpart")
+#' subspaces = came(effects, max.sd = 500, rp.method = "rpart")
 #'
 #' # Analyze results:
 #' summary(subspaces)
