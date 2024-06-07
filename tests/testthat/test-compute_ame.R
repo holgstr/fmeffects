@@ -13,7 +13,7 @@ testthat::test_that("FME computation correct for univariate numeric vignette exa
             features = list(temp = 1),
             ep.method = "envelope")$ame
 
-  testthat::expect_equal(ame, 2.364761, tolerance = 0.3)
+  testthat::expect_equal(ame, 56.7, tolerance = 0.3)
 })
 
 testthat::test_that("FME computation correct for multivariate vignette example", {
@@ -23,7 +23,7 @@ testthat::test_that("FME computation correct for multivariate vignette example",
             features = list(temp = -3, humidity = -0.1),
             ep.method = "envelope")$ame
 
-  testthat::expect_equal(ame, -2.796907, tolerance = 0.3)
+  testthat::expect_equal(ame, -118, tolerance = 0.3)
 })
 
 testthat::test_that("FME computation correct for categorical vignette example", {
@@ -39,7 +39,7 @@ testthat::test_that("FME computation correct for categorical interactions vignet
 
   ame = fme(model = forest,
             data = bikes,
-            features = list(weather = "clear", workingday = "False"))$ame
+            features = list(weather = "clear", workingday = "no"))$ame
 
   testthat::expect_equal(ame, -175.7891, tolerance = 2)
 })

@@ -5,7 +5,7 @@
 \alias{bikes}
 \title{Regression data of the usage of rental bikes in Washington D.C., USA}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 727 rows and 11 columns.
+An object of class \code{data.frame} with 731 rows and 10 columns.
 }
 \source{
 This is a subset of the original data, which can be found on the \href{https://www.openml.org/search?type=data&id=42712&sort=runs&status=active}{OpenML} database (ID = \code{42712}).

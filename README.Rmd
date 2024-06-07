@@ -92,7 +92,7 @@ summary(effects)
 plot(effects)
 ```
 
-On average, an increase in temperature by 1°C results in an increase in the predicted number of bike rentals by more than 2. This is called the average marginal effect (AME).
+On average, an increase in temperature by 1°C results in an increase in the predicted number of bike rentals by more than 56. This is called the average marginal effect (AME).
 
 ### Model Overview
 

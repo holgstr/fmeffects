@@ -48,7 +48,7 @@ forest = lrn("regr.ranger")$train(task)
 
 # Numeric Feature Effects
 
-FMEs can be used to compute feature effects for both numerical and categorical features. This can be done with the `fme()` function. The most common application is to compute the FME for a single numerical feature, i.e., a univariate feature effect. The variable of interest must be specified with the `features` argument. This is a named list with the feature names and step lengths. The step length is chosen to be the number deemed most useful for the purpose of interpretation. Most of the time, this will be a unit change, e.g., `features = list(feature_name = 1)`. As the concept of numerical FMEs extends to multivariate feature changes as well, `fme()` can be asked to compute a multivariate feature effect.
+FMEs can be used to compute feature effects for both numerical and categorical features. This can be done with the `fme()` function. The most common application is to compute the FME for a single numerical feature, i.e., a univariate feature effect. The variable of interest must be specified with the `features` argument. This is a named list with the feature names and step lengths. The step length is chosen to be the number deemed most useful for the purpose of interpretation. Often, this could be a unit change, e.g., `features = list(feature_name = 1)`. As the concept of numerical FMEs extends to multivariate feature changes as well, `fme()` can be asked to compute a multivariate feature effect.
 
 ## Univariate Effects
 
@@ -67,15 +67,15 @@ Note that we have specified `ep.method = "envelope"`. This means we exclude obse
 plot(effects)
 ```
 
-The black arrow indicates direction and magnitude of the step size. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. Therefore, on average, the FME of a temperature increase of 1°C on bike sharing usage is roughly 2.4. As can be seen, the observation-wise effects seem to vary along the range of `temp`. While the FME tends to be positive for lower temperature values (5-20°C), it turns negative for higher temperature values (>20°C). \
-
-We can extract relevant aggregate information from the `effects` object:
+The black arrow indicates direction and magnitude of the step size. The horizontal line is the average marginal effect (AME). The AME is computed as a simple mean over all observation-wise FMEs. We can extract relevant aggregate information from the `effects` object:
 
 ```{r}
 effects$ame
 ```
 
-For a more in-depth analysis, we can inspect the FME of each observation in the data (excluding extrapolation points):
+Therefore, on average, a temperature increase of 1°C is associated with an increase in predicted bike sharing usage by roughly 56. As can be seen in the plot, the observation-wise effects seem to vary along the range of `temp`. The FME tends to be positive for temperature values between 0 and 17°C and negative for higher temperature values (>17°C). \
+
+For a more in-depth analysis, we can inspect individual FMEs for each observation in the data (excluding extrapolation points):
 
 ```{r}
 head(effects$results)
@@ -98,7 +98,7 @@ For bivariate effects, we can plot the effects in a way similar to univariate ef
 plot(effects2)
 ```
 
-The plot for bivariate FMEs uses a color scale to indicate direction and magnitude of the estimated effect. We can see that FMEs tend to be positive for days with high temperature and high humidity. Let's check the AME:
+The plot for bivariate FMEs uses a color scale to indicate direction and magnitude of the estimated effect. We see that a drop in both temperature and humidity is associated with lower predicted bike sharing usage especially on days with medium temperatures and medium-to-low humidity. Let's check the AME:
 
 ```{r}
 effects2$ame
@@ -132,7 +132,7 @@ Similarly to the AME, we can extract an Average NLM (ANLM):
 effects3$anlm
 ```
 
-A value of 0.5 indicates that a linear effect can describe some but not all of the change of the prediction function along the multivariate feature step. This means we should be weary of interpreting the FME as a linear effect.
+A value of 0.2 indicates that a linear effect is ill-suited to describe the change of the prediction function along the multivariate feature step. This means we should be weary of interpreting the FME as a linear effect.
 
 If NLMs have been computed, they can be visualized alongside FMEs using `with.nlm = TRUE`:
 
@@ -165,7 +165,7 @@ effects5 = fme(model = forest,
 summary(effects5)
 ```
 
-Here, the AME of `rain` is -55. Therefore, while holding all other features constant, a change to rainy weather can be expected to reduce bike sharing usage by 55. \
+An AME of -732 implies that holding all other features constant, a change to rainy weather can be expected to reduce bike sharing usage by 732. \
 For categorical feature effects, we can plot the empirical distribution of the FMEs:
 
 ```{r, warning=FALSE}
@@ -174,12 +174,12 @@ plot(effects5)
 
 ## Interactions
 
-In a similar way, we can consider interactions of categories from different features. For example, consider the average combined effect of a clear sky on the weekend, i.e., `weather = "clear"` and `workingday = "False"`:  
+In a similar way, we can consider interactions of categories from different features. For example, consider the average combined effect of a clear sky on the weekend, i.e., `weather = "clear"` and `workingday = "no"`:  
 
 ```{r}
 fme(model = forest,
     data = bikes,
-    features = list(weather = "clear", workingday = "False"))$ame
+    features = list(weather = "clear", workingday = "no"))$ame
 ```
 
 ---
@@ -223,7 +223,7 @@ As can be seen, the CTREE algorithm was used to partition the feature space into
 plot(subspaces)
 ```
 
-In this case, we get a decision tree that assigns observations to a feature subspace according to the weather situation (`weather`) and the day of the week (`weekday`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. The difference in the cAMEs across the groups means the expected ME is estimated to vary substantially in direction and magnitude across the subspaces. For example, the cAME is highest on rainy days. It turns negative on non-rainy days.
+In this case, we get a decision tree that assigns observations to a feature subspace according to the season (`season`) and the humidity (`humidity`). The information contained in the boxes below the terminal nodes are equivalent to the summary output and can be extracted from `subspaces$results`. The difference in the cAMEs across the groups means the expected ME varies substantially in direction and magnitude across the subspaces. For example, the cAME is highest on summer days. It is lowest on days in spring, fall or winter when the humidity is below 66%.
 
 ---
 

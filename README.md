@@ -103,10 +103,10 @@ summary(effects)
 #>   temp, 1
 #> 
 #> Extrapolation point detection:
-#>   none, EPs: 0 of 727 obs. (0 %)
+#>   none, EPs: 0 of 731 obs. (0 %)
 #> 
 #> Average Marginal Effect (AME):
-#>   2.4411
+#>   56.7848
 ```
 
 ### Plot effects
@@ -118,7 +118,7 @@ plot(effects)
 ![](man/figures/unnamed-chunk-6-1.png)<!-- -->
 
 On average, an increase in temperature by 1°C results in an increase in
-the predicted number of bike rentals by more than 2. This is called the
+the predicted number of bike rentals by more than 56. This is called the
 average marginal effect (AME).
 
 ### Model Overview
@@ -132,29 +132,28 @@ summary(overview)
 #> 
 #> Model Summary Using Average Marginal Effects:
 #> 
-#>       Feature step.size       AME      SD      0.25      0.75   n
-#> 1      season    spring  -25.5549 27.3998    -32.45   -5.9315 548
-#> 2      season    summer    0.7093 21.1565   -7.6447   11.6903 543
-#> 3      season      fall   10.1952 26.8142   -3.4281   32.8187 539
-#> 4      season    winter   15.0809 23.8147    1.0429   26.4387 551
-#> 5        year         0  -99.2488 67.1833 -158.9906  -20.4887 364
-#> 6        year         1   96.7449 60.1848   22.3911  147.3953 363
-#> 7       month         1     3.972 13.3527   -1.2051    7.0222 727
-#> 8     holiday     False   -1.2738 20.6053  -12.3941   13.8391  21
-#> 9     holiday      True  -12.6624   24.82  -31.2439    7.6505 706
-#> 10    weekday       Sat  -55.4373   49.01  -87.0245  -17.8073 622
-#> 11    weekday       Sun  -84.0272 55.8122 -120.5427  -33.0282 622
-#> 12    weekday       Mon   11.8773  29.037   -8.0628   32.0552 623
-#> 13    weekday       Tue   18.4042 25.4493    0.5363   34.5578 625
-#> 14    weekday       Wed   20.9593 23.3927    1.3587   35.6727 623
-#> 15    weekday       Thu    20.424 24.6661   -0.2019   37.0423 624
-#> 16    weekday       Fri     2.156 36.5116  -25.2143   32.6578 623
-#> 17 workingday     False -202.7007 90.6191 -255.7437 -139.1033 496
-#> 18 workingday      True  161.4155 64.4276   119.987  208.2005 231
-#> 19    weather     clear   26.4157 42.2183    4.0505   24.5175 284
-#> 20    weather     misty    2.8201 33.2774   -9.2876    0.7728 513
-#> 21    weather      rain  -56.4571 53.9396  -95.1849   -5.5318 657
-#> 22       temp         1    2.4411  7.3702   -0.6545    4.8451 727
-#> 23   humidity      0.01   -0.2313  2.5498   -0.3944    0.4116 727
-#> 24  windspeed         1    0.0453  2.5067   -0.1638    0.3046 727
+#>       Feature step.size       AME       SD       0.25       0.75   n
+#> 1      season    winter -906.3152 452.5878 -1271.0584  -600.2563 550
+#> 2      season    spring  133.4859 560.2646  -251.9123   656.0786 547
+#> 3      season    summer  290.1049 538.7409   -38.9006   749.0648 543
+#> 4      season      fall  522.5996 569.6906    44.5897   1109.532 553
+#> 5        year         0 -1899.879 633.9108 -2386.0419 -1505.6763 366
+#> 6        year         1 1784.2169 512.4153  1437.0613    2188.87 365
+#> 7     holiday        no  192.3511 243.8668    88.2007   234.6339  21
+#> 8     holiday       yes -125.4963 162.4853  -201.8025   -16.1199 710
+#> 9     weekday    Sunday  162.5495  191.207    18.7489   271.2774 626
+#> 10    weekday    Monday -157.9409 223.1961  -265.1487    -4.9606 626
+#> 11    weekday   Tuesday -116.1417 198.0911   -202.525    12.3244 626
+#> 12    weekday Wednesday  -48.2876 175.2334  -124.9116    62.7098 627
+#> 13    weekday  Thursday   12.3041 164.3111   -69.5711    86.6357 627
+#> 14    weekday    Friday   58.2788  166.217   -23.7812   138.4033 627
+#> 15    weekday  Saturday  109.3594 171.4439     3.0084   191.9563 627
+#> 16 workingday        no  -40.2099 132.4716  -139.6087    63.0035 500
+#> 17 workingday       yes   48.4213  152.836   -66.5641   141.8286 231
+#> 18    weather     misty -215.4948 314.4225  -406.0824   -66.8453 484
+#> 19    weather     clear   366.836 321.0056   146.1407   460.0033 268
+#> 20    weather      rain -710.9229 338.3372  -967.2359  -477.8959 710
+#> 21       temp         1   56.7848 165.6973   -23.7236   103.5828 731
+#> 22   humidity      0.01  -20.1036  60.3589    -36.062    11.4318 731
+#> 23  windspeed         1  -23.4009  76.1323   -53.8099    15.4921 731
 ```

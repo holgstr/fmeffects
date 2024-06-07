@@ -48,7 +48,7 @@ subspaces = came(effects, number.partitions = 3)
 
 # Find a partitioning with a maximum standard deviation of 20, use `rpart`:
 library(rpart)
-subspaces = came(effects, max.sd = 20, rp.method = "rpart")
+subspaces = came(effects, max.sd = 200, rp.method = "rpart")
 
 # Analyze results:
 summary(subspaces)
