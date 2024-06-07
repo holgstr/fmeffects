@@ -19,8 +19,7 @@
 #'
 #' @usage data(bikes)
 #'
-#' @source The original data can be found on the \href{https://www.openml.org/search?type=data&id=42712&sort=runs&status=active}{OpenML} database (ID = \code{42712}).
+#' @source The original data can be found on the \href{https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset}{UCI} database (ID = \code{275}).
 #'
 #' @references Fanaee-T, Hadi, and Gama, Joao, "Event labeling combining ensemble detectors and background knowledge", Progress in Artificial Intelligence (2013): pp. 1-15, Springer Berlin Heidelberg, doi:10.1007/s13748-013-0040-3.
-#' @references Vanschoren, Joaquin, et al. "OpenML: networked science in machine learning." ACM SIGKDD Explorations Newsletter 15.2 (2014): 49-60.
 "bikes"
