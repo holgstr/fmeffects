@@ -58,8 +58,7 @@ Consider the following example: how does an increase in temperature
 
 ``` r
 set.seed(123)
-#library(fmeffects)
-devtools::load_all()
+library(fmeffects)
 data(bikes)
 ```
 
