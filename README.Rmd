@@ -53,7 +53,7 @@ library(fmeffects)
 data(bikes)
 ```
 
-### Train a Model {.tabset}
+### Train a Model
 
 #### `tidymodels`
 
@@ -74,8 +74,6 @@ library(mlr3verse)
 task <- as_task_regr(x = bikes, target = "count")
 forest <- lrn("regr.ranger")$train(task)
 ```
-
-### {-}
 
 ### Compute effects
 
@@ -103,6 +101,7 @@ overview <- ame(model = forest,
                 data = bikes)
 summary(overview)
 ```
+
 [1]: https://link.springer.com/article/10.1007/s10618-023-00993-x
 
 [2]: https://mlr3learners.mlr-org.com/
