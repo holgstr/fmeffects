@@ -124,23 +124,23 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Find a partitioning with a maximum standard deviation of 20, use `rpart`:</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart" class="external-link">rpart</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">subspaces</span> <span class="op">=</span> <span class="fu">came</span><span class="op">(</span><span class="va">effects</span>, max.sd <span class="op">=</span> <span class="fl">20</span>, rp.method <span class="op">=</span> <span class="st">"rpart"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">subspaces</span> <span class="op">=</span> <span class="fu">came</span><span class="op">(</span><span class="va">effects</span>, max.sd <span class="op">=</span> <span class="fl">200</span>, rp.method <span class="op">=</span> <span class="st">"rpart"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Analyze results:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">subspaces</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PartitioningRpart of an FME object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Method:  max.sd = 20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Method:  max.sd = 200</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    n       cAME  SD(fME)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  721  2.3572245 7.110771 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  215 -0.9243535 8.129564  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  506  3.7515709 6.127868  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    n      cAME  SD(fME)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  728  55.37279 168.0597 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  349 -36.89525 109.3153  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  379 140.33730 167.9926  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * root node (non-partitioned)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AME (Global): 2.3572</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AME (Global): 55.3728</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">subspaces</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="came-1.png" alt="" width="700" height="433"></span>
@@ -149,13 +149,13 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-in"><span><span class="va">subspaces</span><span class="op">$</span><span class="va">results</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 721</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 728</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$cAME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.357224</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 55.37279</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$`SD(fME)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.110771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 168.0597</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]$is.terminal.node</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -163,13 +163,13 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 349</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$cAME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.9243535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -36.89525</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$`SD(fME)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.129564</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 109.3153</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]$is.terminal.node</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
@@ -177,13 +177,13 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 379</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$cAME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.751571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 140.3373</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$`SD(fME)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.127868</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 167.9926</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]$is.terminal.node</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
@@ -192,13 +192,13 @@ Either <code>number.partitions</code> or <code>max.sd</code> can be specified.</
 <span class="r-in"><span><span class="va">subspaces</span><span class="op">$</span><span class="va">tree</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model formula:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fme ~ season + year + month + holiday + weekday + workingday + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     weather + temp + humidity + windspeed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> fme ~ season + year + holiday + weekday + workingday + weather + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     temp + humidity + windspeed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Fitted party:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] root</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   [2] temp &gt;= 23.37: -0.924 (n = 215, err = 14143.2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   [3] temp &lt; 23.37: 3.752 (n = 506, err = 18963.1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |   [2] temp &gt;= 16.12667: -36.895 (n = 349, err = 4158543.0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |   [3] temp &lt; 16.12667: 140.337 (n = 379, err = 10667735.4)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of inner nodes:    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of terminal nodes: 2</span>
