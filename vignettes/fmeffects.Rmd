@@ -174,12 +174,12 @@ plot(effects5)
 
 ## Interactions
 
-In a similar way, we can consider interactions of categories from different features. For example, consider the average combined effect of a clear sky on the weekend, i.e., `weather = "clear"` and `workingday = "False"`:  
+In a similar way, we can consider interactions of categories from different features. For example, consider the average combined effect of a clear sky on the weekend, i.e., `weather = "clear"` and `workingday = "no"`:  
 
 ```{r}
 fme(model = forest,
     data = bikes,
-    features = list(weather = "clear", workingday = "False"))$ame
+    features = list(weather = "clear", workingday = "no"))$ame
 ```
 
 ---
