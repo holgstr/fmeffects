@@ -61,7 +61,7 @@ FMEPlotHigherOrder = R6::R6Class(
                                   bins = min(round(nrow(df))*0.4, 20),
                                   na.rm = TRUE) +
           ggplot2::geom_vline(lwd = 1.2, mapping = ggplot2::aes(xintercept = mean(fme))) +
-          ggplot2::geom_label(x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
+          ggplot2::annotate(geom = "label", x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
           ggplot2::xlab(
             paste0("FME (",
                    paste(
@@ -89,7 +89,7 @@ FMEPlotHigherOrder = R6::R6Class(
                                     bins = min(round(nrow(df))*0.4, 20),
                                     na.rm = TRUE) +
             ggplot2::geom_vline(lwd = 1.2, mapping = ggplot2::aes(xintercept = mean(nlm))) +
-            ggplot2::geom_label(x = mean(df$nlm), y = countmax*0.9, label = paste0('ANLM: ', round(mean(df$nlm), 4)), fill = 'white') +
+            ggplot2::annotate(geom = "label", x = mean(df$nlm), y = countmax*0.9, label = paste0('ANLM: ', round(mean(df$nlm), 4)), fill = 'white') +
             ggplot2::xlab(
               paste0("NLM (",
                      paste(
@@ -256,7 +256,7 @@ FMEPlotUnivariate = R6::R6Class(
                           arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                           lineend = "round", linejoin = "mitre") +
         ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = mean(fme, na.rm = TRUE))) +
-        ggplot2::geom_label(x = max.x1 + 0.1 * range.x1, y = mean(df$fme, na.rm = TRUE), label = "AME", size = 3, fill = 'white') +
+        ggplot2::annotate(geom = "label", x = max.x1 + 0.1 * range.x1, y = mean(df$fme, na.rm = TRUE), label = "AME", size = 3, fill = 'white') +
         ggplot2::xlab(self$feature[1]) +
         ggplot2::ylab("FME") +
         ggplot2::theme_bw() +
@@ -293,7 +293,7 @@ FMEPlotUnivariate = R6::R6Class(
                             arrow = grid::arrow(length = grid::unit(0.2, "cm")),
                             lineend = "round", linejoin = "mitre") +
           ggplot2::geom_hline(lwd = 1.2, mapping = ggplot2::aes(yintercept = meannlm)) +
-          ggplot2::geom_label(x = max(df$x1) + 0.09 * range.x1, y = meannlm, label = "ANLM", size = 3, fill = 'white') +
+          ggplot2::annotate(geom = "label", x = max(df$x1) + 0.09 * range.x1, y = meannlm, label = "ANLM", size = 3, fill = 'white') +
           ggplot2::xlab(self$feature[1]) +
           ggplot2::ylab("NLM") +
           ggplot2::theme_bw() +
@@ -341,7 +341,7 @@ FMEPlotCategorical = R6::R6Class(
                                   bins = min(round(nrow(df))*0.4, 20),
                                   na.rm = TRUE) +
           ggplot2::geom_vline(lwd = 1.2, mapping = ggplot2::aes(xintercept = mean(fme))) +
-          ggplot2::geom_label(x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
+          ggplot2::annotate(geom = "label", x = mean(df$fme), y = countmax*0.9, label = paste0('AME: ', round(mean(df$fme), 4)), fill = 'white') +
           ggplot2::xlab(paste0("FME (category: ", self$step.size, ", feature: ", self$feature, ")")) +
           ggplot2::ylab("") +
           ggplot2::theme_bw() +
