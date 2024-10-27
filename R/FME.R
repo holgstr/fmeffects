@@ -250,9 +250,6 @@ ForwardMarginalEffect = R6::R6Class("ForwardMarginalEffect",
                               workers = parallelly::availableCores(omit = 2))
         on.exit(future::plan(oplan), add = TRUE)
 
-        # Ensure parallel-safe RNG
-        options(future.rng.onMisuse = "ignore", future.seed = TRUE)
-
         pb <- utils::txtProgressBar(min = 0, max = nrow(data), style = 3)
 
         nlm_values <- furrr::future_map_dbl(ids, ~ {
