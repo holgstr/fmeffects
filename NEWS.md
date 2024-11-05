@@ -1,3 +1,7 @@
+# fmeffects 0.1.4
+
+-   `plot` works much faster for large data sets
+
 # fmeffects 0.1.3
 
 -   `fme` and `ame` automatically extract the name of the model's target variable from the model.
